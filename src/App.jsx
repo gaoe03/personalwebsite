@@ -179,15 +179,13 @@ const HikingTrail = () => {
         {stop.desc && <p className="text-sm mt-1" style={{ color: '#777' }}>{stop.desc}</p>}
       </div>
       {stop.milestones.length > 0 && (
-        <div className="flex flex-col" style={{ alignItems: side === 'left' ? 'flex-start' : 'flex-end', paddingLeft: side === 'left' ? '20px' : '0', paddingRight: side === 'right' ? '20px' : '0' }}>
-          <div style={{ width: '3px', height: '16px', backgroundColor: '#b5b0a6', borderRadius: '2px' }} />
+        <div className="flex flex-col gap-3 mt-3" style={{ alignItems: side === 'left' ? 'flex-start' : 'flex-end', paddingLeft: side === 'left' ? '20px' : '0', paddingRight: side === 'right' ? '20px' : '0' }}>
           {stop.milestones.map((m, i) => (
             <div key={i} className="flex flex-col" style={{ alignItems: side === 'left' ? 'flex-start' : 'flex-end' }}>
               <div className="flex items-center gap-3 p-3 rounded-xl bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1" style={{ border: '1px solid #e8e4df', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }} onClick={() => setSelectedItem(m.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 6px 15px rgba(0,0,0,0.1)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)'}>
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}><m.icon size={16} style={{ color: '#fff' }} /></div>
                 <div><p className="text-sm font-semibold" style={{ color: '#2d2d2d' }}>{m.label}</p><p className="text-xs" style={{ color: '#888' }}>{m.desc}</p></div>
               </div>
-              {i < stop.milestones.length - 1 && <div style={{ width: '3px', height: '16px', backgroundColor: '#b5b0a6', borderRadius: '2px' }} />}
             </div>
           ))}
         </div>
@@ -302,7 +300,7 @@ const HikingTrail = () => {
         )}
       </div>
 
-      ```
+
       {selectedItem && <ResumeModal item={selectedItem} onClose={() => setSelectedItem(null)} />}
     </div>
   );
