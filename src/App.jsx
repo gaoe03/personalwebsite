@@ -302,15 +302,19 @@ const HikingTrail = () => {
         )}
       </div>
 
+      ```
       {selectedItem && <ResumeModal item={selectedItem} onClose={() => setSelectedItem(null)} />}
     </div>
   );
 };
 
+import { Analytics } from "@vercel/analytics/react"
+
 export default function Site() {
   const [selectedProject, setSelectedProject] = useState(null);
   return (
     <div style={{ backgroundColor: '#faf9f6', minHeight: '100vh', fontFamily: 'system-ui, sans-serif', scrollBehavior: 'smooth' }}>
+      <Analytics />
       <style>{`
         html { scroll-behavior: smooth; }
         
@@ -337,14 +341,14 @@ export default function Site() {
         <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #faf9f6 0%, #f5f1eb 50%, #f0ebe5 100%)' }} />
 
         <div className="absolute bottom-0 left-0 right-0 h-24" style={{ background: 'linear-gradient(to bottom, transparent, #f5f3ef)' }} />
-        <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-10 py-4">
-          <span className="px-4 py-2 rounded-full flex items-center gap-2" style={{ fontFamily: 'Georgia, serif', fontSize: '1.2rem', color: '#2d2d2d', backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
+        <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 md:px-10 py-4">
+          <span className="px-3 md:px-4 py-2 rounded-full flex items-center gap-2" style={{ fontFamily: 'Georgia, serif', fontSize: '1.2rem', color: '#2d2d2d', backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
             <img src="/favicon.png" alt="Whale" style={{ width: '24px', height: '24px' }} />
-            Ethan Gao
+            <span className="hidden sm:inline">Ethan Gao</span>
           </span>
-          <div className="flex items-center gap-2 md:gap-3 px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
+          <div className="flex items-center gap-1 md:gap-3 px-3 md:px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
             {[{ label: 'Experience', href: '#experience' }, { label: 'Projects', href: '#projects' }, { label: 'Interests', href: '#interests' }, { label: 'Contact', href: '#contact' }].map((link) => (
-              <a key={link.label} href={link.href} className="text-xs md:text-sm font-medium transition-all duration-200 px-3 py-1 hover:scale-110" style={{ color: '#555' }}>{link.label}</a>
+              <a key={link.label} href={link.href} className="text-xs md:text-sm font-medium transition-all duration-200 px-2 md:px-3 py-1 hover:scale-110" style={{ color: '#555' }}>{link.label}</a>
             ))}
           </div>
         </nav>
