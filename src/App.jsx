@@ -441,7 +441,7 @@ const ImageTaggerMockup = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* Image display */}
-      <div style={{ borderRadius: '12px', overflow: 'hidden', position: 'relative', flex: '0 0 auto', minHeight: '120px', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1)' }}>
+      <div style={{ borderRadius: '12px', overflow: 'hidden', position: 'relative', flex: '0 0 auto', minHeight: '80px', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1)' }}>
         <div style={{ width: '100%', height: '100%', background: image.bg }} />
         {isAnalyzing && (
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -477,18 +477,17 @@ const ImageTaggerMockup = () => {
         onClick={handleAnalyze}
         disabled={isAnalyzing}
         style={{
-          marginTop: '12px',
+          marginTop: '10px',
           width: '100%',
           background: isAnalyzing ? '#ccc' : '#4A7C59',
           border: 'none',
-          borderRadius: '10px',
-          padding: '14px 10px',
+          borderRadius: '8px',
+          padding: '10px 8px',
           color: '#fff',
-          fontSize: '12px',
+          fontSize: '11px',
           fontWeight: '600',
           cursor: isAnalyzing ? 'default' : 'pointer',
           flexShrink: 0,
-          minHeight: '44px',
         }}
       >
         {isAnalyzing ? 'Analyzing...' : 'Analyze Next Image'}
@@ -536,7 +535,7 @@ const TweetFetchMockup = () => {
 
         {/* Image + metadata */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px', minHeight: 0 }}>
-          <div style={{ borderRadius: '8px', overflow: 'hidden', height: '80px', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.15)' }}>
+          <div style={{ borderRadius: '8px', overflow: 'hidden', height: '55px', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.15)' }}>
             <div style={{ width: '100%', height: '100%', background: currentArt.bg }} />
           </div>
           {/* Tweet text */}
@@ -546,12 +545,12 @@ const TweetFetchMockup = () => {
         </div>
 
         {/* Navigation */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px', flexShrink: 0 }}>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={prevSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', color: '#fff', fontSize: '13px', minHeight: '36px' }}>←</button>
-            <button onClick={nextSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', color: '#fff', fontSize: '13px', minHeight: '36px' }}>→</button>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button onClick={prevSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '6px', padding: '6px 12px', cursor: 'pointer', color: '#fff', fontSize: '12px' }}>←</button>
+            <button onClick={nextSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '6px', padding: '6px 12px', cursor: 'pointer', color: '#fff', fontSize: '12px' }}>→</button>
           </div>
-          <span style={{ color: '#72767d', fontSize: '11px' }}>{currentSlide + 1} / {slides.length}</span>
+          <span style={{ color: '#72767d', fontSize: '10px' }}>{currentSlide + 1} / {slides.length}</span>
         </div>
       </div>
     </div>
@@ -633,18 +632,17 @@ const SynthMockup = () => {
           onClick={handleGenerate}
           disabled={isGenerating}
           style={{
-            marginTop: '12px',
+            marginTop: '8px',
             background: isGenerating ? '#72767d' : '#AA96DA',
             border: 'none',
-            borderRadius: '8px',
-            padding: '10px 16px',
+            borderRadius: '6px',
+            padding: '6px 12px',
             cursor: isGenerating ? 'default' : 'pointer',
             color: '#fff',
-            fontSize: '12px',
+            fontSize: '10px',
             fontWeight: '600',
             alignSelf: 'flex-start',
             flexShrink: 0,
-            minHeight: '40px',
           }}
         >
           {isGenerating ? 'Generating...' : 'Regenerate'}
@@ -695,9 +693,9 @@ const StockXGuessMockup = () => {
 
       {/* Sneaker card - centered */}
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ background: sneaker.bg, borderRadius: '16px', padding: '30px 40px', textAlign: 'center' }}>
-          <div style={{ width: '80px', height: '50px', background: sneaker.accent, borderRadius: '8px', margin: '0 auto 12px', opacity: 0.8 }} />
-          <div style={{ fontSize: '14px', fontWeight: '600', color: '#555' }}>{sneaker.name}</div>
+        <div style={{ background: sneaker.bg, borderRadius: '12px', padding: '16px 24px', textAlign: 'center' }}>
+          <div style={{ width: '60px', height: '35px', background: sneaker.accent, borderRadius: '6px', margin: '0 auto 8px', opacity: 0.8 }} />
+          <div style={{ fontSize: '11px', fontWeight: '600', color: '#555' }}>{sneaker.name}</div>
         </div>
       </div>
 
@@ -716,10 +714,10 @@ const StockXGuessMockup = () => {
       ) : (
         <div
           onClick={() => inputRef.current?.focus()}
-          style={{ background: '#f5f3ef', borderRadius: '12px', padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, cursor: 'text', minHeight: '52px' }}
+          style={{ background: '#f5f3ef', borderRadius: '10px', padding: '8px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, cursor: 'text' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: 1 }}>
-            <span style={{ color: '#4A7C59', fontWeight: '600', fontSize: '14px' }}>$</span>
+            <span style={{ color: '#4A7C59', fontWeight: '600', fontSize: '12px' }}>$</span>
             <input
               ref={inputRef}
               type="number"
@@ -727,13 +725,13 @@ const StockXGuessMockup = () => {
               onChange={(e) => setGuess(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleGuess()}
               placeholder="???"
-              style={{ width: '100%', border: 'none', background: 'transparent', fontSize: '14px', outline: 'none', fontWeight: '600' }}
+              style={{ width: '100%', border: 'none', background: 'transparent', fontSize: '12px', outline: 'none', fontWeight: '600' }}
             />
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleGuess(); }}
             disabled={!guess}
-            style={{ background: guess ? '#4A7C59' : '#ccc', border: 'none', borderRadius: '8px', padding: '10px 20px', cursor: guess ? 'pointer' : 'default', color: '#fff', fontSize: '12px', fontWeight: '600', flexShrink: 0, minHeight: '40px' }}
+            style={{ background: guess ? '#4A7C59' : '#ccc', border: 'none', borderRadius: '6px', padding: '6px 14px', cursor: guess ? 'pointer' : 'default', color: '#fff', fontSize: '10px', fontWeight: '600', flexShrink: 0 }}
           >
             Guess
           </button>
