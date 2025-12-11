@@ -1,6 +1,34 @@
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, Briefcase, GraduationCap, Github, Youtube, Mail, Camera, Code, Globe, Ticket, ArrowUpRight, Image, X, ChevronRight, Play, ExternalLink, IceCream, Coins, Linkedin, ChevronDown } from 'lucide-react';
 
+// === TYPING ANIMATION HOOK ===
+const useTypingEffect = (text, speed = 80, delay = 500) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    let timeout;
+    const startTyping = () => {
+      let i = 0;
+      const type = () => {
+        if (i < text.length) {
+          setDisplayedText(text.slice(0, i + 1));
+          i++;
+          timeout = setTimeout(type, speed);
+        } else {
+          setIsComplete(true);
+        }
+      };
+      timeout = setTimeout(type, delay);
+    };
+
+    startTyping();
+    return () => clearTimeout(timeout);
+  }, [text, speed, delay]);
+
+  return { displayedText, isComplete };
+};
+
 const projects = [
   {
     id: 'image-tagger', title: 'Image Tagger', desc: 'AI-powered tool for organizing and searching thousands of saved images', icon: Image, tech: ['Python', 'Gemini API', 'OpenAI API', 'Discord.py'], type: 'Nov 2025',
@@ -1137,7 +1165,7 @@ const HikingTrail = () => {
             <svg className="absolute top-0 right-0" width="620" height="350" viewBox="0 0 620 350" fill="none" style={{ pointerEvents: 'none' }}>
               {trees.map((t, i) => (<g key={i}><polygon points={`${t.x},${t.y - 20 * t.s} ${t.x - 12 * t.s},${t.y + 10 * t.s} ${t.x + 12 * t.s},${t.y + 10 * t.s}`} fill="#4A7C59" opacity={0.1 + (i % 5) * 0.03} /><polygon points={`${t.x},${t.y - 10 * t.s} ${t.x - 8 * t.s},${t.y + 6 * t.s} ${t.x + 8 * t.s},${t.y + 6 * t.s}`} fill="#3d6b4a" opacity={0.15 + (i % 4) * 0.04} /><rect x={t.x - 2} y={t.y + 8 * t.s} width="4" height={6 * t.s} fill="#8b7355" opacity="0.2" /></g>))}
             </svg>
-            <svg className="absolute right-4" style={{ top: '620px', pointerEvents: 'none' }} width="420" height="240" viewBox="0 0 420 240" fill="none">
+            <svg className="absolute right-4" style={{ top: '520px', pointerEvents: 'none' }} width="495" height="288" viewBox="0 0 420 240" fill="none">
               <path d="M45 90 Q90 37 195 52 Q315 67 367 120 Q397 172 300 202 Q180 232 75 187 Q22 157 45 90" fill="#a8d4e6" opacity="0.4" />
               <path d="M75 97 Q120 60 202 72 Q292 87 330 132 Q352 172 270 195 Q165 217 90 172 Q52 147 75 97" fill="#c5e4f0" opacity="0.3" />
             </svg>
@@ -1177,6 +1205,25 @@ const HikingTrail = () => {
 
 import { Analytics } from "@vercel/analytics/react"
 
+// === HERO HEADING WITH TYPING ===
+const HeroHeading = () => {
+  const { displayedText, isComplete } = useTypingEffect("Hey, I'm Ethan Gao", 70, 300);
+
+  return (
+    <h1 className="mb-6" style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', lineHeight: 1.15, color: '#2d2d2d', fontWeight: 400, minHeight: '1.2em' }}>
+      {displayedText.includes("Ethan") ? (
+        <>
+          {displayedText.split("Ethan")[0]}
+          <span style={{ color: '#3d6b4a' }}>Ethan{displayedText.split("Ethan")[1] || ''}</span>
+        </>
+      ) : (
+        displayedText
+      )}
+      {!isComplete && <span className="inline-block w-0.5 h-8 ml-1 bg-current" style={{ animation: 'blink 1s infinite' }} />}
+    </h1>
+  );
+};
+
 export default function Site() {
   const [selectedProject, setSelectedProject] = useState(null);
   return (
@@ -1209,6 +1256,11 @@ export default function Site() {
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.5; }
+        }
+
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
         }
 
         .social-icon {
@@ -1254,7 +1306,7 @@ export default function Site() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6" style={{ backgroundColor: 'rgba(74,124,89,0.15)', border: '1px solid rgba(74,124,89,0.25)' }}>
                 <MapPin size={12} style={{ color: '#3d6b4a' }} /><span className="text-sm font-medium" style={{ color: '#3d6b4a' }}>Costa Mesa, CA</span>
               </div>
-              <h1 className="mb-6" style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', lineHeight: 1.15, color: '#2d2d2d', fontWeight: 400 }}>Hey, I'm <span style={{ color: '#3d6b4a' }}>Ethan Gao</span></h1>
+              <HeroHeading />
               <p className="leading-relaxed mb-4" style={{ color: '#444', fontSize: 'clamp(1.05rem, 2vw, 1.15rem)', lineHeight: 1.85 }}>I'm an Analyst at <strong>Deloitte</strong> in Costa Mesa, working within Deloitte Digital. I recently graduated from <strong>UC Irvine</strong> with degrees in Computer Science and Business Administration.</p>
               <p className="leading-relaxed mb-8" style={{ color: '#666', fontSize: 'clamp(0.95rem, 1.5vw, 1.05rem)', lineHeight: 1.85 }}>I also make travel videos and build side projects.</p>
               <div className="flex items-center gap-5">
@@ -1285,12 +1337,10 @@ export default function Site() {
       <section id="projects" className="relative px-6 py-16">
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(74,124,89,0.08) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
         <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          {/* Section header with mixed typography */}
           <div className="mb-12">
             <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: '#2d2d2d', fontWeight: 400 }}>
-              <span style={{ fontStyle: 'italic' }}>Recent</span> Projects
+              Recent Projects
             </h2>
-            <div style={{ width: '60px', height: '3px', background: 'linear-gradient(90deg, #8b7355, transparent)', marginTop: '12px', borderRadius: '2px' }} />
           </div>
 
           {/* Desktop: Alternating full-width cards */}
