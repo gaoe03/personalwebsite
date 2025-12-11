@@ -42,14 +42,293 @@ The application pulls on-chain transaction history using the Etherscan and Cyber
 Built with JavaScript, TypeScript, and CSS. Completed in 24 hours with a team of three.` }
 ];
 
+// Coordinates placed visually on SVG landmasses
 const videos = [
-  { num: '1', title: 'Tohoku', gradient: 'linear-gradient(135deg, #3d5a4a 0%, #5a7c6a 100%)', url: 'https://www.youtube.com/watch?v=cUowHezVU8c', comingSoon: false, thumbnail: '/thumbnails/gaolife-1.jpg' },
-  { num: '1 pt.2', title: 'Hokkaido', gradient: 'linear-gradient(135deg, #2d4a5a 0%, #4a6a7c 100%)', url: 'https://www.youtube.com/watch?v=xY8n0mokf9w', comingSoon: false, thumbnail: '/thumbnails/gaolife-1pt2.jpg' },
-  { num: '2', title: 'Hong Kong', gradient: 'linear-gradient(135deg, #4a3d5a 0%, #6a5a7c 100%)', url: 'https://www.youtube.com/watch?v=DhuqgmEaplg', comingSoon: false, thumbnail: '/thumbnails/gaolife-2.jpg' },
-  { num: '3', title: 'Guangdong', gradient: 'linear-gradient(135deg, #5a4a2d 0%, #7c6a4a 100%)', url: 'https://www.youtube.com/watch?v=oHXrmyAfnkc', comingSoon: false, thumbnail: '/thumbnails/gaolife-3.jpg' },
-  { num: '4', title: 'Sichuan', gradient: 'linear-gradient(135deg, #2d5a4a 0%, #4a7c59 100%)', url: 'https://www.youtube.com/watch?v=bOl0s6UcLQI', comingSoon: false, thumbnail: '/thumbnails/gaolife-4.jpg' },
-  { num: '5', title: 'Coming Soon', gradient: 'linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%)', url: '', comingSoon: true, thumbnail: null },
+  // Coordinates calculated from SVG path analysis
+  { num: '1', title: 'Tohoku', gradient: 'linear-gradient(135deg, #3d5a4a 0%, #5a7c6a 100%)', url: 'https://www.youtube.com/watch?v=cUowHezVU8c', comingSoon: false, thumbnail: '/thumbnails/gaolife-1.jpg', mapX: 725, mapY: 405, country: 'Japan' },
+  { num: '1 pt.2', title: 'Hokkaido', gradient: 'linear-gradient(135deg, #2d4a5a 0%, #4a6a7c 100%)', url: 'https://www.youtube.com/watch?v=xY8n0mokf9w', comingSoon: false, thumbnail: '/thumbnails/gaolife-1pt2.jpg', mapX: 725, mapY: 388, country: 'Japan' },
+  { num: '2', title: 'Hong Kong', gradient: 'linear-gradient(135deg, #4a3d5a 0%, #6a5a7c 100%)', url: 'https://www.youtube.com/watch?v=DhuqgmEaplg', comingSoon: false, thumbnail: '/thumbnails/gaolife-2.jpg', mapX: 682, mapY: 462, country: 'China' },
+  { num: '3', title: 'Guangdong', gradient: 'linear-gradient(135deg, #5a4a2d 0%, #7c6a4a 100%)', url: 'https://www.youtube.com/watch?v=oHXrmyAfnkc', comingSoon: false, thumbnail: '/thumbnails/gaolife-3.jpg', mapX: 677, mapY: 456, country: 'China' },
+  { num: '4', title: 'Sichuan', gradient: 'linear-gradient(135deg, #2d5a4a 0%, #4a7c59 100%)', url: 'https://www.youtube.com/watch?v=bOl0s6UcLQI', comingSoon: false, thumbnail: '/thumbnails/gaolife-4.jpg', mapX: 638, mapY: 428, country: 'China' },
+  { num: '5', title: 'Coming Soon', gradient: 'linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%)', url: '', comingSoon: true, thumbnail: null, mapX: 0, mapY: 0, country: '' },
 ];
+
+// Interactive map component for gao life videos
+const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
+  // East Asia map using accurate geographic SVG paths from simple-world-map
+  // ViewBox cropped to show East Asia region
+
+  return (
+    <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+      <svg viewBox="575 365 170 115" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '12px' }}>
+
+        {/* China - accurate geographic outline */}
+        <path
+          d="M594.498,386.128l-2.99,7.521l-4.124-0.217l-4.349,9.518l3.691,4.701l-7.606,10.504l-3.907-0.658l-2.611,3.285l0.648,1.971l3.043,0.217l1.521,3.5l3.044,0.658l9.344,12.04v6.129l4.563,2.844l4.996-0.873l6.303,3.719l7.605,2.187l3.691-0.439l4.132-0.441l8.687-5.688l2.828,0.44l1.08,2.567l2.396,0.718l3.26,4.813l-2.17,4.814l1.306,3.285l3.69,1.312l0.647,3.942l4.35,0.439l0.647-1.971l6.302-3.285l3.907,0.217l4.563,5.03l3.043-1.312l1.954,0.216l0.873,2.412l1.521,0.216l2.169-3.06l8.688-3.285l7.823-9.413l2.61-8.974l-0.217-5.912l-3.259-0.656l1.953-2.188l-0.434-3.501l-8.255-8.314v-4.157l2.386-3.062l2.388-1.098l0.216-2.412h-6.085l-1.089,3.285l-2.828-0.656l-3.475-3.718l2.17-5.688l3.043-3.285l2.827,0.217l-0.434,5.031l1.521,1.313l3.691-3.717l1.306-0.216l-0.433-2.844l3.476-4.158l2.61,0.216l1.521-4.813l1.781-0.942l0.182-3l-1.729-1.815l-0.147-4.736l3.329-0.217l-0.216-12.214l-2.334,1.4L694.267,377l-3.897-0.009l-11.298-6.354l-8.16-9.837l-8.281-0.086l-2.107,1.833l2.68,6.137l-0.935,5.758l-3.335,1.383l-1.876-0.147l-0.139,5.696l1.954,0.441l3.476-1.53l4.563,2.187v2.188l-3.26,0.216l-2.611,5.688l-2.386,0.215l-8.472,11.16l-8.902,3.941l-6.086,0.441l-4.124-2.844l-5.869,3.068l-6.302-1.971l-1.521-4.158l-10.642-0.657l-5.646-9.188h-2.386l-1.92-4.262L594.498,386.128z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.5"
+        />
+
+        {/* Taiwan - accurate geographic outline */}
+        <path
+          d="M695.686,453.76l-3.06,2.334l-0.163,4.494l2.646,3.078l0.656-0.58L695.686,453.76z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.4"
+        />
+
+        {/* North Korea - accurate geographic outline */}
+        <path
+          d="M687.751,407.047l1.59,0.666l0.484,5.566l3.155,0.183l2.974-3.483l-1.029-0.916l0.121-3.734l2.731-3.303l-1.392-2.506l0.908-1.039l0.501-2.592l-1.582-0.719l-1.35,0.684l-1.668,5.064l-2.697-0.232l-3.12,3.682L687.751,407.047z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.4"
+        />
+
+        {/* South Korea - accurate geographic outline */}
+        <path
+          d="M696.446,410.443l5.342,4.356l0.909,4.22l-0.183,2.264l-2.61,2.939l-2.248,0.12l-2.551-5.506l-0.968-2.629l1.028-0.795l-0.242-1.099l-1.271-0.569L696.446,410.443z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.4"
+        />
+
+        {/* Japan - all islands with accurate geographic outlines */}
+        {/* Kyushu */}
+        <path
+          d="M709.317,426.193l-1.41,1.418l0.579,1.996l1.236,0.086l0.83,4.332l0.993,1.08l1.738-1.582l0.151-4.773l-2-2.125L709.317,426.193z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.4"
+        />
+        {/* Shikoku */}
+        <path
+          d="M716.688,422.188l-2.659,2.156l-0.591,2.719l1.812,1.25l2.625-2.75l0.37-3.062L716.688,422.188z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.4"
+        />
+        {/* Honshu (main island) */}
+        <path
+          d="M713.613,418.033l-4.219,4.832v2.322l2.604-0.312l4.085-3.592l2.731-0.502l0.663,0.779l0.015,2.377l0.688,1.25h1.255l1.763-2.158l0.743-2.836l3.552-0.086l3.476-4.166l-1.814-6.916l-0.83-3.664l1.815-1.496l-4.133-6.241l-0.944-0.744l-1.875,0.744l-0.481,2.584v2.083l0.994,1.167l0.328,5.498l-2.56,3.164l-1.485-0.917l-1.159,2.584l-0.251,2.412l0.909,1.418l-0.579,1.08l-1.902-1.582h-1.322l-1.157,0.666L713.613,418.033z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.4"
+        />
+        {/* Hokkaido */}
+        <path
+          d="M720.729,380.396l-1.321,1.168l0.665,2.498l1.158,1.166l-0.086,3.83l-1.487,0.578l-1.158,2.584l3.388,4.659l2.23-0.752l0.415-1.167l-2.396-2.161l1.487-1.919l1.572,0.25l3.43,2.305l0.37-2.584l1.63-2.979l2.281-2.312l-2.469-1.125l-0.944-1.801l-1.236,0.83l-1.071,1.331l-2.316-0.501l-2.396-1.582L720.729,380.396z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.4"
+        />
+        {/* Small northern islands */}
+        <path
+          d="M733.201,377.812l-2.317,3.25l0.164,1.582l1.158-0.502l2.723-3.414L733.201,377.812z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.4"
+        />
+        <path
+          d="M736.261,373.066l-0.829,2.248l0.086,1.496l1.409-0.918l1.322-2.662v-0.994L736.261,373.066z"
+          fill="#e8e4df"
+          stroke="#c5c0b8"
+          strokeWidth="0.4"
+        />
+
+        {/* Location markers */}
+        {videos.filter(v => !v.comingSoon).map((video, i) => (
+          <g key={i} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)}>
+            {/* Pulse animation ring - shows on selected, subtle on others */}
+            <circle
+              cx={video.mapX}
+              cy={video.mapY}
+              r={selectedIndex === i ? 4 : 3}
+              fill="none"
+              stroke={selectedIndex === i ? '#4A7C59' : '#999'}
+              strokeWidth="0.8"
+              opacity={0.3}
+            >
+              <animate attributeName="r" from="3" to="6" dur={selectedIndex === i ? '1.5s' : '2.5s'} repeatCount="indefinite" />
+              <animate attributeName="opacity" from="0.4" to="0" dur={selectedIndex === i ? '1.5s' : '2.5s'} repeatCount="indefinite" />
+            </circle>
+            {/* Main marker */}
+            <circle
+              cx={video.mapX}
+              cy={video.mapY}
+              r={selectedIndex === i ? 3 : 2}
+              fill={selectedIndex === i ? '#4A7C59' : '#999'}
+              stroke="#fff"
+              strokeWidth="1"
+              className="map-marker"
+              style={{ transition: 'all 0.3s ease' }}
+            />
+            {/* Label - positioned contextually to avoid overlaps */}
+            {selectedIndex === i && (
+              <text
+                x={video.country === 'Japan' ? video.mapX - 8 : video.title === 'Hong Kong' ? video.mapX + 8 : video.mapX}
+                y={video.country === 'Japan' ? video.mapY + 1 : video.title === 'Hong Kong' ? video.mapY + 1 : video.mapY - 5}
+                textAnchor={video.country === 'Japan' ? 'end' : video.title === 'Hong Kong' ? 'start' : 'middle'}
+                fill="#4A7C59"
+                fontSize="4"
+                fontWeight="600"
+                fontFamily="system-ui, sans-serif"
+              >
+                {video.title}
+              </text>
+            )}
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+};
+
+// Gao Life section with interactive map
+const GaoLifeSection = () => {
+  const [selectedVideo, setSelectedVideo] = useState(0);
+  const activeVideos = videos.filter(v => !v.comingSoon);
+  const currentVideo = activeVideos[selectedVideo];
+
+  return (
+    <section id="interests" className="relative px-6 py-16">
+      <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
+          <div>
+            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>gao life</h2>
+          </div>
+          <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all duration-200 hover:scale-105" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}><Youtube size={14} />@gaofiles<ExternalLink size={12} /></a>
+        </div>
+        <p className="mb-8 max-w-2xl" style={{ color: '#666', lineHeight: 1.7 }}>I like traveling and making videos about it. Mostly Asia so far.</p>
+
+        {/* Desktop: Map + Video side by side */}
+        <div className="hidden md:flex gap-12 items-start">
+          {/* Map */}
+          <div style={{ flex: '1' }}>
+            <TravelMap
+              videos={activeVideos}
+              onSelectVideo={setSelectedVideo}
+              selectedIndex={selectedVideo}
+            />
+          </div>
+
+          {/* Selected video card */}
+          <div style={{ flex: '1', maxWidth: '400px' }}>
+            <a
+              href={currentVideo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-xl overflow-hidden relative transition-all duration-300 hover:scale-[1.02] group"
+              style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}
+            >
+              <div style={{ aspectRatio: '16/9', position: 'relative' }}>
+                {currentVideo.thumbnail ? (
+                  <img src={currentVideo.thumbnail} alt={currentVideo.title} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full" style={{ background: currentVideo.gradient }} />
+                )}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.95)' }}>
+                    <Play size={24} style={{ color: '#2d2d2d', marginLeft: '2px' }} fill="#2d2d2d" />
+                  </div>
+                </div>
+              </div>
+              <div style={{ padding: '20px', background: '#fff' }}>
+                <p className="text-xs font-medium mb-1" style={{ color: '#4A7C59', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  gao life {currentVideo.num} · {currentVideo.country}
+                </p>
+                <p className="font-medium text-xl" style={{ fontFamily: 'Georgia, serif', color: '#2d2d2d' }}>{currentVideo.title}</p>
+              </div>
+            </a>
+
+            {/* Video selector pills */}
+            <div style={{ display: 'flex', gap: '8px', marginTop: '16px', flexWrap: 'wrap' }}>
+              {activeVideos.map((vid, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedVideo(i)}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '20px',
+                    border: 'none',
+                    background: selectedVideo === i ? '#4A7C59' : '#f5f3ef',
+                    color: selectedVideo === i ? '#fff' : '#666',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  {vid.title}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile: Stacked layout */}
+        <div className="md:hidden">
+          <TravelMap
+            videos={activeVideos}
+            onSelectVideo={setSelectedVideo}
+            selectedIndex={selectedVideo}
+          />
+
+          {/* Selected video */}
+          <a
+            href={currentVideo.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block rounded-xl overflow-hidden mt-6"
+            style={{ boxShadow: '0 4px 15px rgba(0,0,0,0.08)' }}
+          >
+            <div style={{ aspectRatio: '16/9', position: 'relative' }}>
+              {currentVideo.thumbnail ? (
+                <img src={currentVideo.thumbnail} alt={currentVideo.title} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full" style={{ background: currentVideo.gradient }} />
+              )}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.9)' }}>
+                  <Play size={20} style={{ color: '#2d2d2d', marginLeft: '2px' }} fill="#2d2d2d" />
+                </div>
+              </div>
+            </div>
+          </a>
+          <div className="mt-3">
+            <p className="text-xs font-medium mb-0.5" style={{ color: '#4A7C59', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              gao life {currentVideo.num} · {currentVideo.country}
+            </p>
+            <p className="font-medium text-lg" style={{ fontFamily: 'Georgia, serif', color: '#2d2d2d' }}>{currentVideo.title}</p>
+          </div>
+
+          {/* Mobile video pills */}
+          <div style={{ display: 'flex', gap: '6px', marginTop: '16px', flexWrap: 'wrap' }}>
+            {activeVideos.map((vid, i) => (
+              <button
+                key={i}
+                onClick={() => setSelectedVideo(i)}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '16px',
+                  border: 'none',
+                  background: selectedVideo === i ? '#4A7C59' : '#f5f3ef',
+                  color: selectedVideo === i ? '#fff' : '#666',
+                  fontSize: '12px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                }}
+              >
+                {vid.title}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const skills = {
   languages: { title: 'Languages', items: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'HTML/CSS', 'LaTeX'] },
@@ -872,14 +1151,14 @@ const HikingTrail = () => {
               <svg width="200" height="920" viewBox="0 0 200 920" fill="none">
                 <path d="M100 60 C100 100 130 130 130 180 C130 250 155 290 125 360 C85 450 55 480 55 540 C55 600 50 650 80 720 C110 790 105 830 100 870" stroke="#c9b896" strokeWidth="50" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
                 <path d="M100 60 C100 100 130 130 130 180 C130 250 155 290 125 360 C85 450 55 480 55 540 C55 600 50 650 80 720 C110 790 105 830 100 870" stroke="#ddd0b8" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.35" />
-                <line x1="128" y1="160" x2="-150" y2="160" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
-                <line x1="140" y1="320" x2="350" y2="320" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
+                <line x1="129" y1="160" x2="-150" y2="160" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
+                <line x1="137" y1="320" x2="350" y2="320" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
                 <line x1="55" y1="560" x2="-150" y2="560" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
-                <line x1="95" y1="820" x2="350" y2="820" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
-                <circle cx="128" cy="160" r="14" fill="#fff" stroke="#4A7C59" strokeWidth="4" />
-                <circle cx="140" cy="320" r="14" fill="#fff" stroke="#4A7C59" strokeWidth="4" />
+                <line x1="104" y1="820" x2="350" y2="820" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
+                <circle cx="129" cy="160" r="14" fill="#fff" stroke="#4A7C59" strokeWidth="4" />
+                <circle cx="137" cy="320" r="14" fill="#fff" stroke="#4A7C59" strokeWidth="4" />
                 <circle cx="55" cy="560" r="14" fill="#fff" stroke="#4A7C59" strokeWidth="4" />
-                <circle cx="95" cy="820" r="14" fill="#fff" stroke="#4A7C59" strokeWidth="4" />
+                <circle cx="104" cy="820" r="14" fill="#fff" stroke="#4A7C59" strokeWidth="4" />
               </svg>
             </div>
             <div className="absolute right-1/2 pr-28" style={{ top: '100px' }}><StopCard stop={stops[0]} side="left" /></div>
@@ -1008,7 +1287,6 @@ export default function Site() {
         <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
           {/* Section header with mixed typography */}
           <div className="mb-12">
-            <span style={{ color: '#8b7355', fontSize: '14px', fontWeight: '500', display: 'block', marginBottom: '8px' }}>(03)</span>
             <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: '#2d2d2d', fontWeight: 400 }}>
               <span style={{ fontStyle: 'italic' }}>Recent</span> Projects
             </h2>
@@ -1074,46 +1352,7 @@ export default function Site() {
       </section>
 
       {/* YouTube Section */}
-      <section id="interests" className="relative px-6 py-16">
-        <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
-            <div>
-              <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>gao life</h2>
-            </div>
-            <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all duration-200 hover:scale-105" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}><Youtube size={14} />@gaofiles<ExternalLink size={12} /></a>
-          </div>
-          <p className="mb-8 max-w-2xl" style={{ color: '#666', lineHeight: 1.7 }}>I like traveling and making videos about it. Mostly Asia so far.</p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {videos.map((vid, i) => (
-              <div key={i} className="group">
-                {vid.comingSoon ? (
-                  <div className="rounded-xl overflow-hidden relative flex items-center justify-center" style={{ aspectRatio: '16/9', boxShadow: '0 4px 15px rgba(0,0,0,0.08)', background: vid.gradient }}>
-                    <p className="text-4xl font-light" style={{ color: 'rgba(255,255,255,0.4)' }}>...</p>
-                  </div>
-                ) : (
-                  <a href={vid.url} target="_blank" rel="noopener noreferrer" className="block rounded-xl overflow-hidden relative transition-transform duration-200 hover:scale-105" style={{ aspectRatio: '16/9', boxShadow: '0 4px 15px rgba(0,0,0,0.08)' }}>
-                    {vid.thumbnail ? (
-                      <img src={vid.thumbnail} alt={vid.title} className="w-full h-full object-cover" style={{ objectPosition: 'center' }} />
-                    ) : (
-                      <div className="w-full h-full" style={{ background: vid.gradient }} />
-                    )}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.95)' }}>
-                        <Play size={20} style={{ color: '#2d2d2d', marginLeft: '2px' }} fill="#2d2d2d" />
-                      </div>
-                    </div>
-                  </a>
-                )}
-                <div className="mt-3">
-                  <p className="text-xs font-medium mb-0.5" style={{ color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>gao life {vid.num}</p>
-                  <p className="font-medium text-base" style={{ fontFamily: 'Georgia, serif', color: '#2d2d2d' }}>{vid.title}</p>
-                  {vid.subtitle && !vid.comingSoon && !vid.thumbnail && <p className="text-xs mt-1" style={{ color: '#666' }}>{vid.subtitle}</p>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <GaoLifeSection />
 
       {/* Contact Section */}
       <section id="contact" className="px-6 py-16" style={{ backgroundColor: '#f5f3ef' }}>
