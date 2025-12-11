@@ -439,9 +439,9 @@ const ImageTaggerMockup = () => {
   const image = images[currentImage];
 
   return (
-    <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', height: 'calc(100% - 30px)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* Image display */}
-      <div style={{ borderRadius: '12px', overflow: 'hidden', position: 'relative', height: '120px', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1)' }}>
+      <div style={{ borderRadius: '12px', overflow: 'hidden', position: 'relative', flex: '0 0 auto', minHeight: '120px', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1)' }}>
         <div style={{ width: '100%', height: '100%', background: image.bg }} />
         {isAnalyzing && (
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -481,13 +481,14 @@ const ImageTaggerMockup = () => {
           width: '100%',
           background: isAnalyzing ? '#ccc' : '#4A7C59',
           border: 'none',
-          borderRadius: '8px',
-          padding: '10px',
+          borderRadius: '10px',
+          padding: '14px 10px',
           color: '#fff',
-          fontSize: '11px',
+          fontSize: '12px',
           fontWeight: '600',
           cursor: isAnalyzing ? 'default' : 'pointer',
           flexShrink: 0,
+          minHeight: '44px',
         }}
       >
         {isAnalyzing ? 'Analyzing...' : 'Analyze Next Image'}
@@ -511,9 +512,9 @@ const TweetFetchMockup = () => {
   const prevSlide = () => setCurrentSlide((currentSlide - 1 + slides.length) % slides.length);
 
   return (
-    <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', height: 'calc(100% - 30px)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* Command input bar */}
-      <div style={{ background: '#40444b', borderRadius: '8px', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ background: '#40444b', borderRadius: '8px', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
         <span style={{ color: '#5865F2', fontSize: '12px', fontWeight: '600' }}>/</span>
         <span style={{ color: '#dcddde', fontSize: '11px' }}>compile favartist</span>
       </div>
@@ -545,12 +546,12 @@ const TweetFetchMockup = () => {
         </div>
 
         {/* Navigation */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', flexShrink: 0 }}>
-          <div style={{ display: 'flex', gap: '6px' }}>
-            <button onClick={prevSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '4px', padding: '5px 12px', cursor: 'pointer', color: '#fff', fontSize: '11px' }}>←</button>
-            <button onClick={nextSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '4px', padding: '5px 12px', cursor: 'pointer', color: '#fff', fontSize: '11px' }}>→</button>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px', flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button onClick={prevSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', color: '#fff', fontSize: '13px', minHeight: '36px' }}>←</button>
+            <button onClick={nextSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: 'pointer', color: '#fff', fontSize: '13px', minHeight: '36px' }}>→</button>
           </div>
-          <span style={{ color: '#72767d', fontSize: '10px' }}>{currentSlide + 1} / {slides.length}</span>
+          <span style={{ color: '#72767d', fontSize: '11px' }}>{currentSlide + 1} / {slides.length}</span>
         </div>
       </div>
     </div>
@@ -581,9 +582,9 @@ const SynthMockup = () => {
   };
 
   return (
-    <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', height: 'calc(100% - 30px)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* Command input bar */}
-      <div style={{ background: '#40444b', borderRadius: '8px', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ background: '#40444b', borderRadius: '8px', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
         <span style={{ color: '#AA96DA', fontSize: '11px', fontWeight: '600' }}>!gen</span>
         <span style={{ color: '#dcddde', fontSize: '11px' }}>{prompt}</span>
       </div>
@@ -632,17 +633,18 @@ const SynthMockup = () => {
           onClick={handleGenerate}
           disabled={isGenerating}
           style={{
-            marginTop: '10px',
+            marginTop: '12px',
             background: isGenerating ? '#72767d' : '#AA96DA',
             border: 'none',
-            borderRadius: '4px',
-            padding: '6px 12px',
+            borderRadius: '8px',
+            padding: '10px 16px',
             cursor: isGenerating ? 'default' : 'pointer',
             color: '#fff',
-            fontSize: '10px',
-            fontWeight: '500',
+            fontSize: '12px',
+            fontWeight: '600',
             alignSelf: 'flex-start',
             flexShrink: 0,
+            minHeight: '40px',
           }}
         >
           {isGenerating ? 'Generating...' : 'Regenerate'}
@@ -688,8 +690,8 @@ const StockXGuessMockup = () => {
   const sneaker = sneakers[currentSneaker];
 
   return (
-    <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', height: 'calc(100% - 30px)' }}>
-      <div style={{ fontSize: '9px', color: '#888', textAlign: 'center' }}>Guess the market price! (±$20)</div>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      <div style={{ fontSize: '10px', color: '#888', textAlign: 'center', marginBottom: '8px', flexShrink: 0 }}>Guess the market price! (±$20)</div>
 
       {/* Sneaker card - centered */}
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -714,7 +716,7 @@ const StockXGuessMockup = () => {
       ) : (
         <div
           onClick={() => inputRef.current?.focus()}
-          style={{ background: '#f5f3ef', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, cursor: 'text' }}
+          style={{ background: '#f5f3ef', borderRadius: '12px', padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, cursor: 'text', minHeight: '52px' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: 1 }}>
             <span style={{ color: '#4A7C59', fontWeight: '600', fontSize: '14px' }}>$</span>
@@ -731,7 +733,7 @@ const StockXGuessMockup = () => {
           <button
             onClick={(e) => { e.stopPropagation(); handleGuess(); }}
             disabled={!guess}
-            style={{ background: guess ? '#4A7C59' : '#ccc', border: 'none', borderRadius: '6px', padding: '8px 16px', cursor: guess ? 'pointer' : 'default', color: '#fff', fontSize: '11px', fontWeight: '600', flexShrink: 0 }}
+            style={{ background: guess ? '#4A7C59' : '#ccc', border: 'none', borderRadius: '8px', padding: '10px 20px', cursor: guess ? 'pointer' : 'default', color: '#fff', fontSize: '12px', fontWeight: '600', flexShrink: 0, minHeight: '40px' }}
           >
             Guess
           </button>
@@ -778,8 +780,8 @@ const CyberCreditMockup = () => {
   };
 
   return (
-    <>
-      <div style={{ marginTop: '40px', display: 'flex', gap: '10px', marginBottom: '10px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '10px', flexShrink: 0 }}>
         <div style={{ flex: 1, background: '#f5f3ef', borderRadius: '8px', padding: '10px' }}>
           <div style={{ fontSize: '8px', color: '#888', marginBottom: '4px' }}>Credit Score</div>
           <div style={{
@@ -823,18 +825,20 @@ const CyberCreditMockup = () => {
           width: '100%',
           background: isAnalyzing ? '#ccc' : '#4A7C59',
           border: 'none',
-          borderRadius: '8px',
-          padding: '10px',
+          borderRadius: '10px',
+          padding: '14px 10px',
           color: '#fff',
-          fontSize: '10px',
+          fontSize: '12px',
           fontWeight: '600',
           cursor: isAnalyzing ? 'default' : 'pointer',
           marginTop: 'auto',
+          minHeight: '44px',
+          flexShrink: 0,
         }}
       >
         {isAnalyzing ? 'Analyzing...' : 'Analyze New Wallet'}
       </button>
-    </>
+    </div>
   );
 };
 
@@ -941,7 +945,7 @@ const ProjectCard = ({ project, index, onClick }) => {
           onMouseEnter={(e) => e.currentTarget.style.color = '#6b5a45'}
           onMouseLeave={(e) => e.currentTarget.style.color = '#8b7355'}
         >
-          LEARN MORE <ArrowUpRight size={12} />
+          VIEW PROJECT <ArrowUpRight size={12} />
         </button>
 
         <h3 style={{
@@ -1044,24 +1048,41 @@ const HikingTrail = () => {
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: isVisible ? 'rgba(35,35,30,0.6)' : 'rgba(35,35,30,0)', transition: 'background-color 0.3s ease' }} onClick={handleClose}>
-        <div className="w-full max-w-lg rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#faf9f6', maxHeight: '80vh', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
+        <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#faf9f6', maxHeight: '85vh', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
           <div className="px-6 pt-6 pb-5" style={{ background: 'linear-gradient(180deg, #f0ede8 0%, #faf9f6 100%)' }}>
-            <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
+            <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150" style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
               <X size={16} style={{ color: '#666' }} />
             </button>
-            <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.5rem', color: '#2d2d2d', marginBottom: '0.25rem' }}>{item.title}</h3>
-            {item.role && <p className="font-medium" style={{ color: '#4A7C59' }}>{item.role}</p>}
-            {item.subtitle && <p className="text-sm" style={{ color: '#4A7C59' }}>{item.subtitle}</p>}
-            <div className="flex flex-wrap gap-3 mt-2 text-sm" style={{ color: '#777' }}>
-              {item.date && <span>{item.date}</span>}
-              {item.location && <span>• {item.location}</span>}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}>
+                <MapPin size={20} style={{ color: '#fff' }} />
+              </div>
+              {(item.role || item.subtitle) && (
+                <span className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(74,124,89,0.15)', color: '#4A7C59' }}>{item.role || item.subtitle}</span>
+              )}
             </div>
+            <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.5rem', fontWeight: 400 }}>{item.title}</h3>
+            {(item.date || item.location) && (
+              <div className="flex flex-wrap gap-2">
+                {item.date && <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#5a5a5a', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>{item.date}</span>}
+                {item.location && <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#5a5a5a', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>{item.location}</span>}
+              </div>
+            )}
           </div>
-          {item.bullets && <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e0dcd6, transparent)' }} />}
-          {item.bullets && (
-            <div className="px-6 py-5 overflow-y-auto" style={{ maxHeight: 'calc(80vh - 180px)' }}>
-              <ul className="space-y-3">{item.bullets.map((b, i) => <li key={i} className="text-sm flex gap-3" style={{ color: '#555', lineHeight: 1.7 }}><span style={{ color: '#4A7C59', fontWeight: 600 }}>•</span><span>{b}</span></li>)}</ul>
-            </div>
+          {item.bullets && item.bullets.length > 0 && (
+            <>
+              <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e0dcd6, transparent)' }} />
+              <div className="px-6 py-5 overflow-y-auto" style={{ maxHeight: 'calc(85vh - 200px)' }}>
+                <ul className="space-y-3">
+                  {item.bullets.map((b, i) => (
+                    <li key={i} className="text-sm leading-relaxed flex gap-3" style={{ color: '#555', lineHeight: 1.85 }}>
+                      <span style={{ color: '#4A7C59', fontWeight: 600 }}>•</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -1070,18 +1091,75 @@ const HikingTrail = () => {
 
   const StopCard = ({ stop, side }) => (
     <div className="flex flex-col" style={{ alignItems: side === 'left' ? 'flex-start' : 'flex-end' }}>
-      <div className="p-5 rounded-2xl cursor-pointer transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', border: '1px solid #e8e4df', minWidth: '260px' }} onClick={() => setSelectedItem(stop.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
-        <p className="text-sm font-bold tracking-wide" style={{ color: '#4A7C59' }}>{stop.year}</p>
-        <p className="text-2xl font-medium mt-1" style={{ color: '#2d2d2d', fontFamily: 'Georgia, serif' }}>{stop.title}</p>
-        {stop.desc && <p className="text-sm mt-1" style={{ color: '#777' }}>{stop.desc}</p>}
+      <div
+        className="relative p-6 rounded-2xl cursor-pointer transition-all duration-300 hover:-translate-y-1 group"
+        style={{
+          background: 'linear-gradient(145deg, #ffffff 0%, #faf9f6 100%)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.05)',
+          border: '1px solid rgba(232,228,223,0.8)',
+          minWidth: '280px',
+          backdropFilter: 'blur(4px)'
+        }}
+        onClick={() => setSelectedItem(stop.modalContent)}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = '0 12px 35px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.05)';
+          e.currentTarget.style.borderColor = 'rgba(74,124,89,0.3)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.05)';
+          e.currentTarget.style.borderColor = 'rgba(232,228,223,0.8)';
+        }}
+      >
+        {/* Subtle accent line */}
+        <div className="absolute top-0 left-6 right-6 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(74,124,89,0.2), transparent)' }} />
+
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#4A7C59', letterSpacing: '0.1em' }}>{stop.year}</span>
+          <span className="w-8 h-px" style={{ backgroundColor: 'rgba(74,124,89,0.3)' }} />
+        </div>
+        <p className="text-2xl font-medium" style={{ color: '#2d2d2d', fontFamily: 'Georgia, serif', letterSpacing: '-0.01em' }}>{stop.title}</p>
+        {stop.desc && (
+          <p className="text-sm mt-2" style={{ color: '#666', lineHeight: 1.5 }}>{stop.desc}</p>
+        )}
+
+        {/* Click indicator */}
+        <div className="flex items-center gap-1 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span className="text-xs" style={{ color: '#888' }}>View details</span>
+          <ChevronRight size={12} style={{ color: '#888' }} />
+        </div>
       </div>
+
       {stop.milestones.length > 0 && (
-        <div className="flex flex-col gap-3 mt-3" style={{ alignItems: side === 'left' ? 'flex-start' : 'flex-end', paddingLeft: side === 'left' ? '20px' : '0', paddingRight: side === 'right' ? '20px' : '0' }}>
+        <div className="flex flex-col gap-2 mt-4" style={{ alignItems: side === 'left' ? 'flex-start' : 'flex-end', paddingLeft: side === 'left' ? '16px' : '0', paddingRight: side === 'right' ? '16px' : '0' }}>
+          {/* Connector line to milestones */}
+          <div className="h-3 w-px mb-1" style={{ backgroundColor: 'rgba(201,184,150,0.5)', marginLeft: side === 'left' ? '20px' : 'auto', marginRight: side === 'right' ? '20px' : 'auto' }} />
+
           {stop.milestones.map((m, i) => (
             <div key={i} className="flex flex-col" style={{ alignItems: side === 'left' ? 'flex-start' : 'flex-end' }}>
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1" style={{ border: '1px solid #e8e4df', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }} onClick={() => setSelectedItem(m.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 6px 15px rgba(0,0,0,0.1)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)'}>
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}><m.icon size={16} style={{ color: '#fff' }} /></div>
-                <div><p className="text-sm font-semibold" style={{ color: '#2d2d2d' }}>{m.label}</p><p className="text-xs" style={{ color: '#888' }}>{m.desc}</p></div>
+              <div
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white cursor-pointer transition-all duration-300 hover:-translate-y-0.5 group"
+                style={{
+                  border: '1px solid rgba(232,228,223,0.6)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                  background: 'linear-gradient(145deg, #ffffff 0%, #fcfbf9 100%)'
+                }}
+                onClick={() => setSelectedItem(m.modalContent)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)';
+                  e.currentTarget.style.borderColor = 'rgba(74,124,89,0.25)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.03)';
+                  e.currentTarget.style.borderColor = 'rgba(232,228,223,0.6)';
+                }}
+              >
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105" style={{ background: 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)' }}>
+                  <m.icon size={15} style={{ color: '#fff' }} />
+                </div>
+                <div>
+                  <p className="text-sm font-medium" style={{ color: '#2d2d2d' }}>{m.label}</p>
+                  <p className="text-xs" style={{ color: '#999' }}>{m.desc}</p>
+                </div>
               </div>
             </div>
           ))}
@@ -1095,22 +1173,49 @@ const HikingTrail = () => {
       {/* MOBILE LAYOUT */}
       <div className="md:hidden px-4">
         <div className="flex">
-          <div className="flex flex-col items-center mr-4"><div style={{ width: '3px', backgroundColor: '#c9b896', borderRadius: '2px', flex: 1, minHeight: '100%' }} /></div>
-          <div className="flex flex-col gap-6 flex-1 pb-4">
+          <div className="flex flex-col items-center mr-4">
+            <div style={{ width: '2px', background: 'linear-gradient(180deg, #c9b896 0%, rgba(201,184,150,0.3) 100%)', borderRadius: '2px', flex: 1, minHeight: '100%' }} />
+          </div>
+          <div className="flex flex-col gap-5 flex-1 pb-4">
             {stops.map((stop) => (
               <div key={stop.id} className="relative">
-                <div className="absolute -left-7 top-4 w-5 h-5 rounded-full bg-white" style={{ borderWidth: '3px', borderStyle: 'solid', borderColor: '#4A7C59' }} />
-                <div className="p-4 rounded-xl cursor-pointer bg-white" style={{ boxShadow: '0 2px 10px rgba(0,0,0,0.06)', border: '1px solid #e8e4df' }} onClick={() => setSelectedItem(stop.modalContent)}>
-                  <p className="text-xs font-bold tracking-wide" style={{ color: '#4A7C59' }}>{stop.year}</p>
-                  <p className="text-lg font-medium mt-0.5" style={{ color: '#2d2d2d', fontFamily: 'Georgia, serif' }}>{stop.title}</p>
-                  {stop.desc && <p className="text-xs mt-0.5" style={{ color: '#777' }}>{stop.desc}</p>}
+                <div className="absolute -left-7 top-4 w-4 h-4 rounded-full" style={{ backgroundColor: '#fff', border: '2px solid #4A7C59', boxShadow: '0 0 0 3px rgba(74,124,89,0.15)' }} />
+                <div
+                  className="p-4 rounded-xl cursor-pointer"
+                  style={{
+                    background: 'linear-gradient(145deg, #ffffff 0%, #faf9f6 100%)',
+                    boxShadow: '0 3px 12px rgba(0,0,0,0.05)',
+                    border: '1px solid rgba(232,228,223,0.8)'
+                  }}
+                  onClick={() => setSelectedItem(stop.modalContent)}
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#4A7C59', letterSpacing: '0.08em' }}>{stop.year}</span>
+                    <span className="w-4 h-px" style={{ backgroundColor: 'rgba(74,124,89,0.3)' }} />
+                  </div>
+                  <p className="text-lg font-medium" style={{ color: '#2d2d2d', fontFamily: 'Georgia, serif' }}>{stop.title}</p>
+                  {stop.desc && <p className="text-xs mt-1" style={{ color: '#666', lineHeight: 1.4 }}>{stop.desc}</p>}
                 </div>
                 {stop.milestones.length > 0 && (
-                  <div className="ml-4 mt-2 flex flex-col gap-2">
+                  <div className="ml-3 mt-2 flex flex-col gap-2">
                     {stop.milestones.map((m, i) => (
-                      <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-white cursor-pointer" style={{ border: '1px solid #e8e4df' }} onClick={() => setSelectedItem(m.modalContent)}>
-                        <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}><m.icon size={12} style={{ color: '#fff' }} /></div>
-                        <div><p className="text-xs font-semibold" style={{ color: '#2d2d2d' }}>{m.label}</p><p className="text-xs" style={{ color: '#888' }}>{m.desc}</p></div>
+                      <div
+                        key={i}
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg cursor-pointer"
+                        style={{
+                          background: 'linear-gradient(145deg, #ffffff 0%, #fcfbf9 100%)',
+                          border: '1px solid rgba(232,228,223,0.6)',
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.03)'
+                        }}
+                        onClick={() => setSelectedItem(m.modalContent)}
+                      >
+                        <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)' }}>
+                          <m.icon size={12} style={{ color: '#fff' }} />
+                        </div>
+                        <div>
+                          <p className="text-xs font-medium" style={{ color: '#2d2d2d' }}>{m.label}</p>
+                          <p className="text-xs" style={{ color: '#999' }}>{m.desc}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -1124,9 +1229,49 @@ const HikingTrail = () => {
       {/* DESKTOP LAYOUT */}
       <div className="hidden md:block">
         {/* Toggle button */}
-        <div className="flex justify-end mb-4 mr-4">
-          <button onClick={() => setShowSimpleView(!showSimpleView)} className="flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all duration-200" style={{ backgroundColor: showSimpleView ? '#4A7C59' : '#fff', color: showSimpleView ? '#fff' : '#555', border: '1px solid #e8e4df', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', opacity: 0.6 }}>
-            {showSimpleView ? 'Show Trail View' : 'Show Simple View'}
+        <div className="flex justify-end mb-6 mr-4">
+          <button
+            onClick={() => setShowSimpleView(!showSimpleView)}
+            className="group flex items-center gap-3 px-5 py-2.5 rounded-full text-sm transition-all duration-300"
+            style={{
+              backgroundColor: showSimpleView ? '#4A7C59' : 'rgba(255,255,255,0.9)',
+              color: showSimpleView ? '#fff' : '#666',
+              border: showSimpleView ? '1px solid #4A7C59' : '1px solid rgba(232,228,223,0.8)',
+              boxShadow: showSimpleView
+                ? '0 4px 15px rgba(74,124,89,0.25)'
+                : '0 2px 10px rgba(0,0,0,0.04)',
+              backdropFilter: 'blur(4px)'
+            }}
+            onMouseEnter={(e) => {
+              if (!showSimpleView) {
+                e.currentTarget.style.borderColor = 'rgba(74,124,89,0.3)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.08)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!showSimpleView) {
+                e.currentTarget.style.borderColor = 'rgba(232,228,223,0.8)';
+                e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.04)';
+              }
+            }}
+          >
+            <span className="relative">
+              <span className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${showSimpleView ? 'opacity-0 scale-75' : 'opacity-100 scale-100'}`}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
+                </svg>
+              </span>
+              <span className={`flex items-center justify-center transition-all duration-300 ${showSimpleView ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M12 2L12 22M2 12H22" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </span>
+            </span>
+            <span className="font-medium tracking-wide" style={{ fontSize: '13px' }}>
+              {showSimpleView ? 'Trail View' : 'Simple View'}
+            </span>
           </button>
         </div>
 
@@ -1350,33 +1495,72 @@ export default function Site() {
             ))}
           </div>
 
-          {/* Mobile: Simplified cards */}
+          {/* Mobile: Interactive mockups */}
           <div className="md:hidden flex flex-col gap-6">
-            {projects.map((proj, i) => (
-              <div key={proj.id} className="rounded-xl overflow-hidden cursor-pointer" style={{ backgroundColor: '#fff', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }} onClick={() => setSelectedProject(proj)}>
-                {/* Mobile mockup preview */}
-                <div style={{ padding: '20px', background: '#faf9f6', display: 'flex', justifyContent: 'flex-end' }}>
-                  <div style={{ width: '50px', height: '50px', borderRadius: '12px', background: '#4A7C59', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <proj.icon size={24} style={{ color: '#fff' }} />
+            {projects.map((proj) => (
+              <div
+                key={proj.id}
+                className="rounded-xl overflow-hidden"
+                style={{ backgroundColor: '#fff', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }}
+              >
+                {/* Interactive mockup area - no scaling, natural size */}
+                <div style={{
+                  padding: '16px',
+                  background: 'linear-gradient(135deg, #faf9f6 0%, #f0ede8 100%)',
+                  borderBottom: '1px solid #e8e4df'
+                }}>
+                  {/* Custom mobile mockup container */}
+                  <div style={{
+                    width: '100%',
+                    aspectRatio: '4/3',
+                    borderRadius: '16px',
+                    background: '#fff',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
+                    overflow: 'hidden',
+                    padding: '16px',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    {proj.id === 'image-tagger' && <ImageTaggerMockup />}
+                    {proj.id === 'tweetfetch' && <TweetFetchMockup />}
+                    {proj.id === 'synth' && <SynthMockup />}
+                    {proj.id === 'stockx-guess' && <StockXGuessMockup />}
+                    {proj.id === 'cybercredit' && <CyberCreditMockup />}
                   </div>
                 </div>
-                {/* Content */}
-                <div style={{ padding: '20px' }}>
-                  <span style={{ color: '#8b7355', fontSize: '11px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '8px' }}>
-                    LEARN MORE <ArrowUpRight size={10} />
-                  </span>
-                  <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.35rem', color: '#2d2d2d', marginBottom: '4px', fontWeight: '400' }}>{proj.title}</h3>
-                  <p style={{ color: '#8b7355', fontSize: '12px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#8b7355', opacity: 0.5 }} />
-                    {proj.category} · {proj.type}
-                  </p>
-                  <p style={{ color: '#666', fontSize: '14px', lineHeight: 1.6, marginBottom: '16px' }}>{proj.desc}</p>
+                {/* Content - only this part opens modal */}
+                <div
+                  style={{ padding: '16px 20px', cursor: 'pointer' }}
+                  onClick={() => setSelectedProject(proj)}
+                >
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <div>
+                      <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.25rem', color: '#2d2d2d', marginBottom: '4px', fontWeight: '400' }}>{proj.title}</h3>
+                      <p style={{ color: '#888', fontSize: '12px' }}>
+                        {proj.category} · {proj.type}
+                      </p>
+                    </div>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '6px 12px',
+                      borderRadius: '8px',
+                      background: '#f5f3ef',
+                      color: '#8b7355',
+                      fontSize: '11px',
+                      fontWeight: '600'
+                    }}>
+                      Details <ArrowUpRight size={12} />
+                    </div>
+                  </div>
+                  <p style={{ color: '#555', fontSize: '14px', lineHeight: 1.6, marginBottom: '14px' }}>{proj.desc}</p>
                   {/* Tags */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                    {proj.tech.slice(0, 3).map(t => (
-                      <span key={t} style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '12px', background: '#f5f3ef', color: '#777' }}>{t}</span>
+                    {proj.tech.slice(0, 4).map(t => (
+                      <span key={t} style={{ fontSize: '11px', padding: '5px 10px', borderRadius: '12px', background: '#f5f3ef', color: '#777' }}>{t}</span>
                     ))}
-                    {proj.tech.length > 3 && <span style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '12px', background: '#f5f3ef', color: '#777' }}>+{proj.tech.length - 3}</span>}
+                    {proj.tech.length > 4 && <span style={{ fontSize: '11px', padding: '5px 10px', borderRadius: '12px', background: '#f5f3ef', color: '#777' }}>+{proj.tech.length - 4}</span>}
                   </div>
                 </div>
               </div>
