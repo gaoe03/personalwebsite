@@ -840,6 +840,148 @@ const CyberCreditMockup = () => {
   );
 };
 
+// Desktop versions with taller images
+const ImageTaggerMockupDesktop = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showTags, setShowTags] = useState(true);
+
+  const images = [
+    { bg: '#E8B4B8', tags: ['sunset', 'warm tones', 'landscape'] },
+    { bg: '#A8D8EA', tags: ['character', 'blue palette', 'digital art'] },
+    { bg: '#AA96DA', tags: ['abstract', 'purple', 'geometric'] },
+  ];
+
+  const handleAnalyze = () => {
+    setIsAnalyzing(true);
+    setShowTags(false);
+    setTimeout(() => {
+      setShowTags(true);
+      setIsAnalyzing(false);
+      setCurrentImage((currentImage + 1) % images.length);
+    }, 600);
+  };
+
+  const image = images[currentImage];
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      {/* Image display - taller for desktop */}
+      <div style={{ borderRadius: '12px', overflow: 'hidden', position: 'relative', height: '45%', minHeight: '100px', flexShrink: 0, boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1)' }}>
+        <div style={{ width: '100%', height: '100%', background: image.bg }} />
+        {isAnalyzing && (
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ color: '#fff', fontSize: '11px' }}>Analyzing...</span>
+          </div>
+        )}
+      </div>
+
+      {/* Generated tags */}
+      <div style={{ background: '#f5f3ef', borderRadius: '10px', padding: '12px', marginTop: '12px', flexShrink: 0 }}>
+        <div style={{ fontSize: '9px', color: '#888', marginBottom: '8px' }}>Generated Tags:</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+          {showTags && image.tags.map((tag, i) => (
+            <span
+              key={tag}
+              style={{
+                background: '#4A7C59',
+                color: '#fff',
+                fontSize: '10px',
+                padding: '4px 10px',
+                borderRadius: '12px',
+                animation: `fadeIn 0.3s ease ${i * 0.1}s both`,
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Analyze button */}
+      <button
+        onClick={handleAnalyze}
+        disabled={isAnalyzing}
+        style={{
+          marginTop: '10px',
+          width: '100%',
+          background: isAnalyzing ? '#ccc' : '#4A7C59',
+          border: 'none',
+          borderRadius: '8px',
+          padding: '10px 8px',
+          color: '#fff',
+          fontSize: '11px',
+          fontWeight: '600',
+          cursor: isAnalyzing ? 'default' : 'pointer',
+          flexShrink: 0,
+        }}
+      >
+        {isAnalyzing ? 'Analyzing...' : 'Analyze Next Image'}
+      </button>
+    </div>
+  );
+};
+
+const TweetFetchMockupDesktop = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    { bg: '#E8B4B8', text: 'finally finished this piece after 3 weeks' },
+    { bg: '#A8D8EA', text: 'day 247 of daily sketches' },
+    { bg: '#AA96DA', text: 'commission for a friend' },
+  ];
+
+  const currentArt = slides[currentSlide];
+  const nextSlide = () => setCurrentSlide((currentSlide + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((currentSlide - 1 + slides.length) % slides.length);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      {/* Command input bar */}
+      <div style={{ background: '#40444b', borderRadius: '8px', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+        <span style={{ color: '#5865F2', fontSize: '12px', fontWeight: '600' }}>/</span>
+        <span style={{ color: '#dcddde', fontSize: '11px' }}>compile favartist</span>
+      </div>
+
+      {/* Bot response card */}
+      <div style={{ marginTop: '12px', background: '#2f3136', borderRadius: '8px', borderLeft: '4px solid #4A7C59', padding: '12px', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+          <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#4A7C59', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ color: '#fff', fontSize: '8px', fontWeight: '600' }}>TF</span>
+          </div>
+          <span style={{ color: '#4A7C59', fontSize: '11px', fontWeight: '600' }}>TweetFetch</span>
+          <span style={{ background: '#5865F2', color: '#fff', fontSize: '7px', padding: '2px 4px', borderRadius: '3px' }}>BOT</span>
+        </div>
+
+        {/* Response text */}
+        <div style={{ fontSize: '10px', color: '#dcddde', marginBottom: '8px' }}>
+          You liked <span style={{ color: '#4A7C59', fontWeight: '600' }}>3</span> tweets by <span style={{ color: '#4A7C59', fontWeight: '600' }}>@favartist</span>
+        </div>
+
+        {/* Image + metadata */}
+        <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div style={{ borderRadius: '8px', overflow: 'hidden', height: '90px', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.15)' }}>
+            <div style={{ width: '100%', height: '100%', background: currentArt.bg }} />
+          </div>
+          {/* Tweet text */}
+          <div style={{ background: '#36393f', borderRadius: '6px', padding: '8px' }}>
+            <div style={{ fontSize: '9px', color: '#8e9297' }}>{currentArt.text}</div>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button onClick={prevSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '6px', padding: '6px 12px', cursor: 'pointer', color: '#fff', fontSize: '12px' }}>←</button>
+            <button onClick={nextSlide} style={{ background: '#4A7C59', border: 'none', borderRadius: '6px', padding: '6px 12px', cursor: 'pointer', color: '#fff', fontSize: '12px' }}>→</button>
+          </div>
+          <span style={{ color: '#72767d', fontSize: '10px' }}>{currentSlide + 1} / {slides.length}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Stylized mockup illustrations for each project
 const ProjectMockup = ({ projectId }) => {
   const mockupStyle = {
@@ -866,9 +1008,9 @@ const ProjectMockup = ({ projectId }) => {
   const renderMockupContent = () => {
     switch (projectId) {
       case 'image-tagger':
-        return <ImageTaggerMockup />;
+        return <ImageTaggerMockupDesktop />;
       case 'tweetfetch':
-        return <TweetFetchMockup />;
+        return <TweetFetchMockupDesktop />;
       case 'synth':
         return <SynthMockup />;
       case 'stockx-guess':
