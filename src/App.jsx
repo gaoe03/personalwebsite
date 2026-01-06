@@ -89,7 +89,20 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
 
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-      <svg viewBox="575 365 170 115" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '12px' }}>
+      {/* Dithering water background */}
+      <div style={{ position: 'absolute', inset: 0, borderRadius: '12px', overflow: 'hidden' }}>
+        <Dithering
+          style={{ width: '100%', height: '100%' }}
+          colorBack="#dae8f0"
+          colorFront="#c1e1f0"
+          shape="wave"
+          type="4x4"
+          size={2}
+          speed={0.15}
+          scale={2.5}
+        />
+      </div>
+      <svg viewBox="575 365 170 115" style={{ position: 'relative', width: '100%', height: 'auto', background: 'transparent', borderRadius: '12px' }}>
 
         {/* China - accurate geographic outline */}
         <path
@@ -561,14 +574,14 @@ const TweetFetchMockup = () => {
 // Interactive mockup for Synth - Discord bot text generation
 const SynthMockup = () => {
   const [isGenerating, setIsGenerating] = useState(false);
-  const [completion, setCompletion] = useState("dessert I had in Japan was in Hokkaido. Try the strawberry cream parfait at Nagayama's Rest.");
+  const [completion, setCompletion] = useState("dessert I had in Japan was in Hokkaido. Try the strawberry cream parfait at Nagayama Rest.");
   const [selectedEngine, setSelectedEngine] = useState(0);
 
   const engines = ['GPT-3', 'CodeGen', 'FairseqGPT'];
   const prompt = 'The best';
 
   const completions = [
-    "dessert I had in Japan was in Hokkaido. Try the strawberry cream parfait at Nagayama's Rest.",
+    "dessert I had in Japan was in Hokkaido. Try the strawberry cream parfait at Nagayama Rest.",
     'breakfast is a yogurt bowl with granola and fruit.',
     'cat of all time is Ace. Follow him at @gaoacey on Instagram.',
   ];
@@ -1780,7 +1793,7 @@ export default function Site() {
 
       <footer className="px-6 py-8" style={{ borderTop: '1px solid #e8e4df' }}>
         <div className="text-center" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <p className="text-sm" style={{ color: '#999' }}>Built by Ethan Gao with React, Vite & Tailwind CSS</p>
+          <p className="text-sm" style={{ color: '#999' }}>Built with React, Vite & Tailwind CSS</p>
         </div>
       </footer>
     </div>
