@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, Briefcase, GraduationCap, Github, Youtube, Mail, Camera, Code, Globe, Ticket, ArrowUpRight, Image, X, ChevronRight, Play, ExternalLink, IceCream, Coins, Linkedin, ChevronDown } from 'lucide-react';
+import { Dithering } from '@paper-design/shaders-react';
 
 // === TYPING ANIMATION HOOK ===
 const useTypingEffect = (text, speed = 80, delay = 500) => {
@@ -1571,7 +1572,19 @@ export default function Site() {
         }
       `}</style>
       <div id="about" className="relative overflow-hidden" style={{ minHeight: '100vh' }}>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #faf9f6 0%, #f5f1eb 50%, #f0ebe5 100%)' }} />
+        {/* Dithering background */}
+        <div className="absolute inset-0">
+          <Dithering
+            style={{ width: '100%', height: '100%' }}
+            colorBack="#f5f1eb"
+            colorFront="#d8e0d8"
+            shape="sphere"
+            type="4x4"
+            size={2}
+            speed={0.2}
+            scale={4}
+          />
+        </div>
 
         <div className="absolute bottom-0 left-0 right-0 h-24" style={{ background: 'linear-gradient(to bottom, transparent, #f5f3ef)' }} />
         <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 md:px-10 py-4">
