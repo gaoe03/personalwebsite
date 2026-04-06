@@ -78,7 +78,9 @@ const videos = [
   { num: '2', title: 'Hong Kong', gradient: 'linear-gradient(135deg, #4a3d5a 0%, #6a5a7c 100%)', url: 'https://www.youtube.com/watch?v=DhuqgmEaplg', comingSoon: false, thumbnail: '/thumbnails/gaolife-2.jpg', mapX: 682, mapY: 462, country: 'China' },
   { num: '3', title: 'Guangdong', gradient: 'linear-gradient(135deg, #5a4a2d 0%, #7c6a4a 100%)', url: 'https://www.youtube.com/watch?v=oHXrmyAfnkc', comingSoon: false, thumbnail: '/thumbnails/gaolife-3.jpg', mapX: 677, mapY: 456, country: 'China' },
   { num: '4', title: 'Sichuan', gradient: 'linear-gradient(135deg, #2d5a4a 0%, #4a7c59 100%)', url: 'https://www.youtube.com/watch?v=bOl0s6UcLQI', comingSoon: false, thumbnail: '/thumbnails/gaolife-4.jpg', mapX: 638, mapY: 428, country: 'China' },
-  { num: '5', title: 'Coming Soon', gradient: 'linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%)', url: '', comingSoon: true, thumbnail: null, mapX: 0, mapY: 0, country: '' },
+  { num: '5', title: 'Yunnan', gradient: 'linear-gradient(135deg, #5a3d2d 0%, #7c5a4a 100%)', url: 'https://www.youtube.com/watch?v=3eXUCCUpVOU', comingSoon: false, thumbnail: '/thumbnails/gaolife-5.jpg', mapX: 640, mapY: 447, country: 'China' },
+  { num: '6', title: 'Oregon', gradient: 'linear-gradient(135deg, #2d4a3d 0%, #4a7c5a 100%)', url: 'https://www.youtube.com/watch?v=XIAJCIYQvZM', comingSoon: false, thumbnail: '/thumbnails/gaolife-6.jpg', mapX: 138, mapY: 410, country: 'USA' },
+  { num: '7', title: 'Coming Soon', gradient: 'linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%)', url: '', comingSoon: true, thumbnail: null, mapX: 0, mapY: 0, country: '' },
 ];
 
 // Interactive map component for gao life videos
@@ -166,7 +168,7 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
         />
 
         {/* Location markers */}
-        {videos.filter(v => !v.comingSoon).map((video, i) => (
+        {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
           <g key={i} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)}>
             {/* Pulse animation ring - shows on selected, subtle on others */}
             <circle
@@ -213,11 +215,80 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
   );
 };
 
+// America map component for gao life videos
+const AmericaMap = ({ videos, onSelectVideo, selectedIndex }) => {
+  return (
+    <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+      <svg viewBox="120 370 150 100" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '12px' }}>
+        {/* Continental US - from simple-world-map, rotated to correct orientation */}
+        <g transform="rotate(-12, 195, 420)">
+          <path
+            d="M143.589,375.989l-0.865,3.475l-3.017-1.954h-1.504l-0.865,3.691l-10.554,23.65l2.801,20.606l3.449,1.737l0.648,5.645h7.105l6.889,5.204l13.562,1.305l1.504,6.941l2.152,1.521l3.017-3.033l2.369,1.08l2.152,9.976l3.656,2.386l3.017-5.645l9.258-6.726l6.025,2.817l5.169,0.433l0.216-3.25l10.762,0.217l2.152,2.386l0.432,5.42l-1.288,3.034l1.504,5.203h3.233l3.232-4.987l-1.288-2.386l-1.288-5.204l1.936-5.86l8.826-7.59l6.673-1.953l-0.864-6.293l9.258-9.983l9.258-1.521l-1.504-5.193l9.042-5.205v-6.94l-0.865-0.433l-3.233,1.082l-0.432,4.252l-10.745,0.129l-8.419,5.594l-13.217,4.322l-2.109-2.586l5.999-9.076l-2.965-2.826l-2.014-3.838l-4.175-3.354l-4.538-0.38l-8.575-5.852L143.589,375.989L143.589,375.989z"
+            fill="#e8e4df"
+            stroke="#c5c0b8"
+            strokeWidth="0.5"
+          />
+        </g>
+
+        {/* Location markers */}
+        {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
+          <g key={i} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)}>
+            <circle
+              cx={video.mapX}
+              cy={video.mapY}
+              r={selectedIndex === i ? 4 : 3}
+              fill="none"
+              stroke={selectedIndex === i ? '#4A7C59' : '#999'}
+              strokeWidth="0.8"
+              opacity={0.3}
+            >
+              <animate attributeName="r" from="3" to="6" dur={selectedIndex === i ? '1.5s' : '2.5s'} repeatCount="indefinite" />
+              <animate attributeName="opacity" from="0.4" to="0" dur={selectedIndex === i ? '1.5s' : '2.5s'} repeatCount="indefinite" />
+            </circle>
+            <circle
+              cx={video.mapX}
+              cy={video.mapY}
+              r={selectedIndex === i ? 3 : 2}
+              fill={selectedIndex === i ? '#4A7C59' : '#999'}
+              stroke="#fff"
+              strokeWidth="1"
+              style={{ transition: 'all 0.3s ease' }}
+            />
+            {selectedIndex === i && (
+              <text
+                x={video.mapX}
+                y={video.mapY - 5}
+                textAnchor="middle"
+                fill="#4A7C59"
+                fontSize="4"
+                fontWeight="600"
+                fontFamily="system-ui, sans-serif"
+              >
+                {video.title}
+              </text>
+            )}
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+};
+
 // Gao Life section with interactive map
 const GaoLifeSection = () => {
   const [selectedVideo, setSelectedVideo] = useState(0);
+  const [selectedRegion, setSelectedRegion] = useState('Asia');
+  const regions = ['Asia', 'America'];
   const activeVideos = videos.filter(v => !v.comingSoon);
-  const currentVideo = activeVideos[selectedVideo];
+  const filteredVideos = activeVideos.filter(v =>
+    selectedRegion === 'Asia' ? ['Japan', 'China'].includes(v.country) : ['USA'].includes(v.country)
+  );
+  const currentVideo = filteredVideos[selectedVideo] || filteredVideos[0];
+
+  const handleRegionChange = (region) => {
+    setSelectedRegion(region);
+    setSelectedVideo(0);
+  };
 
   return (
     <section id="interests" className="relative px-6 py-16">
@@ -234,11 +305,19 @@ const GaoLifeSection = () => {
         <div className="hidden md:flex gap-12 items-start">
           {/* Map */}
           <div style={{ flex: '1' }}>
-            <TravelMap
-              videos={activeVideos}
-              onSelectVideo={setSelectedVideo}
-              selectedIndex={selectedVideo}
-            />
+            {selectedRegion === 'Asia' ? (
+              <TravelMap
+                videos={filteredVideos}
+                onSelectVideo={setSelectedVideo}
+                selectedIndex={selectedVideo}
+              />
+            ) : (
+              <AmericaMap
+                videos={filteredVideos}
+                onSelectVideo={setSelectedVideo}
+                selectedIndex={selectedVideo}
+              />
+            )}
           </div>
 
           {/* Selected video card */}
@@ -270,9 +349,32 @@ const GaoLifeSection = () => {
               </div>
             </a>
 
+            {/* Region tabs */}
+            <div style={{ display: 'flex', gap: '6px', marginTop: '16px' }}>
+              {regions.map(region => (
+                <button
+                  key={region}
+                  onClick={() => handleRegionChange(region)}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: '16px',
+                    border: selectedRegion === region ? '1.5px solid #4A7C59' : '1.5px solid #e8e4df',
+                    background: selectedRegion === region ? 'rgba(74,124,89,0.08)' : 'transparent',
+                    color: selectedRegion === region ? '#4A7C59' : '#999',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  {region}
+                </button>
+              ))}
+            </div>
+
             {/* Video selector pills */}
-            <div style={{ display: 'flex', gap: '8px', marginTop: '16px', flexWrap: 'wrap' }}>
-              {activeVideos.map((vid, i) => (
+            <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
+              {filteredVideos.map((vid, i) => (
                 <button
                   key={i}
                   onClick={() => setSelectedVideo(i)}
@@ -297,11 +399,19 @@ const GaoLifeSection = () => {
 
         {/* Mobile: Stacked layout */}
         <div className="md:hidden">
-          <TravelMap
-            videos={activeVideos}
-            onSelectVideo={setSelectedVideo}
-            selectedIndex={selectedVideo}
-          />
+          {selectedRegion === 'Asia' ? (
+            <TravelMap
+              videos={filteredVideos}
+              onSelectVideo={setSelectedVideo}
+              selectedIndex={selectedVideo}
+            />
+          ) : (
+            <AmericaMap
+              videos={filteredVideos}
+              onSelectVideo={setSelectedVideo}
+              selectedIndex={selectedVideo}
+            />
+          )}
 
           {/* Selected video */}
           <a
@@ -331,9 +441,31 @@ const GaoLifeSection = () => {
             <p className="font-medium text-lg" style={{ fontFamily: 'Georgia, serif', color: '#2d2d2d' }}>{currentVideo.title}</p>
           </div>
 
+          {/* Mobile region tabs */}
+          <div style={{ display: 'flex', gap: '6px', marginTop: '16px' }}>
+            {regions.map(region => (
+              <button
+                key={region}
+                onClick={() => handleRegionChange(region)}
+                style={{
+                  padding: '5px 12px',
+                  borderRadius: '14px',
+                  border: selectedRegion === region ? '1.5px solid #4A7C59' : '1.5px solid #e8e4df',
+                  background: selectedRegion === region ? 'rgba(74,124,89,0.08)' : 'transparent',
+                  color: selectedRegion === region ? '#4A7C59' : '#999',
+                  fontSize: '11px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                }}
+              >
+                {region}
+              </button>
+            ))}
+          </div>
+
           {/* Mobile video pills */}
-          <div style={{ display: 'flex', gap: '6px', marginTop: '16px', flexWrap: 'wrap' }}>
-            {activeVideos.map((vid, i) => (
+          <div style={{ display: 'flex', gap: '6px', marginTop: '8px', flexWrap: 'wrap' }}>
+            {filteredVideos.map((vid, i) => (
               <button
                 key={i}
                 onClick={() => setSelectedVideo(i)}
