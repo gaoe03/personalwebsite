@@ -1715,7 +1715,7 @@ export default function Site() {
             <span className="hidden sm:inline">Ethan Gao</span>
           </span>
           <div className="flex items-center gap-1 md:gap-3 px-3 md:px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
-            {[{ label: 'Experience', href: '#experience' }, { label: 'Projects', href: '#projects' }, { label: 'Interests', href: '#interests' }, { label: 'Contact', href: '#contact' }].map((link) => (
+            {[{ label: 'Experience', href: '#experience' }, { label: 'Projects', href: '#projects' }, { label: 'Interests', href: '#interests' }, { label: 'Blog', href: '/blog' }, { label: 'Contact', href: '#contact' }].map((link) => (
               <a key={link.label} href={link.href} className="text-xs md:text-sm font-medium transition-all duration-200 px-2 md:px-3 py-1 hover:scale-110" style={{ color: '#555' }}>{link.label}</a>
             ))}
           </div>
