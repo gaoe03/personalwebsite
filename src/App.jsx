@@ -295,7 +295,7 @@ const GaoLifeSection = () => {
       <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
           <div>
-            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>gao life</h2>
+            <h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>gao life</h2>
           </div>
           <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all duration-200 hover:scale-105" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}><Youtube size={14} />@gaofiles<ExternalLink size={12} /></a>
         </div>
@@ -345,7 +345,7 @@ const GaoLifeSection = () => {
                 <p className="text-xs font-medium mb-1" style={{ color: '#4A7C59', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   gao life {currentVideo.num} · {currentVideo.country}
                 </p>
-                <p className="font-medium text-xl" style={{ fontFamily: 'Georgia, serif', color: '#2d2d2d' }}>{currentVideo.title}</p>
+                <p className="font-medium text-xl" style={{ fontFamily: 'var(--heading-font)', color: '#2d2d2d' }}>{currentVideo.title}</p>
               </div>
             </a>
 
@@ -438,7 +438,7 @@ const GaoLifeSection = () => {
             <p className="text-xs font-medium mb-0.5" style={{ color: '#4A7C59', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               gao life {currentVideo.num} · {currentVideo.country}
             </p>
-            <p className="font-medium text-lg" style={{ fontFamily: 'Georgia, serif', color: '#2d2d2d' }}>{currentVideo.title}</p>
+            <p className="font-medium text-lg" style={{ fontFamily: 'var(--heading-font)', color: '#2d2d2d' }}>{currentVideo.title}</p>
           </div>
 
           {/* Mobile region tabs */}
@@ -522,7 +522,7 @@ const ProjectModal = ({ project, onClose }) => {
             </div>
             <span className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(139,115,85,0.15)', color: '#8b7355' }}>{project.type}</span>
           </div>
-          <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.875rem', fontWeight: 400 }}>{project.title}</h3>
+          <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.875rem', fontWeight: 400 }}>{project.title}</h3>
           <div className="flex flex-wrap gap-2">
             {project.tech.map(t => <span key={t} className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#5a5a5a', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>{t}</span>)}
           </div>
@@ -1221,7 +1221,7 @@ const ProjectCard = ({ project, index, onClick }) => {
         </button>
 
         <h3 style={{
-          fontFamily: 'Georgia, serif',
+          fontFamily: 'var(--heading-font)',
           fontSize: 'clamp(1.85rem, 3vw, 2.5rem)',
           color: '#2d2d2d',
           marginBottom: '10px',
@@ -1333,7 +1333,7 @@ const HikingTrail = () => {
                 <span className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(74,124,89,0.15)', color: '#4A7C59' }}>{item.role || item.subtitle}</span>
               )}
             </div>
-            <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.5rem', fontWeight: 400 }}>{item.title}</h3>
+            <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.5rem', fontWeight: 400 }}>{item.title}</h3>
             {(item.date || item.location) && (
               <div className="flex flex-wrap gap-2">
                 {item.date && <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#5a5a5a', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>{item.date}</span>}
@@ -1389,7 +1389,7 @@ const HikingTrail = () => {
           <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#4A7C59', letterSpacing: '0.1em' }}>{stop.year}</span>
           <span className="w-8 h-px" style={{ backgroundColor: 'rgba(74,124,89,0.3)' }} />
         </div>
-        <p className="text-2xl font-medium" style={{ color: '#2d2d2d', fontFamily: 'Georgia, serif', letterSpacing: '-0.01em' }}>{stop.title}</p>
+        <p className="text-2xl font-medium" style={{ color: '#2d2d2d', fontFamily: 'var(--heading-font)', letterSpacing: '-0.01em' }}>{stop.title}</p>
         {stop.desc && (
           <p className="text-sm mt-2" style={{ color: '#666', lineHeight: 1.5 }}>{stop.desc}</p>
         )}
@@ -1465,7 +1465,7 @@ const HikingTrail = () => {
                     <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#4A7C59', letterSpacing: '0.08em' }}>{stop.year}</span>
                     <span className="w-4 h-px" style={{ backgroundColor: 'rgba(74,124,89,0.3)' }} />
                   </div>
-                  <p className="text-lg font-medium" style={{ color: '#2d2d2d', fontFamily: 'Georgia, serif' }}>{stop.title}</p>
+                  <p className="text-lg font-medium" style={{ color: '#2d2d2d', fontFamily: 'var(--heading-font)' }}>{stop.title}</p>
                   {stop.desc && <p className="text-xs mt-1" style={{ color: '#666', lineHeight: 1.4 }}>{stop.desc}</p>}
                 </div>
                 {stop.milestones.length > 0 && (
@@ -1559,7 +1559,7 @@ const HikingTrail = () => {
                     <div className="absolute -left-9 top-5 w-5 h-5 rounded-full bg-white" style={{ borderWidth: '3px', borderStyle: 'solid', borderColor: '#4A7C59' }} />
                     <div className="p-5 rounded-xl cursor-pointer bg-white transition-all duration-200 hover:-translate-y-1" style={{ boxShadow: '0 4px 15px rgba(0,0,0,0.06)', border: '1px solid #e8e4df' }} onClick={() => setSelectedItem(stop.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
                       <p className="text-sm font-bold tracking-wide" style={{ color: '#4A7C59' }}>{stop.year}</p>
-                      <p className="text-xl font-medium mt-0.5" style={{ color: '#2d2d2d', fontFamily: 'Georgia, serif' }}>{stop.title}</p>
+                      <p className="text-xl font-medium mt-0.5" style={{ color: '#2d2d2d', fontFamily: 'var(--heading-font)' }}>{stop.title}</p>
                       {stop.desc && <p className="text-sm mt-0.5" style={{ color: '#777' }}>{stop.desc}</p>}
                     </div>
                     {stop.milestones.length > 0 && (
@@ -1627,7 +1627,7 @@ const HeroHeading = () => {
   const { displayedText, isComplete } = useTypingEffect("Hey, I'm Ethan Gao", 70, 300);
 
   return (
-    <h1 className="mb-6" style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', lineHeight: 1.15, color: '#2d2d2d', fontWeight: 400, minHeight: '1.2em' }}>
+    <h1 className="mb-6" style={{ fontFamily: 'var(--heading-font)', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', lineHeight: 1.15, color: '#2d2d2d', fontWeight: 400, minHeight: '1.2em' }}>
       {displayedText.includes("Ethan") ? (
         <>
           {displayedText.split("Ethan")[0]}
@@ -1644,9 +1644,12 @@ const HeroHeading = () => {
 export default function Site() {
   const [selectedProject, setSelectedProject] = useState(null);
   return (
-    <div style={{ backgroundColor: '#faf9f6', minHeight: '100vh', fontFamily: 'system-ui, sans-serif', scrollBehavior: 'smooth' }}>
+    <div style={{ backgroundColor: '#fcfcfc', minHeight: '100vh', fontFamily: 'system-ui, sans-serif', scrollBehavior: 'smooth' }}>
       <Analytics />
       <style>{`
+        :root {
+          --heading-font: 'Libre Baskerville', serif;
+        }
         html { scroll-behavior: smooth; }
 
         @keyframes wiggle {
@@ -1703,11 +1706,11 @@ export default function Site() {
         }
       `}</style>
       <div id="about" className="relative overflow-hidden" style={{ minHeight: '100vh' }}>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #faf9f6 0%, #f5f1eb 50%, #f0ebe5 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #fcfcfc 0%, #f7f7f7 50%, #f2f2f2 100%)' }} />
 
-        <div className="absolute bottom-0 left-0 right-0 h-24" style={{ background: 'linear-gradient(to bottom, transparent, #f5f3ef)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-24" style={{ background: 'linear-gradient(to bottom, transparent, #f5f5f5)' }} />
         <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 md:px-10 py-4">
-          <span className="px-3 md:px-4 py-2 rounded-full flex items-center gap-2" style={{ fontFamily: 'Georgia, serif', fontSize: '1.2rem', color: '#2d2d2d', backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
+          <span className="px-3 md:px-4 py-2 rounded-full flex items-center gap-2" style={{ fontFamily: 'var(--heading-font)', fontSize: '1.2rem', color: '#2d2d2d', backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
             <img src="/favicon.png" alt="Whale" style={{ width: '24px', height: '24px' }} />
             <span className="hidden sm:inline">Ethan Gao</span>
           </span>
@@ -1743,9 +1746,9 @@ export default function Site() {
         </section>
       </div>
 
-      <section id="experience" className="px-4 py-10" style={{ backgroundColor: '#f5f3ef' }}>
+      <section id="experience" className="px-4 py-10" style={{ backgroundColor: '#f5f5f5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div className="text-center mb-2"><h2 style={{ fontFamily: 'Georgia, serif', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Where I've Been</h2></div>
+          <div className="text-center mb-2"><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Where I've Been</h2></div>
           <p className="text-center text-sm mb-6" style={{ color: '#888' }}>Click on a card for more info</p>
           <HikingTrail />
         </div>
@@ -1755,7 +1758,7 @@ export default function Site() {
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(74,124,89,0.08) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
         <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="mb-12">
-            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: '#2d2d2d', fontWeight: 400 }}>
+            <h2 style={{ fontFamily: 'var(--heading-font)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: '#2d2d2d', fontWeight: 400 }}>
               Recent Projects
             </h2>
           </div>
@@ -1778,8 +1781,8 @@ export default function Site() {
                 {/* Interactive mockup area - no scaling, natural size */}
                 <div style={{
                   padding: '16px',
-                  background: 'linear-gradient(135deg, #faf9f6 0%, #f0ede8 100%)',
-                  borderBottom: '1px solid #e8e4df'
+                  background: 'linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%)',
+                  borderBottom: '1px solid #e5e5e5'
                 }}>
                   {/* Custom mobile mockup container */}
                   <div style={{
@@ -1807,7 +1810,7 @@ export default function Site() {
                 >
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '10px' }}>
                     <div>
-                      <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.25rem', color: '#2d2d2d', marginBottom: '4px', fontWeight: '400' }}>{proj.title}</h3>
+                      <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.25rem', color: '#2d2d2d', marginBottom: '4px', fontWeight: '400' }}>{proj.title}</h3>
                       <p style={{ color: '#888', fontSize: '12px' }}>
                         {proj.category} · {proj.type}
                       </p>
@@ -1818,7 +1821,7 @@ export default function Site() {
                       gap: '4px',
                       padding: '6px 12px',
                       borderRadius: '8px',
-                      background: '#f5f3ef',
+                      background: '#f0f0f0',
                       color: '#8b7355',
                       fontSize: '11px',
                       fontWeight: '600'
@@ -1843,9 +1846,9 @@ export default function Site() {
       {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
 
       {/* Technical Skills Section */}
-      <section className="px-6 py-14" style={{ backgroundColor: '#f5f3ef' }}>
+      <section className="px-6 py-14" style={{ backgroundColor: '#f5f5f5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <h2 className="mb-8" style={{ fontFamily: 'Georgia, serif', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Technical Skills</h2>
+          <h2 className="mb-8" style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Technical Skills</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {Object.entries(skills).map(([key, category]) => (
               <div key={key} className="p-5 rounded-xl" style={{ backgroundColor: 'rgba(255,255,255,0.6)', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }}>
@@ -1861,9 +1864,9 @@ export default function Site() {
       <GaoLifeSection />
 
       {/* Contact Section */}
-      <section id="contact" className="px-6 py-16" style={{ backgroundColor: '#f5f3ef' }}>
+      <section id="contact" className="px-6 py-16" style={{ backgroundColor: '#f5f5f5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <h2 className="mb-8 text-center" style={{ fontFamily: 'Georgia, serif', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Get In Touch</h2>
+          <h2 className="mb-8 text-center" style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Get In Touch</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
             <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-blue-600" style={{ backgroundColor: 'rgba(14,118,168,0.1)' }}>
