@@ -1,9 +1,16 @@
-const posts = [
-  {
-    slug: 'taking-pictures-while-traveling',
-    title: 'Taking Pictures While Traveling',
-    date: '2026-04-07',
-    content: `There's this idea that when travelling, you're either the Type A person who is the one planning everything, or the Type B person who's okay with anything and just exists. And that both have to exist for a trip to go well. For most of my life I've been Type B because I've gone on trips with family, or friends who had the strong urge to go somewhere and I just wanted to tag along. I didn't care much where we went or what we did, I was there for the people and food.
+import CameraPreview from './artifacts/CameraPreview.jsx';
+
+export const meta = {
+  title: 'Taking Pictures While Traveling',
+  date: '2026-04-07',
+  type: 'thoughts',
+  category: 'Travel',
+  status: 'published',
+  excerpt: 'How picking up a camera made me pay more attention, not less.',
+  previewComponent: CameraPreview,
+};
+
+There's this idea that when travelling, you're either the Type A person who is the one planning everything, or the Type B person who's okay with anything and just exists. And that both have to exist for a trip to go well. For most of my life I've been Type B because I've gone on trips with family, or friends who had the strong urge to go somewhere and I just wanted to tag along. I didn't care much where we went or what we did, I was there for the people and food.
 
 It's fair to say it might also be because I was more of an "in the moment" kind of person. I always thought it was odd to take pictures of super famous paintings. Everyone crowds around the Mona Lisa in the Louvre, but their pictures have a bunch of heads in it. Plus, you catch your own reflection in the glass trying to take the photo and that's just embarrassing. You can find a better picture online, so what's the point of taking the picture? To prove that you were there? I thought the whole thing was kind of silly. Being on vacation should be relaxing, taking pictures "ruins the point".
 
@@ -17,8 +24,4 @@ This also means capturing way more of the journey rather than only the destinati
 
 And I think that's what surprised me the most about having a camera. It didn't pull me out of being "in the moment". It might if that's the only thing you're doing (like if you only take pictures of yourself so that other people know you went there). But in my experience, I'm noticing and learning much more about the places I visit. I notice a strange plant, so I film it, look it up later, and find out that it's a native plant in that region that's poisonous. Glass columns in a building that I thought just looked cool, but were actually functionally designed to survive earthquakes. I wouldn't have known any of that if I wasn't looking for something to film.
 
-Having the camera pushes you to have that more intentional travel experience, but not in a way that compromises your energy. You aren't focused on getting the perfect shot, you're just focused on capturing the raw moment. It makes the trip better on both ends: You're having a richer experience while actually there, and you have it all saved for later.`,
-  },
-];
-
-export default posts;
+Having the camera pushes you to have that more intentional travel experience, but not in a way that compromises your energy. You aren't focused on getting the perfect shot, you're just focused on capturing the raw moment. It makes the trip better on both ends: You're having a richer experience while actually there, and you have it all saved for later.
