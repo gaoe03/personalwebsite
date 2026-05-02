@@ -62,53 +62,53 @@ export default function FlavorMatrix() {
           {varieties.map((v, i) => {
             const isSel = selected === i;
             const isHov = hovered === i;
-            // Filter dims non-matching dots. Selected/hovered always override.
             const dimmed = !isSel && !isHov && !isVisible(v);
             const r = isSel ? 10 : isHov ? 8 : 6;
             return (
-              <g
+              <circle
                 key={i}
-                style={{ cursor: 'pointer' }}
+                cx={toPx(v.x)}
+                cy={toPx(v.y)}
+                r={r}
+                fill={originColors[v.origin]}
+                stroke="#fff"
+                strokeWidth="2"
+                opacity={dimmed ? 0.25 : 1}
+                filter={isSel || isHov ? 'url(#dotShadow)' : undefined}
+                style={{ cursor: 'pointer', transition: 'r 0.15s ease, opacity 0.2s ease' }}
                 onClick={() => setSelected(isSel ? null : i)}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
-              >
-                <circle
-                  cx={toPx(v.x)}
-                  cy={toPx(v.y)}
-                  r={r}
-                  fill={originColors[v.origin]}
-                  stroke="#fff"
-                  strokeWidth="2"
-                  opacity={dimmed ? 0.25 : 1}
-                  filter={isSel || isHov ? 'url(#dotShadow)' : undefined}
-                  style={{ transition: 'r 0.15s ease, opacity 0.2s ease' }}
-                />
-                {/* Hover label */}
-                {isHov && !isSel && (
-                  <g style={{ pointerEvents: 'none' }}>
-                    <rect
-                      x={toPx(v.x) - (v.name.length * 3.2 + 10)}
-                      y={toPx(v.y) - 28}
-                      width={v.name.length * 6.4 + 20}
-                      height="20"
-                      rx="4"
-                      fill="#222"
-                    />
-                    <text
-                      x={toPx(v.x)}
-                      y={toPx(v.y) - 14}
-                      textAnchor="middle"
-                      fontSize="11"
-                      fill="#fff"
-                    >
-                      {v.name}
-                    </text>
-                  </g>
-                )}
-              </g>
+              />
             );
           })}
+          {/* Active label rendered last so it's always on top */}
+          {(() => {
+            const activeIdx = hovered !== null ? hovered : selected;
+            if (activeIdx === null) return null;
+            const v = varieties[activeIdx];
+            const labelW = v.name.length * 6.4 + 20;
+            const labelH = 20;
+            const cx = toPx(v.x);
+            const cy = toPx(v.y);
+            // Clamp to SVG edges only so label stays centered above its dot
+            const rx = Math.max(4, Math.min(cx - labelW / 2, W - labelW - 4));
+            const ry = cy - 28 < 4 ? cy + 12 : cy - 28;
+            return (
+              <g style={{ pointerEvents: 'none' }}>
+                <rect x={rx} y={ry} width={labelW} height={labelH} rx="4" fill="#222" />
+                <text
+                  x={rx + labelW / 2}
+                  y={ry + labelH - 6}
+                  textAnchor="middle"
+                  fontSize="11"
+                  fill="#fff"
+                >
+                  {v.name}
+                </text>
+              </g>
+            );
+          })()}
         </svg>
       </div>
 

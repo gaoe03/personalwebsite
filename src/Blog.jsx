@@ -24,7 +24,6 @@ const FilterChip = ({ label, active, onClick }) => (
 );
 
 const PostCard = ({ post }) => {
-  const Preview = post.previewComponent;
   const dateLabel = post.status === 'growing'
     ? `Updated ${post.updatedDate || post.date}`
     : post.date;
@@ -44,38 +43,17 @@ const PostCard = ({ post }) => {
         transition: 'border-color 0.15s, transform 0.15s',
       }}
     >
-      <div className="flex flex-col md:flex-row md:items-center md:gap-8 gap-4">
-        <div className="flex-1 min-w-0">
-          <h3 className="post-title" style={{
-            fontSize: '20px',
-            color: '#222',
-            fontWeight: 500,
-            lineHeight: 1.35,
-            marginBottom: '10px',
-            transition: 'color 0.15s',
-          }}>
-            {post.title}
-          </h3>
-          <p style={{ color: '#aaa', fontSize: '14px' }}>{dateLabel}</p>
-        </div>
-        {Preview && (
-          <div style={{
-            flex: '0 0 auto',
-            width: '90px',
-            height: '68px',
-            background: '#fafafa',
-            border: '1px solid #eee',
-            borderRadius: '8px',
-            overflow: 'hidden',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '8px',
-          }}>
-            <Preview />
-          </div>
-        )}
-      </div>
+      <h3 className="post-title" style={{
+        fontSize: '20px',
+        color: '#222',
+        fontWeight: 500,
+        lineHeight: 1.35,
+        marginBottom: '10px',
+        transition: 'color 0.15s',
+      }}>
+        {post.title}
+      </h3>
+      <p style={{ color: '#aaa', fontSize: '14px' }}>{dateLabel}</p>
     </Link>
   );
 };
