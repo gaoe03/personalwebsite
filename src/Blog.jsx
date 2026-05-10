@@ -1,27 +1,5 @@
-import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import posts from './posts/index.js';
-
-const FilterChip = ({ label, active, onClick }) => (
-  <button
-    onClick={onClick}
-    style={{
-      fontSize: '13px',
-      padding: '6px 14px',
-      borderRadius: '16px',
-      background: active ? '#222' : '#fff',
-      color: active ? '#fff' : '#666',
-      border: `1px solid ${active ? '#222' : '#eee'}`,
-      fontWeight: active ? 500 : 400,
-      cursor: 'pointer',
-      transition: 'all 0.15s ease',
-      whiteSpace: 'nowrap',
-      fontFamily: 'inherit',
-    }}
-  >
-    {label}
-  </button>
-);
 
 const PostCard = ({ post }) => {
   const dateLabel = post.status === 'growing'
@@ -59,28 +37,13 @@ const PostCard = ({ post }) => {
 };
 
 export default function Blog() {
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [categoryFilter, setCategoryFilter] = useState('all');
-
-  const categories = useMemo(() => {
-    const set = new Set(posts.filter((p) => p.status !== 'draft').map((p) => p.category).filter(Boolean));
-    return Array.from(set).sort();
-  }, []);
-
-  const visible = posts.filter((p) => {
-    if (p.status === 'draft') return false;
-    if (typeFilter !== 'all' && p.type !== typeFilter) return false;
-    if (categoryFilter !== 'all' && p.category !== categoryFilter) return false;
-    return true;
-  });
+  const visible = posts.filter((p) => p.status !== 'draft');
 
   return (
     <div style={{ backgroundColor: '#fff', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', color: '#333' }}>
       <style>{`
         .post-card:hover { border-color: #ccc !important; }
         .post-card:hover .post-title { color: #000; }
-        .filter-row::-webkit-scrollbar { display: none; }
-        .filter-row { scrollbar-width: none; }
       `}</style>
 
       <div style={{ maxWidth: '760px', margin: '0 auto', padding: '72px 28px 120px' }}>
@@ -96,38 +59,13 @@ export default function Blog() {
         </div>
 
         {/* Header */}
-        <div style={{ marginBottom: '28px' }}>
+        <div style={{ marginBottom: '24px' }}>
           <h1 style={{ fontSize: '32px', color: '#222', fontWeight: 500, letterSpacing: '-0.4px', marginBottom: '6px' }}>
             Blog
           </h1>
           <p style={{ color: '#888', fontSize: '15px', lineHeight: 1.5 }}>
             Thoughts and things I'm learning.
           </p>
-        </div>
-
-        {/* Filter row */}
-        <div className="filter-row" style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px', marginBottom: '20px', alignItems: 'center' }}>
-          <FilterChip
-            label="Thoughts"
-            active={typeFilter === 'thoughts'}
-            onClick={() => setTypeFilter(typeFilter === 'thoughts' ? 'all' : 'thoughts')}
-          />
-          <FilterChip
-            label="Learning"
-            active={typeFilter === 'learning'}
-            onClick={() => setTypeFilter(typeFilter === 'learning' ? 'all' : 'learning')}
-          />
-          {categories.length > 0 && (
-            <div style={{ width: '1px', height: '16px', background: '#e5e5e5', margin: '0 6px', flexShrink: 0 }} />
-          )}
-          {categories.map((c) => (
-            <FilterChip
-              key={c}
-              label={c}
-              active={categoryFilter === c}
-              onClick={() => setCategoryFilter(categoryFilter === c ? 'all' : c)}
-            />
-          ))}
         </div>
 
         {/* Posts */}

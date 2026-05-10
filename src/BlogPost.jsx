@@ -37,8 +37,12 @@ export default function BlogPost() {
         .post-content .intro-image { float: right; width: 180px; margin: 4px 0 12px 24px; border-radius: 10px; border: 1px solid #eee; padding: 8px 8px 6px; background: #fff; }
         .post-content .intro-image img { width: 100%; display: block; border-radius: 4px; }
         .post-content .intro-image figcaption { text-align: center; font-size: 11px; color: #999; margin-top: 6px; font-style: italic; }
+        .post-content .feature-image { margin: 0 0 1.8em; }
+        .post-content .feature-image img { width: 100%; display: block; border-radius: 8px; }
+        .post-content .feature-image figcaption { text-align: center; font-size: 12px; color: #999; margin-top: 8px; font-style: italic; }
         @media (max-width: 600px) {
           .post-content .intro-image { float: none; display: block; margin: 0 auto 20px; width: 55%; max-width: 180px; }
+          .post-content .feature-image { margin-bottom: 1.5em; }
         }
       `}</style>
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 28px 120px' }}>
@@ -60,19 +64,6 @@ export default function BlogPost() {
 
         {/* Post */}
         <article>
-          <p style={{
-            color: '#aaa',
-            fontSize: '11.5px',
-            fontWeight: 500,
-            letterSpacing: '1.2px',
-            textTransform: 'uppercase',
-            marginBottom: '14px',
-          }}>
-            {post.type} · {post.category}
-            {post.status === 'growing' && (
-              <span style={{ marginLeft: '8px', color: '#bbb', letterSpacing: '0.3px', textTransform: 'none', fontSize: '12px', fontStyle: 'italic' }}>growing</span>
-            )}
-          </p>
           <h1 style={{ fontSize: '24px', fontWeight: 500, color: '#222', marginBottom: '8px', lineHeight: 1.3, letterSpacing: '-0.3px' }}>
             {post.title}
           </h1>
