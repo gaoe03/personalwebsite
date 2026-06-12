@@ -1278,6 +1278,30 @@ const ProjectCard = ({ project, index, onClick }) => {
 const HikingTrail = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showSimpleView, setShowSimpleView] = useState(false);
+  const resumeWobbleRef = useRef(null);
+
+  useEffect(() => {
+    let frame = 0;
+    let lastTick = 0;
+    let animationFrame;
+
+    const animateSeeds = (time) => {
+      if (time - lastTick >= 170) {
+        frame = (frame + 1) % 3;
+        lastTick = time;
+
+        resumeWobbleRef.current?.querySelectorAll('[data-resume-wobble]').forEach((node) => {
+          const seeds = node.dataset.seeds.split(',');
+          node.setAttribute('seed', seeds[frame]);
+        });
+      }
+
+      animationFrame = requestAnimationFrame(animateSeeds);
+    };
+
+    animationFrame = requestAnimationFrame(animateSeeds);
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
 
   const stops = [
     {
@@ -1306,6 +1330,27 @@ const HikingTrail = () => {
     { x: 340, y: 295, s: 0.95 }, { x: 420, y: 305, s: 1.0 }, { x: 495, y: 295, s: 1.15 },
   ];
 
+  const WobbleFilter = ({ id, seedOffset = 0 }) => (
+    <filter id={id} x="-45%" y="-45%" width="190%" height="190%">
+      <feTurbulence
+        data-resume-wobble
+        data-seeds={`${13 + seedOffset},${113 + seedOffset},${213 + seedOffset}`}
+        type="turbulence"
+        baseFrequency="0.012 0.009"
+        numOctaves="2"
+        seed={13 + seedOffset}
+        result="warp"
+      />
+      <feDisplacementMap
+        in="SourceGraphic"
+        in2="warp"
+        scale="6.5"
+        xChannelSelector="R"
+        yChannelSelector="G"
+      />
+    </filter>
+  );
+
   const ResumeModal = ({ item, onClose }) => {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -1319,10 +1364,10 @@ const HikingTrail = () => {
     };
 
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: isVisible ? 'rgba(35,35,30,0.6)' : 'rgba(35,35,30,0)', transition: 'background-color 0.3s ease' }} onClick={handleClose}>
-        <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#faf9f6', maxHeight: '85vh', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
-          <div className="px-6 pt-6 pb-5" style={{ background: 'linear-gradient(180deg, #f0ede8 0%, #faf9f6 100%)' }}>
-            <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150" style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: isVisible ? 'rgba(17,24,39,0.56)' : 'rgba(17,24,39,0)', transition: 'background-color 0.3s ease' }} onClick={handleClose}>
+        <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#fff', maxHeight: '85vh', border: '1px solid #e5e7eb', boxShadow: '0 24px 60px rgba(15,23,42,0.22)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
+          <div className="px-6 pt-6 pb-5" style={{ background: '#f8fafc', borderBottom: '1px solid #e5e7eb' }}>
+            <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150" style={{ backgroundColor: '#eef2f7' }}>
               <X size={16} style={{ color: '#666' }} />
             </button>
             <div className="flex items-center gap-3 mb-4">
@@ -1330,20 +1375,19 @@ const HikingTrail = () => {
                 <MapPin size={20} style={{ color: '#fff' }} />
               </div>
               {(item.role || item.subtitle) && (
-                <span className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(74,124,89,0.15)', color: '#4A7C59' }}>{item.role || item.subtitle}</span>
+                <span className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: '#eef7f1', color: '#3d6b4a', border: '1px solid #d7eadc' }}>{item.role || item.subtitle}</span>
               )}
             </div>
             <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.5rem', fontWeight: 400 }}>{item.title}</h3>
             {(item.date || item.location) && (
               <div className="flex flex-wrap gap-2">
-                {item.date && <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#5a5a5a', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>{item.date}</span>}
-                {item.location && <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#5a5a5a', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>{item.location}</span>}
+                {item.date && <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#4b5563', border: '1px solid #e5e7eb' }}>{item.date}</span>}
+                {item.location && <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#4b5563', border: '1px solid #e5e7eb' }}>{item.location}</span>}
               </div>
             )}
           </div>
           {item.bullets && item.bullets.length > 0 && (
             <>
-              <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e0dcd6, transparent)' }} />
               <div className="px-6 py-5 overflow-y-auto" style={{ maxHeight: 'calc(85vh - 200px)' }}>
                 <ul className="space-y-3">
                   {item.bullets.map((b, i) => (
@@ -1366,24 +1410,24 @@ const HikingTrail = () => {
       <div
         className="relative p-6 rounded-2xl cursor-pointer transition-all duration-300 hover:-translate-y-1 group"
         style={{
-          background: 'linear-gradient(145deg, #ffffff 0%, #faf9f6 100%)',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.05)',
-          border: '1px solid rgba(232,228,223,0.8)',
+          background: '#fff',
+          boxShadow: '0 8px 24px rgba(15,23,42,0.06)',
+          border: '1px solid #e5e7eb',
           minWidth: '280px',
           backdropFilter: 'blur(4px)'
         }}
         onClick={() => setSelectedItem(stop.modalContent)}
         onMouseEnter={(e) => {
-          e.currentTarget.style.boxShadow = '0 12px 35px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.05)';
-          e.currentTarget.style.borderColor = 'rgba(74,124,89,0.3)';
+          e.currentTarget.style.boxShadow = '0 14px 34px rgba(15,23,42,0.11)';
+          e.currentTarget.style.borderColor = '#cbd5e1';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.05)';
-          e.currentTarget.style.borderColor = 'rgba(232,228,223,0.8)';
+          e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,23,42,0.06)';
+          e.currentTarget.style.borderColor = '#e5e7eb';
         }}
       >
         {/* Subtle accent line */}
-        <div className="absolute top-0 left-6 right-6 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(74,124,89,0.2), transparent)' }} />
+        <div className="absolute top-0 left-6 right-6 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(74,124,89,0.24), transparent)' }} />
 
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#4A7C59', letterSpacing: '0.1em' }}>{stop.year}</span>
@@ -1404,25 +1448,25 @@ const HikingTrail = () => {
       {stop.milestones.length > 0 && (
         <div className="flex flex-col gap-2 mt-4" style={{ alignItems: side === 'left' ? 'flex-start' : 'flex-end', paddingLeft: side === 'left' ? '16px' : '0', paddingRight: side === 'right' ? '16px' : '0' }}>
           {/* Connector line to milestones */}
-          <div className="h-3 w-px mb-1" style={{ backgroundColor: 'rgba(201,184,150,0.5)', marginLeft: side === 'left' ? '20px' : 'auto', marginRight: side === 'right' ? '20px' : 'auto' }} />
+          <div className="h-3 w-px mb-1" style={{ backgroundColor: '#d1d5db', marginLeft: side === 'left' ? '20px' : 'auto', marginRight: side === 'right' ? '20px' : 'auto' }} />
 
           {stop.milestones.map((m, i) => (
             <div key={i} className="flex flex-col" style={{ alignItems: side === 'left' ? 'flex-start' : 'flex-end' }}>
               <div
                 className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white cursor-pointer transition-all duration-300 hover:-translate-y-0.5 group"
                 style={{
-                  border: '1px solid rgba(232,228,223,0.6)',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                  background: 'linear-gradient(145deg, #ffffff 0%, #fcfbf9 100%)'
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 4px 14px rgba(15,23,42,0.04)',
+                  background: '#fff'
                 }}
                 onClick={() => setSelectedItem(m.modalContent)}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)';
-                  e.currentTarget.style.borderColor = 'rgba(74,124,89,0.25)';
+                  e.currentTarget.style.boxShadow = '0 10px 24px rgba(15,23,42,0.09)';
+                  e.currentTarget.style.borderColor = '#cbd5e1';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.03)';
-                  e.currentTarget.style.borderColor = 'rgba(232,228,223,0.6)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(15,23,42,0.04)';
+                  e.currentTarget.style.borderColor = '#e5e7eb';
                 }}
               >
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105" style={{ background: 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)' }}>
@@ -1441,7 +1485,7 @@ const HikingTrail = () => {
   );
 
   return (
-    <div className="relative py-6 overflow-hidden">
+    <div ref={resumeWobbleRef} className="relative py-6 overflow-hidden">
       {/* MOBILE LAYOUT */}
       <div className="md:hidden px-4">
         <div className="flex">
@@ -1455,9 +1499,9 @@ const HikingTrail = () => {
                 <div
                   className="p-4 rounded-xl cursor-pointer"
                   style={{
-                    background: 'linear-gradient(145deg, #ffffff 0%, #faf9f6 100%)',
-                    boxShadow: '0 3px 12px rgba(0,0,0,0.05)',
-                    border: '1px solid rgba(232,228,223,0.8)'
+                    background: '#fff',
+                    boxShadow: '0 6px 18px rgba(15,23,42,0.06)',
+                    border: '1px solid #e5e7eb'
                   }}
                   onClick={() => setSelectedItem(stop.modalContent)}
                 >
@@ -1475,9 +1519,9 @@ const HikingTrail = () => {
                         key={i}
                         className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg cursor-pointer"
                         style={{
-                          background: 'linear-gradient(145deg, #ffffff 0%, #fcfbf9 100%)',
-                          border: '1px solid rgba(232,228,223,0.6)',
-                          boxShadow: '0 2px 6px rgba(0,0,0,0.03)'
+                          background: '#fff',
+                          border: '1px solid #e5e7eb',
+                          boxShadow: '0 4px 12px rgba(15,23,42,0.04)'
                         }}
                         onClick={() => setSelectedItem(m.modalContent)}
                       >
@@ -1501,7 +1545,7 @@ const HikingTrail = () => {
       {/* DESKTOP LAYOUT */}
       <div className="hidden md:block">
         {/* Toggle button */}
-        <div className="flex justify-end mb-6 mr-4">
+        <div className="flex justify-end items-center gap-3 mb-6 mr-4">
           <button
             onClick={() => setShowSimpleView(!showSimpleView)}
             className="group flex items-center gap-3 px-5 py-2.5 rounded-full text-sm transition-all duration-300"
@@ -1557,7 +1601,7 @@ const HikingTrail = () => {
                 {stops.map((stop) => (
                   <div key={stop.id} className="relative">
                     <div className="absolute -left-9 top-5 w-5 h-5 rounded-full bg-white" style={{ borderWidth: '3px', borderStyle: 'solid', borderColor: '#4A7C59' }} />
-                    <div className="p-5 rounded-xl cursor-pointer bg-white transition-all duration-200 hover:-translate-y-1" style={{ boxShadow: '0 4px 15px rgba(0,0,0,0.06)', border: '1px solid #e8e4df' }} onClick={() => setSelectedItem(stop.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+                    <div className="p-5 rounded-xl cursor-pointer bg-white transition-all duration-200 hover:-translate-y-1" style={{ boxShadow: '0 8px 24px rgba(15,23,42,0.06)', border: '1px solid #e5e7eb' }} onClick={() => setSelectedItem(stop.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 14px 34px rgba(15,23,42,0.11)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,23,42,0.06)'}>
                       <p className="text-sm font-bold tracking-wide" style={{ color: '#4A7C59' }}>{stop.year}</p>
                       <p className="text-xl font-medium mt-0.5" style={{ color: '#2d2d2d', fontFamily: 'var(--heading-font)' }}>{stop.title}</p>
                       {stop.desc && <p className="text-sm mt-0.5" style={{ color: '#777' }}>{stop.desc}</p>}
@@ -1565,7 +1609,7 @@ const HikingTrail = () => {
                     {stop.milestones.length > 0 && (
                       <div className="ml-6 mt-3 flex flex-col gap-2">
                         {stop.milestones.map((m, i) => (
-                          <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1" style={{ border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }} onClick={() => setSelectedItem(m.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+                          <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1" style={{ border: '1px solid #e5e7eb', boxShadow: '0 6px 18px rgba(15,23,42,0.05)' }} onClick={() => setSelectedItem(m.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 12px 28px rgba(15,23,42,0.1)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 6px 18px rgba(15,23,42,0.05)'}>
                             <div className="w-8 h-8 rounded-md flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}><m.icon size={14} style={{ color: '#fff' }} /></div>
                             <div><p className="text-sm font-semibold" style={{ color: '#2d2d2d' }}>{m.label}</p><p className="text-xs" style={{ color: '#888' }}>{m.desc}</p></div>
                           </div>
@@ -1580,22 +1624,38 @@ const HikingTrail = () => {
         ) : (
           <div className="relative" style={{ minHeight: '920px' }}>
             <svg className="absolute top-0 right-0" width="620" height="350" viewBox="0 0 620 350" fill="none" style={{ pointerEvents: 'none' }}>
-              {trees.map((t, i) => (<g key={i}><polygon points={`${t.x},${t.y - 20 * t.s} ${t.x - 12 * t.s},${t.y + 10 * t.s} ${t.x + 12 * t.s},${t.y + 10 * t.s}`} fill="#4A7C59" opacity={0.1 + (i % 5) * 0.03} /><polygon points={`${t.x},${t.y - 10 * t.s} ${t.x - 8 * t.s},${t.y + 6 * t.s} ${t.x + 8 * t.s},${t.y + 6 * t.s}`} fill="#3d6b4a" opacity={0.15 + (i % 4) * 0.04} /><rect x={t.x - 2} y={t.y + 8 * t.s} width="4" height={6 * t.s} fill="#8b7355" opacity="0.2" /></g>))}
+              <defs>
+                <WobbleFilter id="resume-tree-wobble" />
+              </defs>
+              {trees.map((t, i) => (<g key={i} filter="url(#resume-tree-wobble)"><polygon points={`${t.x},${t.y - 20 * t.s} ${t.x - 12 * t.s},${t.y + 10 * t.s} ${t.x + 12 * t.s},${t.y + 10 * t.s}`} fill="#4A7C59" opacity={0.1 + (i % 5) * 0.03} /><polygon points={`${t.x},${t.y - 10 * t.s} ${t.x - 8 * t.s},${t.y + 6 * t.s} ${t.x + 8 * t.s},${t.y + 6 * t.s}`} fill="#3d6b4a" opacity={0.15 + (i % 4) * 0.04} /><rect x={t.x - 2} y={t.y + 8 * t.s} width="4" height={6 * t.s} fill="#8b7355" opacity="0.2" /></g>))}
             </svg>
             <svg className="absolute right-4" style={{ top: '520px', pointerEvents: 'none' }} width="495" height="288" viewBox="0 0 420 240" fill="none">
-              <path d="M45 90 Q90 37 195 52 Q315 67 367 120 Q397 172 300 202 Q180 232 75 187 Q22 157 45 90" fill="#a8d4e6" opacity="0.4" />
-              <path d="M75 97 Q120 60 202 72 Q292 87 330 132 Q352 172 270 195 Q165 217 90 172 Q52 147 75 97" fill="#c5e4f0" opacity="0.3" />
+              <defs>
+                <WobbleFilter id="resume-lake-wobble" seedOffset={31} />
+              </defs>
+              <g filter="url(#resume-lake-wobble)">
+                <path d="M45 90 Q90 37 195 52 Q315 67 367 120 Q397 172 300 202 Q180 232 75 187 Q22 157 45 90" fill="#a8d4e6" opacity="0.4" />
+                <path d="M75 97 Q120 60 202 72 Q292 87 330 132 Q352 172 270 195 Q165 217 90 172 Q52 147 75 97" fill="#c5e4f0" opacity="0.3" />
+              </g>
             </svg>
             <svg className="absolute left-0 bottom-0" width="200" height="200" viewBox="0 0 200 200" fill="none" style={{ pointerEvents: 'none' }}>
-              <g><polygon points="40,60 28,90 52,90" fill="#4A7C59" opacity="0.12" /><polygon points="40,72 32,88 48,88" fill="#3d6b4a" opacity="0.16" /><rect x="38" y="88" width="4" height="8" fill="#8b7355" opacity="0.2" /></g>
-              <g><polygon points="80,45 68,75 92,75" fill="#4A7C59" opacity="0.14" /><polygon points="80,57 72,73 88,73" fill="#3d6b4a" opacity="0.18" /><rect x="78" y="73" width="4" height="8" fill="#8b7355" opacity="0.2" /></g>
-              <g><polygon points="55,95 43,125 67,125" fill="#4A7C59" opacity="0.13" /><polygon points="55,107 47,123 63,123" fill="#3d6b4a" opacity="0.17" /><rect x="53" y="123" width="4" height="8" fill="#8b7355" opacity="0.2" /></g>
-              <g><polygon points="25,130 13,160 37,160" fill="#4A7C59" opacity="0.12" /><polygon points="25,142 17,158 33,158" fill="#3d6b4a" opacity="0.16" /><rect x="23" y="158" width="4" height="8" fill="#8b7355" opacity="0.2" /></g>
+              <defs>
+                <WobbleFilter id="resume-foreground-tree-wobble" seedOffset={59} />
+              </defs>
+              <g filter="url(#resume-foreground-tree-wobble)"><polygon points="40,60 28,90 52,90" fill="#4A7C59" opacity="0.12" /><polygon points="40,72 32,88 48,88" fill="#3d6b4a" opacity="0.16" /><rect x="38" y="88" width="4" height="8" fill="#8b7355" opacity="0.2" /></g>
+              <g filter="url(#resume-foreground-tree-wobble)"><polygon points="80,45 68,75 92,75" fill="#4A7C59" opacity="0.14" /><polygon points="80,57 72,73 88,73" fill="#3d6b4a" opacity="0.18" /><rect x="78" y="73" width="4" height="8" fill="#8b7355" opacity="0.2" /></g>
+              <g filter="url(#resume-foreground-tree-wobble)"><polygon points="55,95 43,125 67,125" fill="#4A7C59" opacity="0.13" /><polygon points="55,107 47,123 63,123" fill="#3d6b4a" opacity="0.17" /><rect x="53" y="123" width="4" height="8" fill="#8b7355" opacity="0.2" /></g>
+              <g filter="url(#resume-foreground-tree-wobble)"><polygon points="25,130 13,160 37,160" fill="#4A7C59" opacity="0.12" /><polygon points="25,142 17,158 33,158" fill="#3d6b4a" opacity="0.16" /><rect x="23" y="158" width="4" height="8" fill="#8b7355" opacity="0.2" /></g>
             </svg>
             <div className="absolute left-1/2 transform -translate-x-1/2" style={{ width: '200px' }}>
               <svg width="200" height="920" viewBox="0 0 200 920" fill="none">
-                <path d="M100 60 C100 100 130 130 130 180 C130 250 155 290 125 360 C85 450 55 480 55 540 C55 600 50 650 80 720 C110 790 105 830 100 870" stroke="#c9b896" strokeWidth="50" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
-                <path d="M100 60 C100 100 130 130 130 180 C130 250 155 290 125 360 C85 450 55 480 55 540 C55 600 50 650 80 720 C110 790 105 830 100 870" stroke="#ddd0b8" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.35" />
+                <defs>
+                  <WobbleFilter id="resume-path-wobble" seedOffset={83} />
+                </defs>
+                <g filter="url(#resume-path-wobble)">
+                  <path d="M100 60 C100 100 130 130 130 180 C130 250 155 290 125 360 C85 450 55 480 55 540 C55 600 50 650 80 720 C110 790 105 830 100 870" stroke="#c9b896" strokeWidth="50" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
+                  <path d="M100 60 C100 100 130 130 130 180 C130 250 155 290 125 360 C85 450 55 480 55 540 C55 600 50 650 80 720 C110 790 105 830 100 870" stroke="#ddd0b8" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.35" />
+                </g>
                 <line x1="129" y1="160" x2="-150" y2="160" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
                 <line x1="137" y1="320" x2="350" y2="320" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
                 <line x1="55" y1="560" x2="-150" y2="560" stroke="rgba(255,255,255,0.9)" strokeWidth="4" strokeLinecap="round" />
@@ -1722,7 +1782,7 @@ export default function Site() {
         </nav>
         <section className="relative px-6 md:px-10 flex flex-col justify-center w-full" style={{ maxWidth: '1200px', margin: '0 auto', minHeight: 'calc(100vh - 80px)', paddingTop: '80px' }}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-            <div className="max-w-xl">
+            <div className="relative z-10 max-w-xl">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6" style={{ backgroundColor: 'rgba(74,124,89,0.15)', border: '1px solid rgba(74,124,89,0.25)' }}>
                 <MapPin size={12} style={{ color: '#3d6b4a' }} /><span className="text-sm font-medium" style={{ color: '#3d6b4a' }}>Costa Mesa, CA</span>
               </div>
