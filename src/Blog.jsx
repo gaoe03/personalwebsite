@@ -14,7 +14,7 @@ const PostCard = ({ post }) => {
         display: 'block',
         textDecoration: 'none',
         padding: '14px 22px',
-        border: '1px solid #eee',
+        border: '1px solid #e3e5e2',
         borderRadius: '10px',
         marginBottom: '12px',
         background: '#fff',
@@ -22,9 +22,10 @@ const PostCard = ({ post }) => {
       }}
     >
       <h3 className="post-title" style={{
-        fontSize: '20px',
-        color: '#222',
-        fontWeight: 500,
+        fontFamily: "'Libre Baskerville', serif",
+        fontSize: '19px',
+        color: '#232323',
+        fontWeight: 400,
         lineHeight: 1.35,
         marginBottom: '10px',
         transition: 'color 0.15s',
@@ -40,10 +41,10 @@ export default function Blog() {
   const visible = posts.filter((p) => p.status !== 'draft');
 
   return (
-    <div style={{ backgroundColor: '#fff', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', color: '#333' }}>
+    <div style={{ backgroundColor: '#fbfcfb', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', color: '#333' }}>
       <style>{`
-        .post-card:hover { border-color: #ccc !important; }
-        .post-card:hover .post-title { color: #000; }
+        .post-card:hover { border-color: rgba(74,124,89,0.45) !important; }
+        .post-card:hover .post-title { color: #3d6b4a; }
       `}</style>
 
       <div style={{ maxWidth: '760px', margin: '0 auto', padding: '72px 28px 120px' }}>
@@ -60,7 +61,7 @@ export default function Blog() {
 
         {/* Header */}
         <div style={{ marginBottom: '24px' }}>
-          <h1 style={{ fontSize: '32px', color: '#222', fontWeight: 500, letterSpacing: '-0.4px', marginBottom: '6px' }}>
+          <h1 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: '32px', color: '#232323', fontWeight: 400, marginBottom: '6px' }}>
             Blog
           </h1>
           <p style={{ color: '#888', fontSize: '15px', lineHeight: 1.5 }}>

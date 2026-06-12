@@ -22,7 +22,7 @@ export default function BlogPost() {
     : post.date;
 
   return (
-    <div style={{ backgroundColor: '#fff', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', color: '#333' }}>
+    <div style={{ backgroundColor: '#fbfcfb', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', color: '#333' }}>
       <style>{`
         .post-content p { margin: 0 0 1.4em; }
         .post-content p:last-child { margin-bottom: 0; }
@@ -64,7 +64,7 @@ export default function BlogPost() {
 
         {/* Post */}
         <article>
-          <h1 style={{ fontSize: '24px', fontWeight: 500, color: '#222', marginBottom: '8px', lineHeight: 1.3, letterSpacing: '-0.3px' }}>
+          <h1 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: '24px', fontWeight: 400, color: '#232323', marginBottom: '8px', lineHeight: 1.3 }}>
             {post.title}
           </h1>
           <p style={{ color: '#bbb', fontSize: '13px', marginBottom: '40px' }}>{dateLabel}</p>

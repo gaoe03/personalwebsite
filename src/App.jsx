@@ -29,6 +29,75 @@ const useTypingEffect = (text, speed = 80, delay = 500) => {
   return { displayedText, isComplete };
 };
 
+// === WOBBLE SYSTEM ===
+// Three speeds mapped to physical weight:
+// alive (170ms) trees/leaves · calm (600ms) drawn lines · slow (1300ms) frames/structure
+const WOBBLE_SPEED_MS = { alive: 170, calm: 600, slow: 1300 };
+
+const WobbleDefs = () => (
+  <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+    <defs>
+      {[
+        { id: 'wobble-alive', speed: 'alive', baseFrequency: '0.012 0.009', scale: 6.5, seed: 13 },
+        { id: 'wobble-calm', speed: 'calm', baseFrequency: '0.02 0.016', scale: 2.2, seed: 29 },
+        { id: 'wobble-slow', speed: 'slow', baseFrequency: '0.012 0.01', scale: 2.2, seed: 89 },
+      ].map(f => (
+        <filter key={f.id} id={f.id} x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence
+            data-wobble={f.speed}
+            data-seeds={`${f.seed},${f.seed + 100},${f.seed + 200}`}
+            type="turbulence"
+            baseFrequency={f.baseFrequency}
+            numOctaves="2"
+            seed={f.seed}
+            result="warp"
+          />
+          <feDisplacementMap in="SourceGraphic" in2="warp" scale={f.scale} xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      ))}
+    </defs>
+  </svg>
+);
+
+const useWobbleLoop = (rootRef) => {
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const frames = { alive: 0, calm: 0, slow: 0 };
+    const last = { alive: 0, calm: 0, slow: 0 };
+    let raf;
+
+    const tick = (time) => {
+      for (const speed of Object.keys(WOBBLE_SPEED_MS)) {
+        if (time - last[speed] >= WOBBLE_SPEED_MS[speed]) {
+          last[speed] = time;
+          frames[speed] = (frames[speed] + 1) % 3;
+          rootRef.current?.querySelectorAll(`[data-wobble="${speed}"]`).forEach((node) => {
+            node.setAttribute('seed', node.dataset.seeds.split(',')[frames[speed]]);
+          });
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [rootRef]);
+};
+
+// Hand-drawn underline, calm tier
+const WobblyUnderline = ({ color = '#4A7C59', height = 9, strokeWidth = 2.4, style }) => (
+  <svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height, overflow: 'visible', ...style }} aria-hidden="true">
+    <path d="M4 7 Q 50 3 100 6 T 196 5" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" filter="url(#wobble-calm)" />
+  </svg>
+);
+
+// Sketched frame border, slow tier — drawn inside the parent, which must be position: relative
+const WobblyFrameBorder = ({ stroke = '#9a9d98', strokeWidth = 1.5, radius = 12 }) => (
+  <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', overflow: 'visible', pointerEvents: 'none', zIndex: 2 }} aria-hidden="true">
+    <rect x="2.5" y="2.5" width="calc(100% - 5px)" height="calc(100% - 5px)" rx={radius} fill="none" stroke={stroke} strokeWidth={strokeWidth} filter="url(#wobble-slow)" />
+  </svg>
+);
+
 const projects = [
   {
     id: 'image-tagger', title: 'Image Tagger', desc: 'AI-powered tool for organizing and searching thousands of saved images', icon: Image, tech: ['Python', 'Gemini API', 'OpenAI API', 'Discord.py'], type: 'Nov 2025',
@@ -74,13 +143,13 @@ Built with JavaScript, TypeScript, and CSS. Completed in 24 hours with a team of
 const videos = [
   // Coordinates calculated from SVG path analysis
   { num: '1', title: 'Tohoku', gradient: 'linear-gradient(135deg, #3d5a4a 0%, #5a7c6a 100%)', url: 'https://www.youtube.com/watch?v=cUowHezVU8c', comingSoon: false, thumbnail: '/thumbnails/gaolife-1.jpg', mapX: 725, mapY: 405, country: 'Japan' },
-  { num: '1 pt.2', title: 'Hokkaido', gradient: 'linear-gradient(135deg, #2d4a5a 0%, #4a6a7c 100%)', url: 'https://www.youtube.com/watch?v=xY8n0mokf9w', comingSoon: false, thumbnail: '/thumbnails/gaolife-1pt2.jpg', mapX: 725, mapY: 388, country: 'Japan' },
-  { num: '2', title: 'Hong Kong', gradient: 'linear-gradient(135deg, #4a3d5a 0%, #6a5a7c 100%)', url: 'https://www.youtube.com/watch?v=DhuqgmEaplg', comingSoon: false, thumbnail: '/thumbnails/gaolife-2.jpg', mapX: 682, mapY: 462, country: 'China' },
-  { num: '3', title: 'Guangdong', gradient: 'linear-gradient(135deg, #5a4a2d 0%, #7c6a4a 100%)', url: 'https://www.youtube.com/watch?v=oHXrmyAfnkc', comingSoon: false, thumbnail: '/thumbnails/gaolife-3.jpg', mapX: 677, mapY: 456, country: 'China' },
-  { num: '4', title: 'Sichuan', gradient: 'linear-gradient(135deg, #2d5a4a 0%, #4a7c59 100%)', url: 'https://www.youtube.com/watch?v=bOl0s6UcLQI', comingSoon: false, thumbnail: '/thumbnails/gaolife-4.jpg', mapX: 638, mapY: 428, country: 'China' },
-  { num: '5', title: 'Yunnan', gradient: 'linear-gradient(135deg, #5a3d2d 0%, #7c5a4a 100%)', url: 'https://www.youtube.com/watch?v=3eXUCCUpVOU', comingSoon: false, thumbnail: '/thumbnails/gaolife-5.jpg', mapX: 640, mapY: 447, country: 'China' },
-  { num: '6', title: 'Oregon', gradient: 'linear-gradient(135deg, #2d4a3d 0%, #4a7c5a 100%)', url: 'https://www.youtube.com/watch?v=XIAJCIYQvZM', comingSoon: false, thumbnail: '/thumbnails/gaolife-6.jpg', mapX: 138, mapY: 410, country: 'USA' },
-  { num: '7', title: 'Coming Soon', gradient: 'linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%)', url: '', comingSoon: true, thumbnail: null, mapX: 0, mapY: 0, country: '' },
+  { num: '2', title: 'Hokkaido', gradient: 'linear-gradient(135deg, #2d4a5a 0%, #4a6a7c 100%)', url: 'https://www.youtube.com/watch?v=xY8n0mokf9w', comingSoon: false, thumbnail: '/thumbnails/gaolife-1pt2.jpg', mapX: 725, mapY: 388, country: 'Japan' },
+  { num: '3', title: 'Hong Kong', gradient: 'linear-gradient(135deg, #4a3d5a 0%, #6a5a7c 100%)', url: 'https://www.youtube.com/watch?v=DhuqgmEaplg', comingSoon: false, thumbnail: '/thumbnails/gaolife-2.jpg', mapX: 682, mapY: 462, country: 'China' },
+  { num: '4', title: 'Shenzhen & Guangzhou', gradient: 'linear-gradient(135deg, #5a4a2d 0%, #7c6a4a 100%)', url: 'https://www.youtube.com/watch?v=oHXrmyAfnkc', comingSoon: false, thumbnail: '/thumbnails/gaolife-3.jpg', mapX: 677, mapY: 456, country: 'China' },
+  { num: '5', title: 'Chengdu & Jiuzhaigou', gradient: 'linear-gradient(135deg, #2d5a4a 0%, #4a7c59 100%)', url: 'https://www.youtube.com/watch?v=bOl0s6UcLQI', comingSoon: false, thumbnail: '/thumbnails/gaolife-4.jpg', mapX: 638, mapY: 428, country: 'China' },
+  { num: '6', title: 'Kunming & Dali', gradient: 'linear-gradient(135deg, #5a3d2d 0%, #7c5a4a 100%)', url: 'https://www.youtube.com/watch?v=3eXUCCUpVOU', comingSoon: false, thumbnail: '/thumbnails/gaolife-5.jpg', mapX: 640, mapY: 447, country: 'China' },
+  { num: '7', title: 'Oregon', gradient: 'linear-gradient(135deg, #2d4a3d 0%, #4a7c5a 100%)', url: 'https://www.youtube.com/watch?v=XIAJCIYQvZM', comingSoon: false, thumbnail: '/thumbnails/gaolife-6.jpg', mapX: 138, mapY: 410, country: 'USA' },
+  { num: '8', title: 'Coming Soon', gradient: 'linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%)', url: '', comingSoon: true, thumbnail: null, mapX: 0, mapY: 0, country: '' },
 ];
 
 // Interactive map component for gao life videos
@@ -89,9 +158,11 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
   // ViewBox cropped to show East Asia region
 
   return (
-    <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-      <svg viewBox="575 365 170 115" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '12px' }}>
+    <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto', background: '#fff', borderRadius: '14px', padding: '8px' }}>
+      <WobblyFrameBorder radius={12} />
+      <svg viewBox="575 365 170 115" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '10px', display: 'block' }}>
 
+        <g filter="url(#wobble-calm)">
         {/* China - accurate geographic outline */}
         <path
           d="M594.498,386.128l-2.99,7.521l-4.124-0.217l-4.349,9.518l3.691,4.701l-7.606,10.504l-3.907-0.658l-2.611,3.285l0.648,1.971l3.043,0.217l1.521,3.5l3.044,0.658l9.344,12.04v6.129l4.563,2.844l4.996-0.873l6.303,3.719l7.605,2.187l3.691-0.439l4.132-0.441l8.687-5.688l2.828,0.44l1.08,2.567l2.396,0.718l3.26,4.813l-2.17,4.814l1.306,3.285l3.69,1.312l0.647,3.942l4.35,0.439l0.647-1.971l6.302-3.285l3.907,0.217l4.563,5.03l3.043-1.312l1.954,0.216l0.873,2.412l1.521,0.216l2.169-3.06l8.688-3.285l7.823-9.413l2.61-8.974l-0.217-5.912l-3.259-0.656l1.953-2.188l-0.434-3.501l-8.255-8.314v-4.157l2.386-3.062l2.388-1.098l0.216-2.412h-6.085l-1.089,3.285l-2.828-0.656l-3.475-3.718l2.17-5.688l3.043-3.285l2.827,0.217l-0.434,5.031l1.521,1.313l3.691-3.717l1.306-0.216l-0.433-2.844l3.476-4.158l2.61,0.216l1.521-4.813l1.781-0.942l0.182-3l-1.729-1.815l-0.147-4.736l3.329-0.217l-0.216-12.214l-2.334,1.4L694.267,377l-3.897-0.009l-11.298-6.354l-8.16-9.837l-8.281-0.086l-2.107,1.833l2.68,6.137l-0.935,5.758l-3.335,1.383l-1.876-0.147l-0.139,5.696l1.954,0.441l3.476-1.53l4.563,2.187v2.188l-3.26,0.216l-2.611,5.688l-2.386,0.215l-8.472,11.16l-8.902,3.941l-6.086,0.441l-4.124-2.844l-5.869,3.068l-6.302-1.971l-1.521-4.158l-10.642-0.657l-5.646-9.188h-2.386l-1.92-4.262L594.498,386.128z"
@@ -166,6 +237,7 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
           stroke="#c5c0b8"
           strokeWidth="0.4"
         />
+        </g>
 
         {/* Location markers */}
         {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
@@ -218,10 +290,11 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
 // America map component for gao life videos
 const AmericaMap = ({ videos, onSelectVideo, selectedIndex }) => {
   return (
-    <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-      <svg viewBox="120 370 150 100" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '12px' }}>
+    <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto', background: '#fff', borderRadius: '14px', padding: '8px' }}>
+      <WobblyFrameBorder radius={12} />
+      <svg viewBox="120 370 150 100" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '10px', display: 'block' }}>
         {/* Continental US - from simple-world-map, rotated to correct orientation */}
-        <g transform="rotate(-12, 195, 420)">
+        <g transform="rotate(-12, 195, 420)" filter="url(#wobble-calm)">
           <path
             d="M143.589,375.989l-0.865,3.475l-3.017-1.954h-1.504l-0.865,3.691l-10.554,23.65l2.801,20.606l3.449,1.737l0.648,5.645h7.105l6.889,5.204l13.562,1.305l1.504,6.941l2.152,1.521l3.017-3.033l2.369,1.08l2.152,9.976l3.656,2.386l3.017-5.645l9.258-6.726l6.025,2.817l5.169,0.433l0.216-3.25l10.762,0.217l2.152,2.386l0.432,5.42l-1.288,3.034l1.504,5.203h3.233l3.232-4.987l-1.288-2.386l-1.288-5.204l1.936-5.86l8.826-7.59l6.673-1.953l-0.864-6.293l9.258-9.983l9.258-1.521l-1.504-5.193l9.042-5.205v-6.94l-0.865-0.433l-3.233,1.082l-0.432,4.252l-10.745,0.129l-8.419,5.594l-13.217,4.322l-2.109-2.586l5.999-9.076l-2.965-2.826l-2.014-3.838l-4.175-3.354l-4.538-0.38l-8.575-5.852L143.589,375.989L143.589,375.989z"
             fill="#e8e4df"
@@ -295,7 +368,10 @@ const GaoLifeSection = () => {
       <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
           <div>
-            <h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>gao life</h2>
+            <div style={{ display: 'inline-block' }}>
+              <h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>gao life</h2>
+              <WobblyUnderline height={8} />
+            </div>
           </div>
           <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all duration-200 hover:scale-105" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}><Youtube size={14} />@gaofiles<ExternalLink size={12} /></a>
         </div>
@@ -358,7 +434,7 @@ const GaoLifeSection = () => {
                   style={{
                     padding: '6px 14px',
                     borderRadius: '16px',
-                    border: selectedRegion === region ? '1.5px solid #4A7C59' : '1.5px solid #e8e4df',
+                    border: selectedRegion === region ? '1.5px solid #4A7C59' : '1.5px solid #e3e5e2',
                     background: selectedRegion === region ? 'rgba(74,124,89,0.08)' : 'transparent',
                     color: selectedRegion === region ? '#4A7C59' : '#999',
                     fontSize: '12px',
@@ -382,7 +458,7 @@ const GaoLifeSection = () => {
                     padding: '8px 16px',
                     borderRadius: '20px',
                     border: 'none',
-                    background: selectedVideo === i ? '#4A7C59' : '#f5f3ef',
+                    background: selectedVideo === i ? '#4A7C59' : '#f1f3f1',
                     color: selectedVideo === i ? '#fff' : '#666',
                     fontSize: '13px',
                     fontWeight: '500',
@@ -450,7 +526,7 @@ const GaoLifeSection = () => {
                 style={{
                   padding: '5px 12px',
                   borderRadius: '14px',
-                  border: selectedRegion === region ? '1.5px solid #4A7C59' : '1.5px solid #e8e4df',
+                  border: selectedRegion === region ? '1.5px solid #4A7C59' : '1.5px solid #e3e5e2',
                   background: selectedRegion === region ? 'rgba(74,124,89,0.08)' : 'transparent',
                   color: selectedRegion === region ? '#4A7C59' : '#999',
                   fontSize: '11px',
@@ -473,7 +549,7 @@ const GaoLifeSection = () => {
                   padding: '6px 12px',
                   borderRadius: '16px',
                   border: 'none',
-                  background: selectedVideo === i ? '#4A7C59' : '#f5f3ef',
+                  background: selectedVideo === i ? '#4A7C59' : '#f1f3f1',
                   color: selectedVideo === i ? '#fff' : '#666',
                   fontSize: '12px',
                   fontWeight: '500',
@@ -511,8 +587,8 @@ const ProjectModal = ({ project, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: isVisible ? 'rgba(35,35,30,0.6)' : 'rgba(35,35,30,0)', transition: 'background-color 0.3s ease' }} onClick={handleClose}>
-      <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#faf9f6', maxHeight: '85vh', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
-        <div className="px-6 pt-6 pb-5" style={{ background: 'linear-gradient(180deg, #f0ede8 0%, #faf9f6 100%)' }}>
+      <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#fbfcfb', maxHeight: '85vh', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
+        <div className="px-6 pt-6 pb-5" style={{ background: 'linear-gradient(180deg, #eef0ee 0%, #fbfcfb 100%)' }}>
           <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150" style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
             <X size={16} style={{ color: '#666' }} />
           </button>
@@ -520,12 +596,12 @@ const ProjectModal = ({ project, onClose }) => {
             <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}>
               <project.icon size={20} style={{ color: '#fff' }} />
             </div>
-            <span className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(139,115,85,0.15)', color: '#8b7355' }}>{project.type}</span>
+            <span className="text-xs font-semibold" style={{ color: '#8b7355', letterSpacing: '0.14em', textTransform: 'uppercase' }}>{project.type}</span>
           </div>
           <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.875rem', fontWeight: 400 }}>{project.title}</h3>
-          <div className="flex flex-wrap gap-2">
-            {project.tech.map(t => <span key={t} className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#5a5a5a', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>{t}</span>)}
-          </div>
+          <p className="text-xs" style={{ color: '#6f7570', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
+            {project.tech.join(', ')}
+          </p>
         </div>
         <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e0dcd6, transparent)' }} />
         <div className="px-6 py-5 overflow-y-auto" style={{ maxHeight: 'calc(85vh - 200px)' }}>
@@ -583,7 +659,7 @@ const ImageTaggerMockup = () => {
       </div>
 
       {/* Generated tags */}
-      <div style={{ background: '#f5f3ef', borderRadius: '10px', padding: '12px', marginTop: '12px', flex: 1 }}>
+      <div style={{ background: '#f1f3f1', borderRadius: '10px', padding: '12px', marginTop: '12px', flex: 1 }}>
         <div style={{ fontSize: '9px', color: '#888', marginBottom: '8px' }}>Generated Tags:</div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
           {showTags && image.tags.map((tag, i) => (
@@ -846,7 +922,7 @@ const StockXGuessMockup = () => {
       ) : (
         <div
           onClick={() => inputRef.current?.focus()}
-          style={{ background: '#f5f3ef', borderRadius: '10px', padding: '8px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, cursor: 'text' }}
+          style={{ background: '#f1f3f1', borderRadius: '10px', padding: '8px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, cursor: 'text' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: 1 }}>
             <span style={{ color: '#4A7C59', fontWeight: '600', fontSize: '12px' }}>$</span>
@@ -912,7 +988,7 @@ const CyberCreditMockup = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <div style={{ display: 'flex', gap: '10px', marginBottom: '10px', flexShrink: 0 }}>
-        <div style={{ flex: 1, background: '#f5f3ef', borderRadius: '8px', padding: '10px' }}>
+        <div style={{ flex: 1, background: '#f1f3f1', borderRadius: '8px', padding: '10px' }}>
           <div style={{ fontSize: '8px', color: '#888', marginBottom: '4px' }}>Credit Score</div>
           <div style={{
             fontSize: '22px',
@@ -923,7 +999,7 @@ const CyberCreditMockup = () => {
             {score}
           </div>
         </div>
-        <div style={{ flex: 1, background: '#f5f3ef', borderRadius: '8px', padding: '10px' }}>
+        <div style={{ flex: 1, background: '#f1f3f1', borderRadius: '8px', padding: '10px' }}>
           <div style={{ fontSize: '8px', color: '#888', marginBottom: '4px' }}>Activity</div>
           <div style={{ display: 'flex', gap: '2px', alignItems: 'flex-end', height: '28px' }}>
             {barHeights.map((h, i) => (
@@ -943,7 +1019,7 @@ const CyberCreditMockup = () => {
         </div>
       </div>
 
-      <div style={{ background: '#f5f3ef', borderRadius: '6px', padding: '8px 10px', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+      <div style={{ background: '#f1f3f1', borderRadius: '6px', padding: '8px 10px', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
         <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }} />
         <span style={{ fontSize: '9px', color: '#888', fontFamily: 'monospace' }}>0x7a2...f4e9</span>
       </div>
@@ -1009,7 +1085,7 @@ const ImageTaggerMockupDesktop = () => {
       </div>
 
       {/* Generated tags */}
-      <div style={{ background: '#f5f3ef', borderRadius: '10px', padding: '12px', marginTop: '12px', flexShrink: 0 }}>
+      <div style={{ background: '#f1f3f1', borderRadius: '10px', padding: '12px', marginTop: '12px', flexShrink: 0 }}>
         <div style={{ fontSize: '9px', color: '#888', marginBottom: '8px' }}>Generated Tags:</div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
           {showTags && image.tags.map((tag, i) => (
@@ -1123,9 +1199,8 @@ const ProjectMockup = ({ projectId }) => {
     aspectRatio: '4/3',
     borderRadius: '20px',
     background: '#fff',
-    boxShadow: '0 25px 50px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.04)',
     overflow: 'hidden',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    transition: 'transform 0.3s ease',
   };
 
   const contentStyle = {
@@ -1159,13 +1234,12 @@ const ProjectMockup = ({ projectId }) => {
       style={mockupStyle}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-4px)';
-        e.currentTarget.style.boxShadow = '0 30px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.04)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 25px 50px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.04)';
       }}
     >
+      <WobblyFrameBorder radius={18} stroke="#8e918c" />
       <div style={contentStyle}>
         {renderMockupContent()}
       </div>
@@ -1220,56 +1294,43 @@ const ProjectCard = ({ project, index, onClick }) => {
           VIEW PROJECT <ArrowUpRight size={12} />
         </button>
 
-        <h3 style={{
-          fontFamily: 'var(--heading-font)',
-          fontSize: 'clamp(1.85rem, 3vw, 2.5rem)',
-          color: '#2d2d2d',
-          marginBottom: '10px',
-          fontWeight: '400',
-          lineHeight: 1.2,
-        }}>
-          {project.title}
-        </h3>
+        <div style={{ display: 'inline-block', marginBottom: '10px' }}>
+          <h3 style={{
+            fontFamily: 'var(--heading-font)',
+            fontSize: 'clamp(1.85rem, 3vw, 2.5rem)',
+            color: '#2d2d2d',
+            fontWeight: '400',
+            lineHeight: 1.2,
+          }}>
+            {project.title}
+          </h3>
+          <WobblyUnderline height={8} strokeWidth={2} color="#aeb1ac" />
+        </div>
 
         <p style={{
           color: '#8b7355',
-          fontSize: '14px',
+          fontSize: '11px',
+          fontWeight: 600,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
           marginBottom: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
         }}>
-          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#8b7355', opacity: 0.5 }} />
-          {project.category} · {project.type}
+          {project.category}, {project.type}
         </p>
 
         <p style={{
           color: '#555',
           fontSize: '16px',
           lineHeight: 1.8,
-          marginBottom: '24px',
+          marginBottom: '20px',
         }}>
           {project.desc}
         </p>
 
         {/* Tags */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-          {project.tech.map(t => (
-            <span
-              key={t}
-              style={{
-                fontSize: '13px',
-                padding: '8px 16px',
-                borderRadius: '20px',
-                background: '#fff',
-                color: '#666',
-                border: '1px solid #e8e4df',
-              }}
-            >
-              {t}
-            </span>
-          ))}
-        </div>
+        <p style={{ fontSize: '13px', color: '#6f7570', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
+          {project.tech.join(', ')}
+        </p>
       </div>
     </div>
   );
@@ -1278,30 +1339,6 @@ const ProjectCard = ({ project, index, onClick }) => {
 const HikingTrail = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showSimpleView, setShowSimpleView] = useState(false);
-  const resumeWobbleRef = useRef(null);
-
-  useEffect(() => {
-    let frame = 0;
-    let lastTick = 0;
-    let animationFrame;
-
-    const animateSeeds = (time) => {
-      if (time - lastTick >= 170) {
-        frame = (frame + 1) % 3;
-        lastTick = time;
-
-        resumeWobbleRef.current?.querySelectorAll('[data-resume-wobble]').forEach((node) => {
-          const seeds = node.dataset.seeds.split(',');
-          node.setAttribute('seed', seeds[frame]);
-        });
-      }
-
-      animationFrame = requestAnimationFrame(animateSeeds);
-    };
-
-    animationFrame = requestAnimationFrame(animateSeeds);
-    return () => cancelAnimationFrame(animationFrame);
-  }, []);
 
   const stops = [
     {
@@ -1330,10 +1367,10 @@ const HikingTrail = () => {
     { x: 340, y: 295, s: 0.95 }, { x: 420, y: 305, s: 1.0 }, { x: 495, y: 295, s: 1.15 },
   ];
 
-  const WobbleFilter = ({ id, seedOffset = 0 }) => (
+  const WobbleFilter = ({ id, seedOffset = 0, speed = 'alive' }) => (
     <filter id={id} x="-45%" y="-45%" width="190%" height="190%">
       <feTurbulence
-        data-resume-wobble
+        data-wobble={speed}
         data-seeds={`${13 + seedOffset},${113 + seedOffset},${213 + seedOffset}`}
         type="turbulence"
         baseFrequency="0.012 0.009"
@@ -1375,14 +1412,14 @@ const HikingTrail = () => {
                 <MapPin size={20} style={{ color: '#fff' }} />
               </div>
               {(item.role || item.subtitle) && (
-                <span className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: '#eef7f1', color: '#3d6b4a', border: '1px solid #d7eadc' }}>{item.role || item.subtitle}</span>
+                <span className="text-xs font-semibold" style={{ color: '#3d6b4a', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{item.role || item.subtitle}</span>
               )}
             </div>
             <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.5rem', fontWeight: 400 }}>{item.title}</h3>
             {(item.date || item.location) && (
-              <div className="flex flex-wrap gap-2">
-                {item.date && <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#4b5563', border: '1px solid #e5e7eb' }}>{item.date}</span>}
-                {item.location && <span className="text-xs px-3 py-1.5 rounded-full font-medium" style={{ backgroundColor: '#fff', color: '#4b5563', border: '1px solid #e5e7eb' }}>{item.location}</span>}
+              <div className="flex flex-wrap gap-3">
+                {item.date && <span className="text-xs font-medium" style={{ color: '#4b5563' }}>{item.date}</span>}
+                {item.location && <span className="text-xs font-medium" style={{ color: '#6f7570' }}>{item.location}</span>}
               </div>
             )}
           </div>
@@ -1485,12 +1522,18 @@ const HikingTrail = () => {
   );
 
   return (
-    <div ref={resumeWobbleRef} className="relative py-6 overflow-hidden">
+    <div className="relative py-6 overflow-hidden">
       {/* MOBILE LAYOUT */}
       <div className="md:hidden px-4">
         <div className="flex">
           <div className="flex flex-col items-center mr-4">
-            <div style={{ width: '2px', background: 'linear-gradient(180deg, #c9b896 0%, rgba(201,184,150,0.3) 100%)', borderRadius: '2px', flex: 1, minHeight: '100%' }} />
+            {/* Mini dirt path, same trail browns as the desktop hike */}
+            <svg width="12" style={{ flex: 1, minHeight: '100%' }} viewBox="0 0 12 100" preserveAspectRatio="none" aria-hidden="true">
+              <g filter="url(#wobble-slow)">
+                <path d="M6 0 C 7.5 18 4.5 38 6.5 58 C 8 76 4.5 90 6 100" stroke="#c9b896" strokeWidth="7" strokeLinecap="round" fill="none" opacity="0.55" />
+                <path d="M6 0 C 7.5 18 4.5 38 6.5 58 C 8 76 4.5 90 6 100" stroke="#ddd0b8" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.5" />
+              </g>
+            </svg>
           </div>
           <div className="flex flex-col gap-5 flex-1 pb-4">
             {stops.map((stop) => (
@@ -1631,7 +1674,7 @@ const HikingTrail = () => {
             </svg>
             <svg className="absolute right-4" style={{ top: '520px', pointerEvents: 'none' }} width="495" height="288" viewBox="0 0 420 240" fill="none">
               <defs>
-                <WobbleFilter id="resume-lake-wobble" seedOffset={31} />
+                <WobbleFilter id="resume-lake-wobble" seedOffset={31} speed="calm" />
               </defs>
               <g filter="url(#resume-lake-wobble)">
                 <path d="M45 90 Q90 37 195 52 Q315 67 367 120 Q397 172 300 202 Q180 232 75 187 Q22 157 45 90" fill="#a8d4e6" opacity="0.4" />
@@ -1650,7 +1693,7 @@ const HikingTrail = () => {
             <div className="absolute left-1/2 transform -translate-x-1/2" style={{ width: '200px' }}>
               <svg width="200" height="920" viewBox="0 0 200 920" fill="none">
                 <defs>
-                  <WobbleFilter id="resume-path-wobble" seedOffset={83} />
+                  <WobbleFilter id="resume-path-wobble" seedOffset={83} speed="slow" />
                 </defs>
                 <g filter="url(#resume-path-wobble)">
                   <path d="M100 60 C100 100 130 130 130 180 C130 250 155 290 125 360 C85 450 55 480 55 540 C55 600 50 650 80 720 C110 790 105 830 100 870" stroke="#c9b896" strokeWidth="50" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
@@ -1703,9 +1746,12 @@ const HeroHeading = () => {
 
 export default function Site() {
   const [selectedProject, setSelectedProject] = useState(null);
+  const rootRef = useRef(null);
+  useWobbleLoop(rootRef);
   return (
-    <div style={{ backgroundColor: '#fcfcfc', minHeight: '100vh', fontFamily: 'system-ui, sans-serif', scrollBehavior: 'smooth' }}>
+    <div ref={rootRef} style={{ backgroundColor: '#fbfcfb', minHeight: '100vh', fontFamily: 'system-ui, sans-serif', scrollBehavior: 'smooth' }}>
       <Analytics />
+      <WobbleDefs />
       <style>{`
         :root {
           --heading-font: 'Libre Baskerville', serif;
@@ -1766,9 +1812,9 @@ export default function Site() {
         }
       `}</style>
       <div id="about" className="relative overflow-hidden" style={{ minHeight: '100vh' }}>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #fcfcfc 0%, #f7f7f7 50%, #f2f2f2 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(175deg, #fbfcfb 0%, #f4f6f4 55%, #f1f3f1 100%)' }} />
 
-        <div className="absolute bottom-0 left-0 right-0 h-24" style={{ background: 'linear-gradient(to bottom, transparent, #f5f5f5)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-24" style={{ background: 'linear-gradient(to bottom, transparent, #f1f3f1)' }} />
         <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 md:px-10 py-4">
           <span className="px-3 md:px-4 py-2 rounded-full flex items-center gap-2" style={{ fontFamily: 'var(--heading-font)', fontSize: '1.2rem', color: '#2d2d2d', backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
             <img src="/favicon.png" alt="Whale" style={{ width: '24px', height: '24px' }} />
@@ -1783,9 +1829,9 @@ export default function Site() {
         <section className="relative px-6 md:px-10 flex flex-col justify-center w-full" style={{ maxWidth: '1200px', margin: '0 auto', minHeight: 'calc(100vh - 80px)', paddingTop: '80px' }}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
             <div className="relative z-10 max-w-xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6" style={{ backgroundColor: 'rgba(74,124,89,0.15)', border: '1px solid rgba(74,124,89,0.25)' }}>
-                <MapPin size={12} style={{ color: '#3d6b4a' }} /><span className="text-sm font-medium" style={{ color: '#3d6b4a' }}>Costa Mesa, CA</span>
-              </div>
+              <p className="flex items-center gap-2 mb-6" style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6f7570' }}>
+                <MapPin size={12} style={{ color: '#4A7C59' }} /> Costa Mesa, CA
+              </p>
               <HeroHeading />
               <p className="leading-relaxed mb-4" style={{ color: '#444', fontSize: 'clamp(1.05rem, 2vw, 1.15rem)', lineHeight: 1.85 }}>I'm an Analyst at <strong>Deloitte</strong> in Costa Mesa, working within Deloitte Digital. I recently graduated from <strong>UC Irvine</strong> with degrees in Computer Science and Business Administration.</p>
               <p className="leading-relaxed mb-8" style={{ color: '#666', fontSize: 'clamp(0.95rem, 1.5vw, 1.05rem)', lineHeight: 1.85 }}>I also make travel videos and build side projects.</p>
@@ -1806,9 +1852,9 @@ export default function Site() {
         </section>
       </div>
 
-      <section id="experience" className="px-4 py-10" style={{ backgroundColor: '#f5f5f5' }}>
+      <section id="experience" className="px-4 py-10" style={{ backgroundColor: '#f1f3f1' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div className="text-center mb-2"><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Where I've Been</h2></div>
+          <div className="text-center mb-2"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Where I've Been</h2><WobblyUnderline height={8} /></div></div>
           <p className="text-center text-sm mb-6" style={{ color: '#888' }}>Click on a card for more info</p>
           <HikingTrail />
         </div>
@@ -1818,9 +1864,12 @@ export default function Site() {
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(74,124,89,0.08) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
         <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="mb-12">
-            <h2 style={{ fontFamily: 'var(--heading-font)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: '#2d2d2d', fontWeight: 400 }}>
-              Recent Projects
-            </h2>
+            <div style={{ display: 'inline-block' }}>
+              <h2 style={{ fontFamily: 'var(--heading-font)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', color: '#2d2d2d', fontWeight: 400 }}>
+                Recent Projects
+              </h2>
+              <WobblyUnderline height={9} />
+            </div>
           </div>
 
           {/* Desktop: Alternating full-width cards */}
@@ -1836,7 +1885,7 @@ export default function Site() {
               <div
                 key={proj.id}
                 className="rounded-xl overflow-hidden"
-                style={{ backgroundColor: '#fff', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }}
+                style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }}
               >
                 {/* Interactive mockup area - no scaling, natural size */}
                 <div style={{
@@ -1846,16 +1895,17 @@ export default function Site() {
                 }}>
                   {/* Custom mobile mockup container */}
                   <div style={{
+                    position: 'relative',
                     width: '100%',
                     aspectRatio: '4/3',
                     borderRadius: '16px',
                     background: '#fff',
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
                     overflow: 'hidden',
                     padding: '16px',
                     display: 'flex',
                     flexDirection: 'column'
                   }}>
+                    <WobblyFrameBorder radius={14} stroke="#8e918c" />
                     {proj.id === 'image-tagger' && <ImageTaggerMockup />}
                     {proj.id === 'tweetfetch' && <TweetFetchMockup />}
                     {proj.id === 'synth' && <SynthMockup />}
@@ -1872,7 +1922,7 @@ export default function Site() {
                     <div>
                       <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.25rem', color: '#2d2d2d', marginBottom: '4px', fontWeight: '400' }}>{proj.title}</h3>
                       <p style={{ color: '#888', fontSize: '12px' }}>
-                        {proj.category} · {proj.type}
+                        {proj.category}, {proj.type}
                       </p>
                     </div>
                     <div style={{
@@ -1891,12 +1941,9 @@ export default function Site() {
                   </div>
                   <p style={{ color: '#555', fontSize: '14px', lineHeight: 1.6, marginBottom: '14px' }}>{proj.desc}</p>
                   {/* Tags */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                    {proj.tech.slice(0, 4).map(t => (
-                      <span key={t} style={{ fontSize: '11px', padding: '5px 10px', borderRadius: '12px', background: '#f5f3ef', color: '#777' }}>{t}</span>
-                    ))}
-                    {proj.tech.length > 4 && <span style={{ fontSize: '11px', padding: '5px 10px', borderRadius: '12px', background: '#f5f3ef', color: '#777' }}>+{proj.tech.length - 4}</span>}
-                  </div>
+                  <p style={{ fontSize: '12px', color: '#6f7570', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
+                    {proj.tech.join(', ')}
+                  </p>
                 </div>
               </div>
             ))}
@@ -1906,12 +1953,12 @@ export default function Site() {
       {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
 
       {/* Technical Skills Section */}
-      <section className="px-6 py-14" style={{ backgroundColor: '#f5f5f5' }}>
+      <section className="px-6 py-14" style={{ backgroundColor: '#f1f3f1' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <h2 className="mb-8" style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Technical Skills</h2>
+          <div className="mb-8" style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Technical Skills</h2><WobblyUnderline height={8} /></div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {Object.entries(skills).map(([key, category]) => (
-              <div key={key} className="p-5 rounded-xl" style={{ backgroundColor: 'rgba(255,255,255,0.6)', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }}>
+              <div key={key} className="p-5 rounded-xl" style={{ backgroundColor: 'rgba(255,255,255,0.6)', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }}>
                 <h3 className="text-sm font-semibold mb-3" style={{ color: '#4A7C59' }}>{category.title}</h3>
                 <p className="text-base leading-relaxed" style={{ color: '#555' }}>{category.items.join('  •  ')}</p>
               </div>
@@ -1924,32 +1971,32 @@ export default function Site() {
       <GaoLifeSection />
 
       {/* Contact Section */}
-      <section id="contact" className="px-6 py-16" style={{ backgroundColor: '#f5f5f5' }}>
+      <section id="contact" className="px-6 py-16" style={{ backgroundColor: '#f1f3f1' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <h2 className="mb-8 text-center" style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Get In Touch</h2>
+          <div className="mb-8 text-center"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Get In Touch</h2><WobblyUnderline height={8} /></div></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+            <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-blue-600" style={{ backgroundColor: 'rgba(14,118,168,0.1)' }}>
                 <Linkedin size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#0e76a8' }} />
               </div>
               <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>LinkedIn</h3>
               <p className="text-sm" style={{ color: '#888' }}>Professional network</p>
             </a>
-            <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+            <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-gray-800" style={{ backgroundColor: 'rgba(36,41,47,0.1)' }}>
                 <Github size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#24292f' }} />
               </div>
               <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>GitHub</h3>
               <p className="text-sm" style={{ color: '#888' }}>Code & projects</p>
             </a>
-            <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+            <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-red-600" style={{ backgroundColor: 'rgba(255,0,0,0.1)' }}>
                 <Youtube size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#FF0000' }} />
               </div>
               <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>YouTube</h3>
               <p className="text-sm" style={{ color: '#888' }}>Travel videos</p>
             </a>
-            <a href="mailto:one@ethangao.xyz" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e8e4df', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+            <a href="mailto:one@ethangao.xyz" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-green-700" style={{ backgroundColor: 'rgba(74,124,89,0.1)' }}>
                 <Mail size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#4A7C59' }} />
               </div>
@@ -1960,7 +2007,7 @@ export default function Site() {
         </div>
       </section>
 
-      <footer className="px-6 py-8" style={{ borderTop: '1px solid #e8e4df' }}>
+      <footer className="px-6 py-8" style={{ borderTop: '1px solid #e3e5e2' }}>
         <div className="text-center" style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <p className="text-sm" style={{ color: '#999' }}>Built by Ethan Gao with React, Vite & Tailwind CSS</p>
         </div>
