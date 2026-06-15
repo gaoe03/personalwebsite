@@ -31,7 +31,7 @@ const useTypingEffect = (text, speed = 80, delay = 500) => {
 
 // === WOBBLE SYSTEM ===
 // Three speeds mapped to physical weight:
-// alive (170ms) trees/leaves · calm (600ms) drawn lines · slow (1300ms) frames/structure
+// alive (170ms) trees/leaves, calm (600ms) drawn lines, slow (1300ms) frames/structure
 const WOBBLE_SPEED_MS = { alive: 170, calm: 600, slow: 1300 };
 
 const WobbleDefs = () => (
@@ -98,15 +98,40 @@ const WobblyFrameBorder = ({ stroke = '#9a9d98', strokeWidth = 1.5, radius = 12 
   </svg>
 );
 
+// Hand-drawn, slightly wobbling project icons (white line art on the accent tile)
+const ProjIcon = ({ size = 20, style, paths }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true"
+    style={{ ...style, fill: 'none', stroke: 'currentColor', strokeWidth: 4, strokeLinecap: 'round', strokeLinejoin: 'round', filter: 'url(#wobble-calm)', overflow: 'visible' }}
+    dangerouslySetInnerHTML={{ __html: paths }} />
+);
+const IconErewhon = (p) => <ProjIcon {...p} paths={`<path d="M38 8 L35 19"/><rect x="15" y="18" width="34" height="5" rx="2.5"/><path d="M19 23 L22 51 H42 L45 23 Z"/><path d="M24 34 Q32 30 40 34"/>`} />;
+const IconImageTagger = (p) => <ProjIcon {...p} paths={`<rect x="13" y="17" width="38" height="30" rx="4"/><circle cx="25" cy="28" r="3.5"/><path d="M15 44 L27 33 L34 40 L43 31 L49 37"/>`} />;
+const IconTweetFetch = (p) => <ProjIcon {...p} paths={`<path d="M18 13 H46 V50 L32 41 L18 50 Z"/><path d="M26 24 H38"/><path d="M26 31 H36"/>`} />;
+const IconSynth = (p) => <ProjIcon {...p} paths={`<path d="M32 11 L36 28 L53 32 L36 36 L32 53 L28 36 L11 32 L28 28 Z"/>`} />;
+const IconStockX = (p) => <ProjIcon {...p} paths={`<path d="M14 30 L30 14 H50 V34 L34 50 Z"/><circle cx="42" cy="22" r="3"/>`} />;
+const IconCyberCredit = (p) => <ProjIcon {...p} paths={`<circle cx="32" cy="32" r="18"/><path d="M32 22 L40 32 L32 42 L24 32 Z"/>`} />;
+const IconIceCream = (p) => <ProjIcon {...p} paths={`<path d="M20 27 Q21 18 27 17 Q29 11 34 14 Q41 12 42 20 Q46 23 43 27 Z"/><path d="M23 27 L32 51 L41 27"/>`} />;
+const IconCodeBrackets = (p) => <ProjIcon {...p} paths={`<path d="M22 21 L12 32 L22 43"/><path d="M42 21 L52 32 L42 43"/><path d="M37 17 L27 47"/>`} />;
+const IconBriefcase = (p) => <ProjIcon {...p} paths={`<rect x="12" y="23" width="40" height="28" rx="4"/><path d="M25 23 V17 H39 V23"/><path d="M12 35 H52"/>`} />;
+const IconMapPin = (p) => <ProjIcon {...p} paths={`<path d="M32 53 C22 39 18 31 18 24 A14 14 0 0 1 46 24 C46 31 42 39 32 53 Z"/><circle cx="32" cy="24" r="5.5"/>`} />;
+
 const projects = [
   {
-    id: 'image-tagger', title: 'Image Tagger', desc: 'AI-powered tool for organizing and searching thousands of saved images', icon: Image, tech: ['Python', 'Gemini API', 'OpenAI API', 'Discord.py'], type: 'Nov 2025',
+    id: 'erewhon', title: 'Erewhon Smoothie Archive', desc: 'Research agents that scoured the web to reconstruct every Erewhon smoothie', icon: IconErewhon, tech: ['Agents', 'JavaScript'], link: '/projects/erewhon/', live: true, type: 'Jun 2026',
+    category: 'Web App',
+    fullDesc: `A weekend spent learning how research agents handle long, multi-step work, with Erewhon's smoothies as the test case.
+
+Erewhon removes all their smoothie collabs after each product life cycle, and I couldn't find a centralized place with the old ones, so I made one. That meant recovering what they'd taken down: old press, archived menu pages, copycat recipes. I ran a fleet of agents to search, loop, and cross-check until messy pages turned into clean structured data, down to a photo for every smoothie.
+
+It was also a design project: every ingredient is its own SVG sprite, each one intentionally designed, with a wobble that gives it a hand-drawn feel.` },
+  {
+    id: 'image-tagger', title: 'Image Tagger', desc: 'AI-powered tool for organizing and searching thousands of saved images', icon: IconImageTagger, tech: ['Python', 'Gemini API', 'OpenAI API', 'Discord.py'], type: 'Nov 2025',
     category: 'Personal Tool',
     fullDesc: `As someone who enjoys digital art, I cherish the references on Twitter that I've sorted into my liked posts over the years. After they changed their API access and privatized all likes in 2023, I downloaded everything locally but lost the discoverability and threading that Twitter provided.
 
 So I built Image Tagger. It uses Gemini 2.5 and OpenAI's 4o models to automatically analyze and tag images, generating searchable descriptions for medium, color palette, subject matter, and more. I created a taxonomy structure to keep tags consistent across the collection. Now I can search through 10,000+ files with natural language queries like "sunset landscapes with warm colors" or "character designs with armor" locally.` },
   {
-    id: 'tweetfetch', title: 'TweetFetch', desc: 'Discord bot for browsing and searching archived Twitter likes', icon: Code, tech: ['Python', 'Discord.py', 'AsyncIO'], link: 'https://github.com/gaoe03/TweetFetch', type: 'Mar 2025',
+    id: 'tweetfetch', title: 'TweetFetch', desc: 'Discord bot for browsing and searching archived Twitter likes', icon: IconTweetFetch, tech: ['Python', 'Discord.py', 'AsyncIO'], link: 'https://github.com/gaoe03/TweetFetch', type: 'Mar 2025',
     category: 'Discord Bot',
     fullDesc: `Discord bot that parses a commonly used Twitter data export format and provides an interface for browsing archived liked tweets.
 
@@ -114,7 +139,7 @@ Features include filtering by username, date range, and media type, a slideshow 
 
 Built with async Python to handle large JSON datasets efficiently.` },
   {
-    id: 'synth', title: 'Synth', desc: 'Discord bot for experimenting with text generation models', icon: Code, tech: ['Python', 'Discord.py', 'TextSynth API'], link: 'https://github.com/gaoe03/Synth', type: 'Dec 2022',
+    id: 'synth', title: 'Synth', desc: 'Discord bot for experimenting with text generation models', icon: IconSynth, tech: ['Python', 'Discord.py', 'TextSynth API'], link: 'https://github.com/gaoe03/Synth', type: 'Dec 2022',
     category: 'Discord Bot',
     fullDesc: `Discord bot built to experiment with text generation APIs after learning about TextSynth in a CS class. Integrates with the TextSynth API to generate text using different language models including GPT-3, CodeGen, and FairseqGPT.
 
@@ -122,7 +147,7 @@ Built a command interface that lets users select which engine to use for their p
 
 Built with Python using discord.py and requests. Implemented custom features to streamline the model selection and query process.` },
   {
-    id: 'stockx-guess', title: 'StockX Guess', desc: 'Browser game where you guess sneaker market prices', icon: Globe, tech: ['JavaScript', 'HTML', 'CSS'], link: 'https://github.com/pyangmain/Sneaker-Price-Guessing-Game', type: 'Aug 2022',
+    id: 'stockx-guess', title: 'StockX Guess', desc: 'Browser game where you guess sneaker market prices', icon: IconStockX, tech: ['JavaScript', 'HTML', 'CSS'], link: 'https://github.com/pyangmain/Sneaker-Price-Guessing-Game', type: 'Aug 2022',
     category: 'Web Game',
     fullDesc: `A browser-based game where players guess the market price of ten random sneakers from popular brands and receive a score based on accuracy.
 
@@ -130,7 +155,7 @@ Scraped and parsed JSON data of sneaker information including price, picture, an
 
 Built with JavaScript, HTML, and CSS.` },
   {
-    id: 'cybercredit', title: 'CyberCredit', desc: 'On-chain credit scoring for DeFi lending protocols', icon: Coins, tech: ['JavaScript', 'TypeScript', 'Etherscan API', 'CyberConnect API'], type: 'Mar 2022',
+    id: 'cybercredit', title: 'CyberCredit', desc: 'On-chain credit scoring for DeFi lending protocols', icon: IconCyberCredit, tech: ['JavaScript', 'TypeScript', 'Etherscan API', 'CyberConnect API'], type: 'Mar 2022',
     category: 'Hackathon',
     fullDesc: `Built at the Blockchain@Columbia 2022 Hackathon. Designed a front-end application that analyzes Ethereum wallet data to generate credit scores for DeFi lending protocols.
 
@@ -145,9 +170,9 @@ const videos = [
   { num: '1', title: 'Tohoku', gradient: 'linear-gradient(135deg, #3d5a4a 0%, #5a7c6a 100%)', url: 'https://www.youtube.com/watch?v=cUowHezVU8c', comingSoon: false, thumbnail: '/thumbnails/gaolife-1.jpg', mapX: 725, mapY: 405, country: 'Japan' },
   { num: '2', title: 'Hokkaido', gradient: 'linear-gradient(135deg, #2d4a5a 0%, #4a6a7c 100%)', url: 'https://www.youtube.com/watch?v=xY8n0mokf9w', comingSoon: false, thumbnail: '/thumbnails/gaolife-1pt2.jpg', mapX: 725, mapY: 388, country: 'Japan' },
   { num: '3', title: 'Hong Kong', gradient: 'linear-gradient(135deg, #4a3d5a 0%, #6a5a7c 100%)', url: 'https://www.youtube.com/watch?v=DhuqgmEaplg', comingSoon: false, thumbnail: '/thumbnails/gaolife-2.jpg', mapX: 682, mapY: 462, country: 'China' },
-  { num: '4', title: 'Shenzhen & Guangzhou', gradient: 'linear-gradient(135deg, #5a4a2d 0%, #7c6a4a 100%)', url: 'https://www.youtube.com/watch?v=oHXrmyAfnkc', comingSoon: false, thumbnail: '/thumbnails/gaolife-3.jpg', mapX: 677, mapY: 456, country: 'China' },
-  { num: '5', title: 'Chengdu & Jiuzhaigou', gradient: 'linear-gradient(135deg, #2d5a4a 0%, #4a7c59 100%)', url: 'https://www.youtube.com/watch?v=bOl0s6UcLQI', comingSoon: false, thumbnail: '/thumbnails/gaolife-4.jpg', mapX: 638, mapY: 428, country: 'China' },
-  { num: '6', title: 'Kunming & Dali', gradient: 'linear-gradient(135deg, #5a3d2d 0%, #7c5a4a 100%)', url: 'https://www.youtube.com/watch?v=3eXUCCUpVOU', comingSoon: false, thumbnail: '/thumbnails/gaolife-5.jpg', mapX: 640, mapY: 447, country: 'China' },
+  { num: '4', title: 'Guangdong', gradient: 'linear-gradient(135deg, #5a4a2d 0%, #7c6a4a 100%)', url: 'https://www.youtube.com/watch?v=oHXrmyAfnkc', comingSoon: false, thumbnail: '/thumbnails/gaolife-3.jpg', mapX: 677, mapY: 456, country: 'China' },
+  { num: '5', title: 'Sichuan', gradient: 'linear-gradient(135deg, #2d5a4a 0%, #4a7c59 100%)', url: 'https://www.youtube.com/watch?v=bOl0s6UcLQI', comingSoon: false, thumbnail: '/thumbnails/gaolife-4.jpg', mapX: 638, mapY: 428, country: 'China' },
+  { num: '6', title: 'Yunnan', gradient: 'linear-gradient(135deg, #5a3d2d 0%, #7c5a4a 100%)', url: 'https://www.youtube.com/watch?v=3eXUCCUpVOU', comingSoon: false, thumbnail: '/thumbnails/gaolife-5.jpg', mapX: 640, mapY: 447, country: 'China' },
   { num: '7', title: 'Oregon', gradient: 'linear-gradient(135deg, #2d4a3d 0%, #4a7c5a 100%)', url: 'https://www.youtube.com/watch?v=XIAJCIYQvZM', comingSoon: false, thumbnail: '/thumbnails/gaolife-6.jpg', mapX: 138, mapY: 410, country: 'USA' },
   { num: '8', title: 'Coming Soon', gradient: 'linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%)', url: '', comingSoon: true, thumbnail: null, mapX: 0, mapY: 0, country: '' },
 ];
@@ -373,7 +398,7 @@ const GaoLifeSection = () => {
               <WobblyUnderline height={8} />
             </div>
           </div>
-          <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all duration-200 hover:scale-105" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}><Youtube size={14} />@gaofiles<ExternalLink size={12} /></a>
+          <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="self-start md:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all duration-200 hover:scale-105" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}><Youtube size={14} />@gaofiles<ExternalLink size={12} /></a>
         </div>
         <p className="mb-8 max-w-2xl" style={{ color: '#666', lineHeight: 1.7 }}>I like traveling and making videos about it. Mostly Asia so far.</p>
 
@@ -419,7 +444,7 @@ const GaoLifeSection = () => {
               </div>
               <div style={{ padding: '20px', background: '#fff' }}>
                 <p className="text-xs font-medium mb-1" style={{ color: '#4A7C59', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  gao life {currentVideo.num} · {currentVideo.country}
+                  gao life {currentVideo.num}, {currentVideo.country}
                 </p>
                 <p className="font-medium text-xl" style={{ fontFamily: 'var(--heading-font)', color: '#2d2d2d' }}>{currentVideo.title}</p>
               </div>
@@ -512,7 +537,7 @@ const GaoLifeSection = () => {
           </a>
           <div className="mt-3">
             <p className="text-xs font-medium mb-0.5" style={{ color: '#4A7C59', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              gao life {currentVideo.num} · {currentVideo.country}
+              gao life {currentVideo.num}, {currentVideo.country}
             </p>
             <p className="font-medium text-lg" style={{ fontFamily: 'var(--heading-font)', color: '#2d2d2d' }}>{currentVideo.title}</p>
           </div>
@@ -569,7 +594,7 @@ const GaoLifeSection = () => {
 const skills = {
   languages: { title: 'Languages', items: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'HTML/CSS', 'LaTeX'] },
   frameworks: { title: 'Frameworks & Libraries', items: ['Discord.py', 'Pandas', 'NumPy', 'PyTorch', 'Requests', 'BeautifulSoup'] },
-  tools: { title: 'Tools', items: ['Git/GitHub', 'VS Code', 'Claude Code', 'OpenAI Models', 'OpenAI Codex', 'Google Antigravity IDE', 'Google Gemini Models', 'Notion', 'Jira', 'Microsoft Suite', 'CapCut', 'IntelliJ', 'Eclipse', 'Repl.it'] },
+  tools: { title: 'Tools', items: ['Git/GitHub', 'VS Code', 'OpenAI Models', 'OpenAI Codex', 'Google Antigravity IDE', 'Google Gemini Models', 'Notion', 'Jira', 'Microsoft Suite', 'CapCut', 'IntelliJ', 'Eclipse', 'Repl.it'] },
   certs: { title: 'Certifications', items: ['Salesforce Platform Administrator'] }
 };
 
@@ -594,25 +619,25 @@ const ProjectModal = ({ project, onClose }) => {
           </button>
           <div className="flex items-center gap-3 mb-4">
             <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}>
-              <project.icon size={20} style={{ color: '#fff' }} />
+              <project.icon size={26} style={{ color: '#fff' }} />
             </div>
-            <span className="text-xs font-semibold" style={{ color: '#8b7355', letterSpacing: '0.14em', textTransform: 'uppercase' }}>{project.type}</span>
+            <span className="text-xs font-semibold" style={{ color: '#7c857d' }}>{project.type}</span>
           </div>
           <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.875rem', fontWeight: 400 }}>{project.title}</h3>
           <p className="text-xs" style={{ color: '#6f7570', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
             {project.tech.join(', ')}
           </p>
         </div>
-        <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e0dcd6, transparent)' }} />
+        <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e2e5e1, transparent)' }} />
         <div className="px-6 py-5 overflow-y-auto" style={{ maxHeight: 'calc(85vh - 200px)' }}>
           <div className="text-sm leading-relaxed" style={{ color: '#555', whiteSpace: 'pre-line', lineHeight: 1.85 }}>{project.fullDesc}</div>
         </div>
         {project.link && (
           <>
-            <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e0dcd6, transparent)' }} />
+            <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e2e5e1, transparent)' }} />
             <div className="px-6 py-4">
               <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}>
-                <Github size={16} /> View on GitHub <ArrowUpRight size={14} />
+                {project.live ? <><Globe size={16} /> Visit the archive <ArrowUpRight size={14} /></> : <><Github size={16} /> View on GitHub <ArrowUpRight size={14} /></>}
               </a>
             </div>
           </>
@@ -1191,6 +1216,64 @@ const TweetFetchMockupDesktop = () => {
 };
 
 // Stylized mockup illustrations for each project
+// Mockup for the Erewhon Smoothie Archive — an abstract, interactive ingredients grid.
+// Real wobbly fruit icons; click one to open an abstracted ingredient "profile".
+const EW = { ink: '#2A2118', red: '#D8503C', pink: '#F2A7BB', magenta: '#D9568C', yellow: '#F0C24F', orange: '#E8893D', peach: '#F0A284', green: '#5E8C4F', deep: '#3F6B4F', lime: '#A4BE6C', blue: '#4F7BC0', purple: '#7B5AA6', brown: '#8A5A3B', cocoa: '#5C4030', tan: '#D9B98C', cream: '#F6EDD8' };
+const EWS = `stroke="${EW.ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"`;
+const EWS2 = `stroke="${EW.ink}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`;
+const EW_FRUITS = [
+  { c: EW.red, svg: `<path d="M32 58 C16 50 10 34 16 26 C22 19 42 19 48 26 C54 34 48 50 32 58 Z" fill="${EW.red}" ${EWS}/><path d="M22 22 L27 11 L31 20 Z" fill="${EW.green}" ${EWS}/><path d="M33 20 L37 10 L42 22 Z" fill="${EW.green}" ${EWS}/><path d="M24 33 h.01 M32 36 h.01 M40 33 h.01 M28 45 h.01 M36 45 h.01 M32 50 h.01" stroke="${EW.cream}" stroke-width="3.5" stroke-linecap="round"/>` },
+  { c: EW.yellow, svg: `<path d="M14 14 C9 39 27 55 50 51 C56 50 56 44 50 43 C32 46 22 32 23 15 C23.5 9 14.5 8 14 14 Z" fill="${EW.yellow}" ${EWS}/><path d="M49 46 l3.5 -1" stroke="${EW.cocoa}" stroke-width="4" stroke-linecap="round"/><path d="M16 13 l1 -3.5" stroke="${EW.cocoa}" stroke-width="4" stroke-linecap="round"/>` },
+  { c: EW.blue, svg: `<circle cx="22" cy="41" r="8" fill="${EW.blue}" ${EWS}/><circle cx="41" cy="42" r="8" fill="${EW.blue}" ${EWS}/><circle cx="31" cy="25" r="8" fill="${EW.blue}" ${EWS}/><path d="M29 23 l4 4 M33 23 l-4 4" stroke="${EW.ink}" stroke-width="1.6" stroke-linecap="round"/><path d="M20 39 l4 4 M24 39 l-4 4" stroke="${EW.ink}" stroke-width="1.6" stroke-linecap="round"/><path d="M39 40 l4 4 M43 40 l-4 4" stroke="${EW.ink}" stroke-width="1.6" stroke-linecap="round"/>` },
+  { c: EW.orange, svg: `<path d="M18 41 C13 27 27 13 40 15 C52 17 53 33 43 44 C34 53 22 53 18 41 Z" fill="${EW.orange}" ${EWS}/><path d="M38 19 C46 22 49 31 44 39" stroke="${EW.red}" stroke-width="5" fill="none" stroke-linecap="round" opacity=".65"/><path d="M40 13 Q47 6 53 9 Q48 15 40 13 Z" fill="${EW.green}" ${EWS}/>` },
+  { c: EW.yellow, svg: `<path d="M24 23 L28 8 L32 20 L36 6 L40 23" fill="${EW.green}" ${EWS}/><ellipse cx="32" cy="40" rx="14" ry="17" fill="${EW.yellow}" ${EWS}/><path d="M24 31 l15 17 M21 40 l11 13 M40 31 l-15 17 M43 40 l-11 13" ${EWS2} fill="none"/>` },
+  { c: EW.red, svg: `<path d="M24 36 C24 22 34 14 46 10" stroke="${EW.deep}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M42 38 C40 26 42 18 46 10" stroke="${EW.deep}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M46 10 Q56 8 58 16 Q50 18 46 10 Z" fill="${EW.green}" ${EWS}/><circle cx="23" cy="44" r="9" fill="${EW.red}" ${EWS}/><circle cx="42" cy="46" r="9" fill="${EW.red}" ${EWS}/>` },
+  { c: EW.orange, svg: `<circle cx="32" cy="34" r="20" fill="${EW.orange}" ${EWS}/><circle cx="32" cy="34" r="13" fill="${EW.peach}" ${EWS2}/><path d="M32 34 L32 21 M32 34 L43 27 M32 34 L43 41 M32 34 L32 47 M32 34 L21 41 M32 34 L21 27" ${EWS2} fill="none" opacity=".5"/>` },
+  { c: EW.deep, svg: `<path d="M32 8 C21 8 15 22 15 36 C15 48 22 56 32 56 C42 56 49 48 49 36 C49 22 43 8 32 8 Z" fill="${EW.deep}" ${EWS}/><path d="M32 13 C24 13 19 24 19 36 C19 46 24 52 32 52 C40 52 45 46 45 36 C45 24 40 13 32 13 Z" fill="${EW.lime}" stroke="none"/><circle cx="32" cy="40" r="8" fill="${EW.brown}" ${EWS2}/>` },
+  { c: EW.magenta, svg: `<ellipse cx="32" cy="39" rx="14" ry="16" fill="${EW.magenta}" ${EWS}/><path d="M21 30 C13 27 9 30 11 35 C16 35 19 34 24 33 Z" fill="${EW.lime}" ${EWS2}/><path d="M43 30 C51 27 55 30 53 35 C48 35 45 34 40 33 Z" fill="${EW.lime}" ${EWS2}/><path d="M24 25 C19 17 13 17 13 23 C18 25 21 27 26 29 Z" fill="${EW.lime}" ${EWS2}/><path d="M40 25 C45 17 51 17 51 23 C46 25 43 27 38 29 Z" fill="${EW.lime}" ${EWS2}/><path d="M32 22 C30 13 25 11 23 15 C27 19 29 22 31 26 Z" fill="${EW.lime}" ${EWS2}/><path d="M32 22 C34 13 39 11 41 15 C37 19 35 22 33 26 Z" fill="${EW.lime}" ${EWS2}/>` },
+  { c: EW.yellow, svg: `<path d="M14 35 Q13 24 26 21 Q43 18 49 28 Q52 34 46 40 Q34 49 22 45 Q15 42 14 35 Z" fill="${EW.yellow}" ${EWS}/><path d="M49 29 l2.5 -1.5 M15 38 l-2.5 1.5" ${EWS} fill="none"/>` },
+  { c: '#7FA84A', svg: `<path d="M14 35 Q13 24 26 21 Q43 18 49 28 Q52 34 46 40 Q34 49 22 45 Q15 42 14 35 Z" fill="#7FA84A" ${EWS}/><path d="M49 29 l2.5 -1.5 M15 38 l-2.5 1.5" ${EWS} fill="none"/>` },
+  { c: EW.magenta, svg: `<path d="M28 14 Q32 8 36 14" stroke="${EW.green}" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="32" cy="22" r="6" fill="${EW.magenta}" ${EWS}/><circle cx="23" cy="31" r="6" fill="${EW.magenta}" ${EWS}/><circle cx="41" cy="31" r="6" fill="${EW.magenta}" ${EWS}/><circle cx="26" cy="42" r="6" fill="${EW.magenta}" ${EWS}/><circle cx="38" cy="42" r="6" fill="${EW.magenta}" ${EWS}/><circle cx="32" cy="51" r="5" fill="${EW.magenta}" ${EWS}/>` },
+  { c: EW.blue, svg: `<path d="M19 25 L25 13 L41 13 L46 25 Z" fill="${EW.tan}" ${EWS}/><path d="M19 25 H46 V53 H19 Z" fill="${EW.cream}" ${EWS}/><path d="M19 39 Q26 35 32.5 39 T46 39" stroke="${EW.blue}" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M30 13 L30 8 L36 8 L36 13" ${EWS2} fill="${EW.cream}"/>` },
+];
+const EwFruit = ({ svg, size }) => (
+  <svg viewBox="0 0 64 64" style={{ width: size, height: size, display: 'block', filter: 'url(#wobble-calm)', overflow: 'visible' }} dangerouslySetInnerHTML={{ __html: svg }} aria-hidden="true" />
+);
+const EwBar = ({ w, h = 5, c = '#d9d9d6' }) => (
+  <span style={{ display: 'block', width: w, height: h, borderRadius: 3, background: c }} />
+);
+const ErewhonMockup = () => {
+  const [sel, setSel] = useState(0);
+  const picks = [0, 1, 3, 2, 7, 12];
+  const f = EW_FRUITS[sel];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, justifyContent: 'center', gap: 22 }}>
+      {/* big wobbling fruit + a few abstract bars */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+        <div style={{ flexShrink: 0, width: 108, height: 108, borderRadius: 22, background: '#f5f5f3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <EwFruit svg={f.svg} size={74} />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
+          <EwBar w="52%" h={12} c={f.c} />
+          <EwBar w="100%" h={6} c="#d9d9d6" />
+          <EwBar w="74%" h={6} c="#d9d9d6" />
+        </div>
+      </div>
+      {/* small row of fruits to pick from */}
+      <div style={{ display: 'flex', gap: 9, justifyContent: 'center', flexShrink: 0 }}>
+        {picks.map((idx) => {
+          const on = sel === idx;
+          return (
+            <button key={idx} onClick={() => setSel(idx)} className="ew-pick" style={{ width: 48, height: 48, borderRadius: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: 'none', ...(on ? { background: `${EW_FRUITS[idx].c}14`, boxShadow: `0 0 0 2px ${EW_FRUITS[idx].c}` } : {}) }}>
+              <EwFruit svg={EW_FRUITS[idx].svg} size={32} />
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const ProjectMockup = ({ projectId }) => {
   const mockupStyle = {
     position: 'relative',
@@ -1214,6 +1297,8 @@ const ProjectMockup = ({ projectId }) => {
 
   const renderMockupContent = () => {
     switch (projectId) {
+      case 'erewhon':
+        return <ErewhonMockup />;
       case 'image-tagger':
         return <ImageTaggerMockupDesktop />;
       case 'tweetfetch':
@@ -1272,26 +1357,25 @@ const ProjectCard = ({ project, index, onClick }) => {
         <button
           onClick={onClick}
           style={{
-            background: 'none',
+            background: 'rgba(74,124,89,0.12)',
             border: 'none',
-            padding: 0,
             cursor: 'pointer',
-            textAlign: 'left',
             display: 'flex',
+            width: 'fit-content',
             alignItems: 'center',
-            gap: '6px',
-            marginBottom: '14px',
-            color: '#8b7355',
-            fontSize: '12px',
+            gap: '5px',
+            marginBottom: '16px',
+            color: '#3d6b4a',
+            fontSize: '11.5px',
             fontWeight: '600',
-            letterSpacing: '1px',
-            textTransform: 'uppercase',
-            transition: 'color 0.2s ease',
+            padding: '6px 13px',
+            borderRadius: '999px',
+            transition: 'all 0.2s ease',
           }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#6b5a45'}
-          onMouseLeave={(e) => e.currentTarget.style.color = '#8b7355'}
+          onMouseEnter={(e) => { e.currentTarget.style.background = '#4A7C59'; e.currentTarget.style.color = '#fff'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(74,124,89,0.12)'; e.currentTarget.style.color = '#3d6b4a'; }}
         >
-          VIEW PROJECT <ArrowUpRight size={12} />
+          View project <ArrowUpRight size={12} />
         </button>
 
         <div style={{ display: 'inline-block', marginBottom: '10px' }}>
@@ -1308,11 +1392,8 @@ const ProjectCard = ({ project, index, onClick }) => {
         </div>
 
         <p style={{
-          color: '#8b7355',
-          fontSize: '11px',
-          fontWeight: 600,
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
+          color: '#888',
+          fontSize: '12px',
           marginBottom: '20px',
         }}>
           {project.category}, {project.type}
@@ -1343,18 +1424,18 @@ const HikingTrail = () => {
   const stops = [
     {
       id: 'wellesley', year: 'Childhood', title: 'Wellesley, MA', modalContent: { title: 'Wellesley, MA', bullets: ['My hometown.'] }, milestones: [
-        { label: "Truly's", desc: '2018 - 2021', icon: IceCream, modalContent: { title: "Truly's Ice Cream", role: 'Team Member', date: '2018 - 2021', location: 'Wellesley, MA', bullets: ['First job experience in customer service', 'Learned teamwork and responsibility'] } },
-        { label: 'Code Ninjas', desc: '2020 - 2021', icon: Code, modalContent: { title: 'Code Ninjas', role: 'Instructor', date: 'August 2020 - June 2021', location: 'Wellesley, MA', bullets: ['Taught coding in Scratch and JavaScript to groups of up to 10 students per session', 'Created and held custom designed curricula for weekly summer coding camps', 'Facilitated mock hackathons for students, guiding them through the creation of their own games'] } },
+        { label: "Truly's", desc: '2018 - 2021', icon: IconIceCream, modalContent: { title: "Truly's Ice Cream", role: 'Team Member', date: '2018 - 2021', location: 'Wellesley, MA', bullets: ['First job experience in customer service', 'Learned teamwork and responsibility'] } },
+        { label: 'Code Ninjas', desc: '2020 - 2021', icon: IconCodeBrackets, modalContent: { title: 'Code Ninjas', role: 'Instructor', date: 'August 2020 - June 2021', location: 'Wellesley, MA', bullets: ['Taught coding in Scratch and JavaScript to groups of up to 10 students per session', 'Created and held custom designed curricula for weekly summer coding camps', 'Facilitated mock hackathons for students, guiding them through the creation of their own games'] } },
       ]
     },
     {
-      id: 'uci', year: '2021 - 2025', title: 'UC Irvine', desc: 'B.A. Business Admin & B.S. Computer Science', modalContent: { title: 'University of California, Irvine', subtitle: 'B.A. in Business Administration • B.S. in Computer Science', date: 'September 2021 - March 2025', location: 'Irvine, CA', bullets: ['Concentration in Finance for Business Administration', 'Concentration in Systems & Software for Computer Science'] }, milestones: [
-        { label: 'Blockchain @ UCI', desc: 'President', icon: Coins, modalContent: { title: 'Blockchain @ UCI Club', role: 'President', date: 'December 2021 - March 2025', location: 'Irvine, CA', bullets: ['Managed club event logistics, including booking rooms and flights, ordering supplies, and leading discussions', 'Integrated automated emailing software to distribute announcements and track metrics', 'Led communications for multiple partnerships, securing over $40,000 in club funding'] } },
-        { label: 'Deloitte Consulting Intern', desc: 'Summer 2024', icon: Briefcase, modalContent: { title: 'Deloitte Consulting', role: 'Summer Scholar', date: 'June 2024 - August 2024', location: 'Costa Mesa, CA', bullets: ['Summer Scholar for Deloitte Consulting'] } },
+      id: 'uci', year: '2021 - 2025', title: 'UC Irvine', desc: 'B.A. Business Admin & B.S. Computer Science', modalContent: { title: 'University of California, Irvine', subtitle: 'B.A. in Business Administration and B.S. in Computer Science', date: 'September 2021 - March 2025', location: 'Irvine, CA', bullets: ['Concentration in Finance for Business Administration', 'Concentration in Systems & Software for Computer Science'] }, milestones: [
+        { label: 'Blockchain @ UCI', desc: 'President', icon: IconCyberCredit, modalContent: { title: 'Blockchain @ UCI Club', role: 'President', date: 'December 2021 - March 2025', location: 'Irvine, CA', bullets: ['Managed club event logistics, including booking rooms and flights, ordering supplies, and leading discussions', 'Integrated automated emailing software to distribute announcements and track metrics', 'Led communications for multiple partnerships, securing over $40,000 in club funding'] } },
+        { label: 'Deloitte Consulting Intern', desc: 'Summer 2024', icon: IconBriefcase, modalContent: { title: 'Deloitte Consulting', role: 'Summer Scholar', date: 'June 2024 - August 2024', location: 'Costa Mesa, CA', bullets: ['Summer Scholar for Deloitte Consulting'] } },
       ]
     },
     { id: 'alpher', year: '2023 - 2024', title: 'Alpher LLC', desc: 'Founder', modalContent: { title: 'Alpher LLC', subtitle: 'Founder', date: 'February 2023 - 2024', location: 'Remote', bullets: ['Founded a ticket brokering venture delivering high-demand event tickets to 400+ international customers', 'Generated 7 figures in revenue during year one', 'Recruited and mentored a team of 7', 'Leveraged sales data to optimize pricing and event selection'] }, milestones: [] },
-    { id: 'deloitte', year: '2025 -', title: 'Deloitte Consulting', desc: 'Analyst', modalContent: { title: 'Deloitte Consulting', subtitle: 'Analyst', date: 'October 2025 - Present', location: 'Costa Mesa, CA', bullets: ['Deloitte Digital Analyst'] }, milestones: [] },
+    { id: 'deloitte', year: 'Since 2025', title: 'Deloitte Consulting', desc: 'Analyst', modalContent: { title: 'Deloitte Consulting', subtitle: 'Analyst', date: 'October 2025 - Present', location: 'Costa Mesa, CA', bullets: ['Deloitte Digital Analyst'] }, milestones: [] },
   ];
 
   const trees = [
@@ -1409,7 +1490,7 @@ const HikingTrail = () => {
             </button>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}>
-                <MapPin size={20} style={{ color: '#fff' }} />
+                <IconMapPin size={24} style={{ color: '#fff' }} />
               </div>
               {(item.role || item.subtitle) && (
                 <span className="text-xs font-semibold" style={{ color: '#3d6b4a', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{item.role || item.subtitle}</span>
@@ -1468,7 +1549,6 @@ const HikingTrail = () => {
 
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#4A7C59', letterSpacing: '0.1em' }}>{stop.year}</span>
-          <span className="w-8 h-px" style={{ backgroundColor: 'rgba(74,124,89,0.3)' }} />
         </div>
         <p className="text-2xl font-medium" style={{ color: '#2d2d2d', fontFamily: 'var(--heading-font)', letterSpacing: '-0.01em' }}>{stop.title}</p>
         {stop.desc && (
@@ -1507,7 +1587,7 @@ const HikingTrail = () => {
                 }}
               >
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105" style={{ background: 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)' }}>
-                  <m.icon size={15} style={{ color: '#fff' }} />
+                  <m.icon size={21} style={{ color: '#fff' }} />
                 </div>
                 <div>
                   <p className="text-sm font-medium" style={{ color: '#2d2d2d' }}>{m.label}</p>
@@ -1528,17 +1608,15 @@ const HikingTrail = () => {
         <div className="flex">
           <div className="flex flex-col items-center mr-4">
             {/* Mini dirt path, same trail browns as the desktop hike */}
-            <svg width="12" style={{ flex: 1, minHeight: '100%' }} viewBox="0 0 12 100" preserveAspectRatio="none" aria-hidden="true">
-              <g filter="url(#wobble-slow)">
-                <path d="M6 0 C 7.5 18 4.5 38 6.5 58 C 8 76 4.5 90 6 100" stroke="#c9b896" strokeWidth="7" strokeLinecap="round" fill="none" opacity="0.55" />
-                <path d="M6 0 C 7.5 18 4.5 38 6.5 58 C 8 76 4.5 90 6 100" stroke="#ddd0b8" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.5" />
-              </g>
-            </svg>
+            <div style={{ position: 'relative', flex: 1, width: '20px', minHeight: '100%', filter: 'url(#wobble-slow)' }} aria-hidden="true">
+              <div style={{ position: 'absolute', inset: 0, borderRadius: '10px', background: 'linear-gradient(90deg, #c9b896, #e3d8c0 50%, #c9b896)', opacity: 0.85 }} />
+              <div style={{ position: 'absolute', left: '8.75px', top: '4px', bottom: '4px', width: 0, borderLeft: '2.5px dashed #ad9870', opacity: 0.5 }} />
+            </div>
           </div>
           <div className="flex flex-col gap-5 flex-1 pb-4">
             {stops.map((stop) => (
               <div key={stop.id} className="relative">
-                <div className="absolute -left-7 top-4 w-4 h-4 rounded-full" style={{ backgroundColor: '#fff', border: '2px solid #4A7C59', boxShadow: '0 0 0 3px rgba(74,124,89,0.15)' }} />
+                <div className="absolute top-4 w-4 h-4 rounded-full" style={{ left: '-43px', backgroundColor: '#fff', border: '2px solid #4A7C59', boxShadow: '0 0 0 3px rgba(74,124,89,0.15)' }} />
                 <div
                   className="p-4 rounded-xl cursor-pointer"
                   style={{
@@ -1550,7 +1628,6 @@ const HikingTrail = () => {
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#4A7C59', letterSpacing: '0.08em' }}>{stop.year}</span>
-                    <span className="w-4 h-px" style={{ backgroundColor: 'rgba(74,124,89,0.3)' }} />
                   </div>
                   <p className="text-lg font-medium" style={{ color: '#2d2d2d', fontFamily: 'var(--heading-font)' }}>{stop.title}</p>
                   {stop.desc && <p className="text-xs mt-1" style={{ color: '#666', lineHeight: 1.4 }}>{stop.desc}</p>}
@@ -1569,7 +1646,7 @@ const HikingTrail = () => {
                         onClick={() => setSelectedItem(m.modalContent)}
                       >
                         <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)' }}>
-                          <m.icon size={12} style={{ color: '#fff' }} />
+                          <m.icon size={17} style={{ color: '#fff' }} />
                         </div>
                         <div>
                           <p className="text-xs font-medium" style={{ color: '#2d2d2d' }}>{m.label}</p>
@@ -1789,6 +1866,9 @@ export default function Site() {
           51%, 100% { opacity: 0; }
         }
 
+        .ew-pick { background: #f5f5f3; transition: background 0.15s ease, box-shadow 0.15s ease; }
+        .ew-pick:hover { background: #ecebe9; }
+
         .social-icon {
           transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
@@ -1906,6 +1986,7 @@ export default function Site() {
                     flexDirection: 'column'
                   }}>
                     <WobblyFrameBorder radius={14} stroke="#8e918c" />
+                    {proj.id === 'erewhon' && <ErewhonMockup />}
                     {proj.id === 'image-tagger' && <ImageTaggerMockup />}
                     {proj.id === 'tweetfetch' && <TweetFetchMockup />}
                     {proj.id === 'synth' && <SynthMockup />}
@@ -1931,8 +2012,8 @@ export default function Site() {
                       gap: '4px',
                       padding: '6px 12px',
                       borderRadius: '8px',
-                      background: '#f0f0f0',
-                      color: '#8b7355',
+                      background: '#eef0ee',
+                      color: '#7c857d',
                       fontSize: '11px',
                       fontWeight: '600'
                     }}>
@@ -1960,7 +2041,11 @@ export default function Site() {
             {Object.entries(skills).map(([key, category]) => (
               <div key={key} className="p-5 rounded-xl" style={{ backgroundColor: 'rgba(255,255,255,0.6)', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }}>
                 <h3 className="text-sm font-semibold mb-3" style={{ color: '#4A7C59' }}>{category.title}</h3>
-                <p className="text-base leading-relaxed" style={{ color: '#555' }}>{category.items.join('  •  ')}</p>
+                <div className="flex flex-wrap gap-2">
+                  {category.items.map((it) => (
+                    <span key={it} className="text-sm" style={{ color: '#555', background: '#fff', border: '1px solid #e6e8e5', borderRadius: '8px', padding: '5px 12px' }}>{it}</span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -1975,30 +2060,30 @@ export default function Site() {
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="mb-8 text-center"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Get In Touch</h2><WobblyUnderline height={8} /></div></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+            <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-blue-600" style={{ backgroundColor: 'rgba(14,118,168,0.1)' }}>
-                <Linkedin size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#0e76a8' }} />
+                <Linkedin size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#0e76a8', filter: 'url(#wobble-calm)', overflow: 'visible' }} />
               </div>
               <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>LinkedIn</h3>
               <p className="text-sm" style={{ color: '#888' }}>Professional network</p>
             </a>
-            <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+            <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-gray-800" style={{ backgroundColor: 'rgba(36,41,47,0.1)' }}>
-                <Github size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#24292f' }} />
+                <Github size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#24292f', filter: 'url(#wobble-calm)', overflow: 'visible' }} />
               </div>
               <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>GitHub</h3>
               <p className="text-sm" style={{ color: '#888' }}>Code & projects</p>
             </a>
-            <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+            <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-red-600" style={{ backgroundColor: 'rgba(255,0,0,0.1)' }}>
-                <Youtube size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#FF0000' }} />
+                <Youtube size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#FF0000', filter: 'url(#wobble-calm)', overflow: 'visible' }} />
               </div>
               <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>YouTube</h3>
               <p className="text-sm" style={{ color: '#888' }}>Travel videos</p>
             </a>
-            <a href="mailto:one@ethangao.xyz" className="group p-6 rounded-xl transition-all duration-200 hover:-translate-y-1" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
+            <a href="mailto:one@ethangao.xyz" className="group p-6 rounded-xl transition-all duration-200" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-green-700" style={{ backgroundColor: 'rgba(74,124,89,0.1)' }}>
-                <Mail size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#4A7C59' }} />
+                <Mail size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#4A7C59', filter: 'url(#wobble-calm)', overflow: 'visible' }} />
               </div>
               <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>Email</h3>
               <p className="text-sm" style={{ color: '#888' }}>one@ethangao.xyz</p>
@@ -2009,7 +2094,7 @@ export default function Site() {
 
       <footer className="px-6 py-8" style={{ borderTop: '1px solid #e3e5e2' }}>
         <div className="text-center" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <p className="text-sm" style={{ color: '#999' }}>Built by Ethan Gao with React, Vite & Tailwind CSS</p>
+          <p className="text-sm" style={{ color: '#999' }}>Built with React, Vite & Tailwind CSS</p>
         </div>
       </footer>
     </div>
