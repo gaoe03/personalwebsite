@@ -64,6 +64,9 @@ export default function GrainComparison() {
               onClick={() => setSelected(i)}
               style={{
                 textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
                 padding: '14px 8px 12px',
                 background: isSel ? '#faf7f1' : '#fafafa',
                 border: `1px solid ${isSel ? '#d4c39a' : '#eee'}`,
@@ -94,7 +97,7 @@ export default function GrainComparison() {
                   />
                 </svg>
               </div>
-              <div style={{ fontSize: '12.5px', color: isSel ? '#222' : '#444', fontWeight: isSel ? 500 : 400, marginTop: '2px' }}>
+              <div style={{ fontSize: '12.5px', color: isSel ? '#222' : '#444', fontWeight: isSel ? 500 : 400, marginTop: '2px', minHeight: '2.4em', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                 {grn.name}
               </div>
               <div style={{ fontSize: '10px', color: familyColor(grn.family), marginTop: '3px', letterSpacing: '0.8px', textTransform: 'uppercase', fontWeight: 500 }}>
