@@ -612,8 +612,8 @@ const ProjectModal = ({ project, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: isVisible ? 'rgba(35,35,30,0.6)' : 'rgba(35,35,30,0)', transition: 'background-color 0.3s ease' }} onClick={handleClose}>
-      <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#fbfcfb', maxHeight: '85vh', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
-        <div className="px-6 pt-6 pb-5" style={{ background: 'linear-gradient(180deg, #eef0ee 0%, #fbfcfb 100%)' }}>
+      <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#fbfcfb', maxHeight: '85vh', display: 'flex', flexDirection: 'column', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
+        <div className="px-6 pt-6 pb-5" style={{ background: 'linear-gradient(180deg, #eef0ee 0%, #fbfcfb 100%)', flexShrink: 0 }}>
           <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150" style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
             <X size={16} style={{ color: '#666' }} />
           </button>
@@ -628,14 +628,14 @@ const ProjectModal = ({ project, onClose }) => {
             {project.tech.join(', ')}
           </p>
         </div>
-        <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e2e5e1, transparent)' }} />
-        <div className="px-6 py-5 overflow-y-auto" style={{ maxHeight: 'calc(85vh - 200px)' }}>
+        <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e2e5e1, transparent)', flexShrink: 0 }} />
+        <div className="px-6 py-5 overflow-y-auto" style={{ flex: '1 1 auto', minHeight: 0 }}>
           <div className="text-sm leading-relaxed" style={{ color: '#555', whiteSpace: 'pre-line', lineHeight: 1.85 }}>{project.fullDesc}</div>
         </div>
         {project.link && (
           <>
-            <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e2e5e1, transparent)' }} />
-            <div className="px-6 py-4">
+            <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e2e5e1, transparent)', flexShrink: 0 }} />
+            <div className="px-6 py-4" style={{ flexShrink: 0 }}>
               <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}>
                 {project.live ? <><Globe size={16} /> Visit the archive <ArrowUpRight size={14} /></> : <><Github size={16} /> View on GitHub <ArrowUpRight size={14} /></>}
               </a>
