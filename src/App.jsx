@@ -117,6 +117,14 @@ const IconMapPin = (p) => <ProjIcon {...p} paths={`<path d="M32 53 C22 39 18 31 
 
 const projects = [
   {
+    id: 'precinct', title: 'Precinct', desc: 'Reads the political lean and demographics of the precinct you\'re standing in', icon: IconMapPin, tech: ['SwiftUI', 'MapKit', 'SQLite', 'HTML', 'CSS', 'JavaScript'], link: '/projects/precinct/', live: true, type: 'Jun 2026',
+    category: 'iOS App',
+    fullDesc: `Stand anywhere it covers and Precinct reads the precinct you're standing in: how it voted, which way it has been moving, and who lives there.
+
+A friend had the data and the general idea. I designed and engineered the app. It covers about 41,000 precincts across California, New York, Texas, and Massachusetts.
+
+The site you can visit here is a landing page I made for the app, mostly for fun and to test out my design skills.` },
+  {
     id: 'erewhon', title: 'Erewhon Smoothie Archive', desc: 'Research agents that scoured the web to reconstruct every Erewhon smoothie', icon: IconErewhon, tech: ['Agents', 'JavaScript'], link: '/projects/erewhon/', live: true, type: 'Jun 2026',
     category: 'Web App',
     fullDesc: `A weekend spent learning how research agents handle long, multi-step work, with Erewhon's smoothies as the test case.
@@ -595,7 +603,7 @@ const skills = {
   languages: { title: 'Languages', items: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'HTML/CSS', 'LaTeX'] },
   frameworks: { title: 'Frameworks & Libraries', items: ['Discord.py', 'Pandas', 'NumPy', 'PyTorch', 'Requests', 'BeautifulSoup'] },
   tools: { title: 'Tools', items: ['Git/GitHub', 'VS Code', 'OpenAI Models', 'OpenAI Codex', 'Google Antigravity IDE', 'Google Gemini Models', 'Notion', 'Jira', 'Microsoft Suite', 'CapCut', 'IntelliJ', 'Eclipse', 'Repl.it'] },
-  certs: { title: 'Certifications', items: ['Salesforce Platform Administrator'] }
+  certs: { title: 'Certifications', items: ['Claude Certified Architect - Foundations (CCA-F)', 'Salesforce Platform Administrator'] }
 };
 
 const ProjectModal = ({ project, onClose }) => {
@@ -637,7 +645,7 @@ const ProjectModal = ({ project, onClose }) => {
             <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e2e5e1, transparent)', flexShrink: 0 }} />
             <div className="px-6 py-4" style={{ flexShrink: 0 }}>
               <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}>
-                {project.live ? <><Globe size={16} /> Visit the archive <ArrowUpRight size={14} /></> : <><Github size={16} /> View on GitHub <ArrowUpRight size={14} /></>}
+                {project.live ? <><Globe size={16} /> Visit site <ArrowUpRight size={14} /></> : <><Github size={16} /> View on GitHub <ArrowUpRight size={14} /></>}
               </a>
             </div>
           </>
@@ -1274,6 +1282,65 @@ const ErewhonMockup = () => {
   );
 };
 
+// Precinct: a mini of the actual app — a map with hand-drawn pins; tap one and its profile card slides open.
+const precinctColor = (dem) => dem >= 72 ? '#2166E6' : dem >= 58 ? '#4F54CF' : dem >= 43 ? '#8C40B3' : dem >= 29 ? '#B5347A' : '#D92929';
+const PRECINCTS = [
+  { name: 'AD 75 · ED 14', loc: 'Manhattan, NY', lean: 'D+49', dem: 74, income: '$89k', race: '64% White', turnout: '44%', x: '24%', y: '30%' },
+  { name: 'Precinct 0331', loc: 'Houston, TX', lean: 'D+11', dem: 56, income: '$58k', race: '31% White', turnout: '52%', x: '67%', y: '25%' },
+  { name: 'Precinct 142', loc: 'McAllen, TX', lean: 'R+1', dem: 49, income: '$41k', race: '14% White', turnout: '39%', x: '46%', y: '44%' },
+];
+const PrecinctMockup = () => {
+  const [sel, setSel] = useState(0);
+  const [open, setOpen] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setOpen(true), 550); return () => clearTimeout(t); }, []);
+  const p = PRECINCTS[sel];
+  const c = precinctColor(p.dem);
+  return (
+    <div style={{ position: 'relative', flex: 1, minHeight: 0, borderRadius: 14, overflow: 'hidden', background: '#edf0ea' }}>
+      {/* map paper: faint grid + a couple soft roads */}
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(#dde3d8 1px, transparent 1px), linear-gradient(90deg, #dde3d8 1px, transparent 1px)', backgroundSize: '20px 20px', opacity: 0.7 }} />
+      <svg width="100%" height="100%" viewBox="0 0 100 70" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, display: 'block' }} aria-hidden="true">
+        <path d="M-5 22 C 30 16, 55 34, 105 26" stroke="#d3dacb" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <path d="M40 -5 C 44 25, 30 45, 52 75" stroke="#d3dacb" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      </svg>
+      {/* precinct pins, colored by lean */}
+      {PRECINCTS.map((pr, i) => {
+        const on = sel === i;
+        return (
+          <button key={i} onClick={() => setSel(i)} aria-label={`${pr.loc}, ${pr.lean}`} style={{ position: 'absolute', left: pr.x, top: pr.y, transform: 'translate(-50%, -100%)', border: 'none', background: 'none', cursor: 'pointer', padding: 0, zIndex: on ? 3 : 2, opacity: on ? 1 : 0.78, transition: 'opacity 0.2s ease' }}>
+            <svg width="24" height="29" viewBox="0 0 60 72" style={{ display: 'block', filter: on ? 'drop-shadow(0 3px 5px rgba(20,24,32,0.3))' : 'drop-shadow(0 2px 3px rgba(20,24,32,0.2))' }}>
+              <g filter="url(#wobble-calm)">
+                <path d="M30 5 C16 5 6 15 6 29 C6 45 30 67 30 67 C30 67 54 45 54 29 C54 15 44 5 30 5 Z" fill={precinctColor(pr.dem)} stroke="#fff" strokeWidth="3.5" strokeLinejoin="round" />
+                <circle cx="30" cy="28" r="8" fill="#fff" />
+              </g>
+            </svg>
+          </button>
+        );
+      })}
+      {/* bottom-sheet profile card — slides open to reveal the demographics */}
+      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, background: '#fff', borderRadius: '16px 16px 0 0', boxShadow: '0 -6px 20px rgba(20,24,32,0.12)', padding: '9px 15px 14px', transform: open ? 'translateY(0)' : 'translateY(40%)', transition: 'transform 0.5s cubic-bezier(.22,.61,.36,1)' }}>
+        <div style={{ width: 32, height: 4, borderRadius: 2, background: '#dcdfd9', margin: '0 auto 9px' }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 10 }}>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontFamily: 'var(--heading-font)', fontSize: 14, fontWeight: 600, color: '#2d2d2d', lineHeight: 1.1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
+            <div style={{ fontSize: 10.5, color: '#888', marginTop: 2 }}>{p.loc}</div>
+          </div>
+          <span style={{ fontFamily: 'var(--heading-font)', fontSize: 28, fontWeight: 600, color: c, lineHeight: 1, transition: 'color 0.25s ease', flexShrink: 0 }}>{p.lean}</span>
+        </div>
+        <div style={{ display: 'flex', height: 9, borderRadius: 6, overflow: 'hidden', marginTop: 9 }}>
+          <div style={{ width: `${p.dem}%`, background: '#2166E6', transition: 'width 0.3s ease' }} />
+          <div style={{ flex: 1, background: '#D92929' }} />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginTop: 10, fontSize: 10, color: '#5b616b' }}>
+          <span><b style={{ color: '#2d2d2d', fontWeight: 600 }}>{p.income}</b> income</span>
+          <span><b style={{ color: '#2d2d2d', fontWeight: 600 }}>{p.race}</b></span>
+          <span><b style={{ color: '#2d2d2d', fontWeight: 600 }}>{p.turnout}</b> turnout</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ProjectMockup = ({ projectId }) => {
   const mockupStyle = {
     position: 'relative',
@@ -1297,6 +1364,8 @@ const ProjectMockup = ({ projectId }) => {
 
   const renderMockupContent = () => {
     switch (projectId) {
+      case 'precinct':
+        return <PrecinctMockup />;
       case 'erewhon':
         return <ErewhonMockup />;
       case 'image-tagger':
@@ -1354,29 +1423,38 @@ const ProjectCard = ({ project, index, onClick }) => {
 
       {/* Content */}
       <div style={{ flex: '1' }}>
-        <button
-          onClick={onClick}
-          style={{
-            background: 'rgba(74,124,89,0.12)',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            width: 'fit-content',
-            alignItems: 'center',
-            gap: '5px',
-            marginBottom: '16px',
-            color: '#3d6b4a',
-            fontSize: '11.5px',
-            fontWeight: '600',
-            padding: '6px 13px',
-            borderRadius: '999px',
-            transition: 'all 0.2s ease',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = '#4A7C59'; e.currentTarget.style.color = '#fff'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(74,124,89,0.12)'; e.currentTarget.style.color = '#3d6b4a'; }}
-        >
-          View project <ArrowUpRight size={12} />
-        </button>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap' }}>
+          {project.live && project.link && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: '#4A7C59', border: 'none', cursor: 'pointer', textDecoration: 'none',
+                display: 'flex', alignItems: 'center', gap: '5px',
+                color: '#fff', fontSize: '11.5px', fontWeight: '600',
+                padding: '6px 13px', borderRadius: '999px', transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#3d6b4a'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = '#4A7C59'; }}
+            >
+              Visit site <ArrowUpRight size={12} />
+            </a>
+          )}
+          <button
+            onClick={onClick}
+            style={{
+              background: 'rgba(74,124,89,0.12)', border: 'none', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '5px',
+              color: '#3d6b4a', fontSize: '11.5px', fontWeight: '600',
+              padding: '6px 13px', borderRadius: '999px', transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = '#4A7C59'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(74,124,89,0.12)'; e.currentTarget.style.color = '#3d6b4a'; }}
+          >
+            Details <ArrowUpRight size={12} />
+          </button>
+        </div>
 
         <div style={{ display: 'inline-block', marginBottom: '10px' }}>
           <h3 style={{
@@ -1986,6 +2064,7 @@ export default function Site() {
                     flexDirection: 'column'
                   }}>
                     <WobblyFrameBorder radius={14} stroke="#8e918c" />
+                    {proj.id === 'precinct' && <PrecinctMockup />}
                     {proj.id === 'erewhon' && <ErewhonMockup />}
                     {proj.id === 'image-tagger' && <ImageTaggerMockup />}
                     {proj.id === 'tweetfetch' && <TweetFetchMockup />}
@@ -2025,6 +2104,17 @@ export default function Site() {
                   <p style={{ fontSize: '12px', color: '#6f7570', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
                     {proj.tech.join(', ')}
                   </p>
+                  {proj.live && proj.link && (
+                    <a
+                      href={proj.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '14px', background: '#4A7C59', color: '#fff', fontSize: '11.5px', fontWeight: '600', padding: '7px 14px', borderRadius: '999px', textDecoration: 'none' }}
+                    >
+                      Visit site <ArrowUpRight size={12} />
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
