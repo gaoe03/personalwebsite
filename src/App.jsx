@@ -275,6 +275,8 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
         {/* Location markers */}
         {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
           <g key={i} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)}>
+            {/* Transparent oversized hit area so the marker is tappable on mobile */}
+            <circle cx={video.mapX} cy={video.mapY} r="7" fill="transparent" />
             {/* Pulse animation ring - shows on selected, subtle on others */}
             <circle
               cx={video.mapX}
@@ -339,6 +341,7 @@ const AmericaMap = ({ videos, onSelectVideo, selectedIndex }) => {
         {/* Location markers */}
         {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
           <g key={i} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)}>
+            <circle cx={video.mapX} cy={video.mapY} r="7" fill="transparent" />
             <circle
               cx={video.mapX}
               cy={video.mapY}
@@ -397,7 +400,7 @@ const GaoLifeSection = () => {
   };
 
   return (
-    <section id="interests" className="relative px-6 py-16">
+    <section id="interests" className="relative px-6 py-16 scroll-mt-20">
       <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
           <div>
@@ -557,7 +560,7 @@ const GaoLifeSection = () => {
                 key={region}
                 onClick={() => handleRegionChange(region)}
                 style={{
-                  padding: '5px 12px',
+                  padding: '9px 14px',
                   borderRadius: '14px',
                   border: selectedRegion === region ? '1.5px solid #4A7C59' : '1.5px solid #e3e5e2',
                   background: selectedRegion === region ? 'rgba(74,124,89,0.08)' : 'transparent',
@@ -579,7 +582,7 @@ const GaoLifeSection = () => {
                 key={i}
                 onClick={() => setSelectedVideo(i)}
                 style={{
-                  padding: '6px 12px',
+                  padding: '10px 14px',
                   borderRadius: '16px',
                   border: 'none',
                   background: selectedVideo === i ? '#4A7C59' : '#f1f3f1',
@@ -1686,15 +1689,14 @@ const HikingTrail = () => {
         <div className="flex">
           <div className="flex flex-col items-center mr-4">
             {/* Mini dirt path, same trail browns as the desktop hike */}
-            <div style={{ position: 'relative', flex: 1, width: '20px', minHeight: '100%', filter: 'url(#wobble-slow)' }} aria-hidden="true">
-              <div style={{ position: 'absolute', inset: 0, borderRadius: '10px', background: 'linear-gradient(90deg, #c9b896, #e3d8c0 50%, #c9b896)', opacity: 0.85 }} />
-              <div style={{ position: 'absolute', left: '8.75px', top: '4px', bottom: '4px', width: 0, borderLeft: '2.5px dashed #ad9870', opacity: 0.5 }} />
+            <div style={{ position: 'relative', flex: 1, width: '14px', minHeight: '100%', filter: 'url(#wobble-slow)' }} aria-hidden="true">
+              <div style={{ position: 'absolute', inset: 0, borderRadius: '7px', background: 'linear-gradient(90deg, #c2af89, #ddd0b4 50%, #c2af89)', opacity: 0.9 }} />
             </div>
           </div>
           <div className="flex flex-col gap-5 flex-1 pb-4">
             {stops.map((stop) => (
               <div key={stop.id} className="relative">
-                <div className="absolute top-4 w-4 h-4 rounded-full" style={{ left: '-43px', backgroundColor: '#fff', border: '2px solid #4A7C59', boxShadow: '0 0 0 3px rgba(74,124,89,0.15)' }} />
+                <div className="absolute top-5 w-4 h-4 rounded-full" style={{ left: '-31px', backgroundColor: '#fff', border: '2px solid #4A7C59', boxShadow: '0 0 0 3px rgba(74,124,89,0.15)' }} />
                 <div
                   className="p-4 rounded-xl cursor-pointer"
                   style={{
@@ -1994,10 +1996,10 @@ export default function Site() {
               <p className="leading-relaxed mb-4" style={{ color: '#444', fontSize: 'clamp(1.05rem, 2vw, 1.15rem)', lineHeight: 1.85 }}>I'm an Analyst at <strong>Deloitte</strong> in Costa Mesa, working within Deloitte Digital. I recently graduated from <strong>UC Irvine</strong> with degrees in Computer Science and Business Administration.</p>
               <p className="leading-relaxed mb-8" style={{ color: '#666', fontSize: 'clamp(0.95rem, 1.5vw, 1.05rem)', lineHeight: 1.85 }}>I also make travel videos and build side projects.</p>
               <div className="flex items-center gap-5">
-                <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="social-icon transition-all duration-200 hover:scale-110 hover:text-blue-600" style={{ color: '#666' }} title="LinkedIn"><Linkedin size={20} /></a>
-                <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="social-icon transition-all duration-200 hover:scale-110" style={{ color: '#666' }} title="GitHub"><Github size={20} /></a>
-                <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="social-icon transition-all duration-200 hover:scale-110 hover:text-red-600" style={{ color: '#666' }} title="YouTube"><Youtube size={20} /></a>
-                <a href="mailto:one@ethangao.xyz" className="social-icon transition-all duration-200 hover:scale-110" style={{ color: '#666' }} title="Email"><Mail size={20} /></a>
+                <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:scale-110 hover:text-blue-600" style={{ color: '#666' }} title="LinkedIn"><Linkedin size={20} /></a>
+                <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:scale-110" style={{ color: '#666' }} title="GitHub"><Github size={20} /></a>
+                <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:scale-110 hover:text-red-600" style={{ color: '#666' }} title="YouTube"><Youtube size={20} /></a>
+                <a href="mailto:one@ethangao.xyz" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:scale-110" style={{ color: '#666' }} title="Email"><Mail size={20} /></a>
               </div>
             </div>
           </div>
@@ -2010,7 +2012,7 @@ export default function Site() {
         </section>
       </div>
 
-      <section id="experience" className="px-4 py-10" style={{ backgroundColor: '#f1f3f1' }}>
+      <section id="experience" className="px-4 py-10 scroll-mt-20" style={{ backgroundColor: '#f1f3f1' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="text-center mb-2"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Where I've Been</h2><WobblyUnderline height={8} /></div></div>
           <p className="text-center text-sm mb-6" style={{ color: '#888' }}>Click on a card for more info</p>
@@ -2018,7 +2020,7 @@ export default function Site() {
         </div>
       </section>
 
-      <section id="projects" className="relative px-6 py-16">
+      <section id="projects" className="relative px-6 py-16 scroll-mt-20">
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(74,124,89,0.08) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
         <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="mb-12">
@@ -2055,7 +2057,7 @@ export default function Site() {
                   <div style={{
                     position: 'relative',
                     width: '100%',
-                    aspectRatio: '4/3',
+                    minHeight: '220px',
                     borderRadius: '16px',
                     background: '#fff',
                     overflow: 'hidden',
@@ -2110,7 +2112,7 @@ export default function Site() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '14px', background: '#4A7C59', color: '#fff', fontSize: '11.5px', fontWeight: '600', padding: '7px 14px', borderRadius: '999px', textDecoration: 'none' }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '14px', background: '#4A7C59', color: '#fff', fontSize: '11.5px', fontWeight: '600', padding: '9px 16px', borderRadius: '999px', textDecoration: 'none' }}
                     >
                       Visit site <ArrowUpRight size={12} />
                     </a>
@@ -2146,7 +2148,7 @@ export default function Site() {
       <GaoLifeSection />
 
       {/* Contact Section */}
-      <section id="contact" className="px-6 py-16" style={{ backgroundColor: '#f1f3f1' }}>
+      <section id="contact" className="px-6 py-16 scroll-mt-20" style={{ backgroundColor: '#f1f3f1' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="mb-8 text-center"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Get In Touch</h2><WobblyUnderline height={8} /></div></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
