@@ -28,3 +28,10 @@ dist-ssr
 # Claude Code
 CLAUDE.md
 .claude/
+
+# design-sync (staged scripts + generated build output + machine state)
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules

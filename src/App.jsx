@@ -609,55 +609,6 @@ const skills = {
   certs: { title: 'Certifications', items: ['Claude Certified Architect - Foundations (CCA-F)', 'Salesforce Platform Administrator'] }
 };
 
-const ProjectModal = ({ project, onClose }) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    requestAnimationFrame(() => setIsVisible(true));
-  }, []);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(onClose, 200);
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: isVisible ? 'rgba(35,35,30,0.6)' : 'rgba(35,35,30,0)', transition: 'background-color 0.3s ease' }} onClick={handleClose}>
-      <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#fbfcfb', maxHeight: '85vh', display: 'flex', flexDirection: 'column', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.05)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
-        <div className="px-6 pt-6 pb-5" style={{ background: 'linear-gradient(180deg, #eef0ee 0%, #fbfcfb 100%)', flexShrink: 0 }}>
-          <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150" style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
-            <X size={16} style={{ color: '#666' }} />
-          </button>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}>
-              <project.icon size={26} style={{ color: '#fff' }} />
-            </div>
-            <span className="text-xs font-semibold" style={{ color: '#7c857d' }}>{project.type}</span>
-          </div>
-          <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.875rem', fontWeight: 400 }}>{project.title}</h3>
-          <p className="text-xs" style={{ color: '#6f7570', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
-            {project.tech.join(', ')}
-          </p>
-        </div>
-        <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e2e5e1, transparent)', flexShrink: 0 }} />
-        <div className="px-6 py-5 overflow-y-auto" style={{ flex: '1 1 auto', minHeight: 0 }}>
-          <div className="text-sm leading-relaxed" style={{ color: '#555', whiteSpace: 'pre-line', lineHeight: 1.85 }}>{project.fullDesc}</div>
-        </div>
-        {project.link && (
-          <>
-            <div className="mx-6" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, #e2e5e1, transparent)', flexShrink: 0 }} />
-            <div className="px-6 py-4" style={{ flexShrink: 0 }}>
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium" style={{ backgroundColor: '#2d2d2d', color: '#fff' }}>
-                {project.live ? <><Globe size={16} /> Visit site <ArrowUpRight size={14} /></> : <><Github size={16} /> View on GitHub <ArrowUpRight size={14} /></>}
-              </a>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
 // Interactive mockup for Image Tagger - input image, get tags
 const ImageTaggerMockup = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -1353,7 +1304,6 @@ const ProjectMockup = ({ projectId }) => {
     borderRadius: '20px',
     background: '#fff',
     overflow: 'hidden',
-    transition: 'transform 0.3s ease',
   };
 
   const contentStyle = {
@@ -1387,15 +1337,7 @@ const ProjectMockup = ({ projectId }) => {
   };
 
   return (
-    <div
-      style={mockupStyle}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-4px)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-      }}
-    >
+    <div style={mockupStyle}>
       <WobblyFrameBorder radius={18} stroke="#8e918c" />
       <div style={contentStyle}>
         {renderMockupContent()}
@@ -1404,95 +1346,120 @@ const ProjectMockup = ({ projectId }) => {
   );
 };
 
-// Full project card component
-const ProjectCard = ({ project, index, onClick }) => {
-  const isEven = index % 2 === 0;
+// Project switcher: tabs on top (most recent first), one full project on stage below.
+// The whole case study fits one screen on desktop; new projects just add a tab.
+const ProjectSwitcher = () => {
+  const [activeId, setActiveId] = useState(projects[0].id);
+  const active = projects.find((p) => p.id === activeId);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: isEven ? 'row' : 'row-reverse',
-        gap: '70px',
-        alignItems: 'center',
-        padding: '50px 0',
-      }}
-      className="project-card-container"
-    >
-      {/* Mockup */}
-      <div style={{ flex: '0 0 48%' }}>
-        <ProjectMockup projectId={project.id} />
+    <div>
+      {/* Tabs: scroll sideways on mobile (bleeding to the screen edge so the next pill peeks), wrap on desktop */}
+      <div className="flex gap-2 overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible" style={{ marginBottom: '22px', paddingBottom: '4px', scrollbarWidth: 'none' }}>
+        {projects.map((p) => {
+          const on = p.id === activeId;
+          const Icon = p.icon;
+          return (
+            <button
+              key={p.id}
+              onClick={() => setActiveId(p.id)}
+              aria-pressed={on}
+              className="flex-none"
+              style={{
+                display: 'flex', alignItems: 'center', gap: '7px', cursor: 'pointer',
+                padding: '8px 15px', borderRadius: '999px', whiteSpace: 'nowrap',
+                border: on ? '1.5px solid #4A7C59' : '1.5px solid #e3e5e2',
+                background: on ? 'rgba(74,124,89,0.08)' : 'transparent',
+                color: on ? '#3d6b4a' : '#777',
+                fontSize: '13px', fontWeight: '600', transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => { if (!on) e.currentTarget.style.borderColor = '#c6cdc6'; }}
+              onMouseLeave={(e) => { if (!on) e.currentTarget.style.borderColor = '#e3e5e2'; }}
+            >
+              <Icon size={17} style={{ color: on ? '#4A7C59' : '#9aa09a', flexShrink: 0 }} />
+              {p.title}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Content */}
-      <div style={{ flex: '1' }}>
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap' }}>
-          {project.live && project.link && (
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: '#4A7C59', border: 'none', cursor: 'pointer', textDecoration: 'none',
-                display: 'flex', alignItems: 'center', gap: '5px',
-                color: '#fff', fontSize: '11.5px', fontWeight: '600',
-                padding: '6px 13px', borderRadius: '999px', transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = '#3d6b4a'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = '#4A7C59'; }}
-            >
-              Visit site <ArrowUpRight size={12} />
-            </a>
-          )}
-          <button
-            onClick={onClick}
-            style={{
-              background: 'rgba(74,124,89,0.12)', border: 'none', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', gap: '5px',
-              color: '#3d6b4a', fontSize: '11.5px', fontWeight: '600',
-              padding: '6px 13px', borderRadius: '999px', transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#4A7C59'; e.currentTarget.style.color = '#fff'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(74,124,89,0.12)'; e.currentTarget.style.color = '#3d6b4a'; }}
-          >
-            Details <ArrowUpRight size={12} />
-          </button>
+      {/* Stage: demo beside the writeup on large screens, stacked below that */}
+      <div key={active.id} className="p-5 md:p-8" style={{ background: '#fff', border: '1px solid #e3e5e2', borderRadius: '18px', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', animation: 'fadeIn 0.35s ease both' }}>
+        <div className="flex flex-col lg:flex-row lg:items-center gap-7 lg:gap-10">
+          {/* Demo */}
+          <div className="w-full lg:w-[480px] lg:flex-none flex justify-center">
+            <div className="hidden md:block w-full" style={{ maxWidth: '480px' }}>
+              <ProjectMockup projectId={active.id} />
+            </div>
+            <div className="md:hidden w-full">
+              <div style={{ position: 'relative', minHeight: '220px', borderRadius: '16px', background: '#fff', overflow: 'hidden', padding: '16px', display: 'flex', flexDirection: 'column' }}>
+                <WobblyFrameBorder radius={14} stroke="#8e918c" />
+                {active.id === 'precinct' && <PrecinctMockup />}
+                {active.id === 'erewhon' && <ErewhonMockup />}
+                {active.id === 'image-tagger' && <ImageTaggerMockup />}
+                {active.id === 'tweetfetch' && <TweetFetchMockup />}
+                {active.id === 'synth' && <SynthMockup />}
+                {active.id === 'stockx-guess' && <StockXGuessMockup />}
+                {active.id === 'cybercredit' && <CyberCreditMockup />}
+              </div>
+            </div>
+          </div>
+
+          {/* Writeup */}
+          <div className="flex-1 min-w-0 w-full">
+            <div style={{ display: 'inline-block', marginBottom: '6px' }}>
+              <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: 'clamp(1.5rem, 2.4vw, 1.85rem)', color: '#2d2d2d', fontWeight: '400', lineHeight: 1.25 }}>
+                {active.title}
+              </h3>
+              <WobblyUnderline height={8} strokeWidth={2} color="#aeb1ac" />
+            </div>
+            <p style={{ color: '#888', fontSize: '12px', marginBottom: '16px' }}>
+              {active.category}, {active.type}
+            </p>
+            {active.fullDesc.split('\n\n').map((para, i) => (
+              <p key={i} style={{ color: '#555', fontSize: '14px', lineHeight: 1.7, marginBottom: '12px' }}>{para}</p>
+            ))}
+            <p style={{ fontSize: '12px', color: '#6f7570', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', marginTop: '14px' }}>
+              {active.tech.join(', ')}
+            </p>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '18px', flexWrap: 'wrap' }}>
+              {active.live && active.link && (
+                <a
+                  href={active.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: '#4A7C59', cursor: 'pointer', textDecoration: 'none',
+                    display: 'inline-flex', alignItems: 'center', gap: '5px',
+                    color: '#fff', fontSize: '12px', fontWeight: '600',
+                    padding: '8px 16px', borderRadius: '999px', transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = '#3d6b4a'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = '#4A7C59'; }}
+                >
+                  Visit site <ArrowUpRight size={13} />
+                </a>
+              )}
+              {!active.live && active.link && active.link.includes('github') && (
+                <a
+                  href={active.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: 'rgba(74,124,89,0.12)', cursor: 'pointer', textDecoration: 'none',
+                    display: 'inline-flex', alignItems: 'center', gap: '6px',
+                    color: '#3d6b4a', fontSize: '12px', fontWeight: '600',
+                    padding: '8px 16px', borderRadius: '999px', transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = '#4A7C59'; e.currentTarget.style.color = '#fff'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(74,124,89,0.12)'; e.currentTarget.style.color = '#3d6b4a'; }}
+                >
+                  <Github size={13} /> View code
+                </a>
+              )}
+            </div>
+          </div>
         </div>
-
-        <div style={{ display: 'inline-block', marginBottom: '10px' }}>
-          <h3 style={{
-            fontFamily: 'var(--heading-font)',
-            fontSize: 'clamp(1.85rem, 3vw, 2.5rem)',
-            color: '#2d2d2d',
-            fontWeight: '400',
-            lineHeight: 1.2,
-          }}>
-            {project.title}
-          </h3>
-          <WobblyUnderline height={8} strokeWidth={2} color="#aeb1ac" />
-        </div>
-
-        <p style={{
-          color: '#888',
-          fontSize: '12px',
-          marginBottom: '20px',
-        }}>
-          {project.category}, {project.type}
-        </p>
-
-        <p style={{
-          color: '#555',
-          fontSize: '16px',
-          lineHeight: 1.8,
-          marginBottom: '20px',
-        }}>
-          {project.desc}
-        </p>
-
-        {/* Tags */}
-        <p style={{ fontSize: '13px', color: '#6f7570', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
-          {project.tech.join(', ')}
-        </p>
       </div>
     </div>
   );
@@ -1902,7 +1869,6 @@ const HeroHeading = () => {
 };
 
 export default function Site() {
-  const [selectedProject, setSelectedProject] = useState(null);
   const rootRef = useRef(null);
   useWobbleLoop(rootRef);
   return (
@@ -1981,7 +1947,7 @@ export default function Site() {
             <span className="hidden sm:inline">Ethan Gao</span>
           </span>
           <div className="flex items-center gap-1 md:gap-3 px-3 md:px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
-            {[{ label: 'Experience', href: '#experience' }, { label: 'Projects', href: '#projects' }, { label: 'Interests', href: '#interests' }, { label: 'Blog', href: '/blog' }, { label: 'Contact', href: '#contact' }].map((link) => (
+            {[{ label: 'Projects', href: '#projects' }, { label: 'Experience', href: '#experience' }, { label: 'Interests', href: '#interests' }, { label: 'Blog', href: '/blog' }, { label: 'Contact', href: '#contact' }].map((link) => (
               <a key={link.label} href={link.href} className="text-xs md:text-sm font-medium transition-all duration-200 px-2 md:px-3 py-1 hover:scale-110" style={{ color: '#555' }}>{link.label}</a>
             ))}
           </div>
@@ -2012,14 +1978,6 @@ export default function Site() {
         </section>
       </div>
 
-      <section id="experience" className="px-4 py-10 scroll-mt-20" style={{ backgroundColor: '#f1f3f1' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div className="text-center mb-2"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Where I've Been</h2><WobblyUnderline height={8} /></div></div>
-          <p className="text-center text-sm mb-6" style={{ color: '#888' }}>Click on a card for more info</p>
-          <HikingTrail />
-        </div>
-      </section>
-
       <section id="projects" className="relative px-6 py-16 scroll-mt-20">
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(74,124,89,0.08) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
         <div className="relative" style={{ maxWidth: '1100px', margin: '0 auto' }}>
@@ -2032,101 +1990,20 @@ export default function Site() {
             </div>
           </div>
 
-          {/* Desktop: Alternating full-width cards */}
-          <div className="hidden md:block">
-            {projects.map((proj, i) => (
-              <ProjectCard key={proj.id} project={proj} index={i} onClick={() => setSelectedProject(proj)} />
-            ))}
-          </div>
-
-          {/* Mobile: Interactive mockups */}
-          <div className="md:hidden flex flex-col gap-6">
-            {projects.map((proj) => (
-              <div
-                key={proj.id}
-                className="rounded-xl overflow-hidden"
-                style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }}
-              >
-                {/* Interactive mockup area - no scaling, natural size */}
-                <div style={{
-                  padding: '16px',
-                  background: 'linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%)',
-                  borderBottom: '1px solid #e5e5e5'
-                }}>
-                  {/* Custom mobile mockup container */}
-                  <div style={{
-                    position: 'relative',
-                    width: '100%',
-                    minHeight: '220px',
-                    borderRadius: '16px',
-                    background: '#fff',
-                    overflow: 'hidden',
-                    padding: '16px',
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
-                    <WobblyFrameBorder radius={14} stroke="#8e918c" />
-                    {proj.id === 'precinct' && <PrecinctMockup />}
-                    {proj.id === 'erewhon' && <ErewhonMockup />}
-                    {proj.id === 'image-tagger' && <ImageTaggerMockup />}
-                    {proj.id === 'tweetfetch' && <TweetFetchMockup />}
-                    {proj.id === 'synth' && <SynthMockup />}
-                    {proj.id === 'stockx-guess' && <StockXGuessMockup />}
-                    {proj.id === 'cybercredit' && <CyberCreditMockup />}
-                  </div>
-                </div>
-                {/* Content - only this part opens modal */}
-                <div
-                  style={{ padding: '16px 20px', cursor: 'pointer' }}
-                  onClick={() => setSelectedProject(proj)}
-                >
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <div>
-                      <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.25rem', color: '#2d2d2d', marginBottom: '4px', fontWeight: '400' }}>{proj.title}</h3>
-                      <p style={{ color: '#888', fontSize: '12px' }}>
-                        {proj.category}, {proj.type}
-                      </p>
-                    </div>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      padding: '6px 12px',
-                      borderRadius: '8px',
-                      background: '#eef0ee',
-                      color: '#7c857d',
-                      fontSize: '11px',
-                      fontWeight: '600'
-                    }}>
-                      Details <ArrowUpRight size={12} />
-                    </div>
-                  </div>
-                  <p style={{ color: '#555', fontSize: '14px', lineHeight: 1.6, marginBottom: '14px' }}>{proj.desc}</p>
-                  {/* Tags */}
-                  <p style={{ fontSize: '12px', color: '#6f7570', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
-                    {proj.tech.join(', ')}
-                  </p>
-                  {proj.live && proj.link && (
-                    <a
-                      href={proj.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '14px', background: '#4A7C59', color: '#fff', fontSize: '11.5px', fontWeight: '600', padding: '9px 16px', borderRadius: '999px', textDecoration: 'none' }}
-                    >
-                      Visit site <ArrowUpRight size={12} />
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <ProjectSwitcher />
         </div>
       </section>
-      {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+
+      <section id="experience" className="px-6 py-10 scroll-mt-20" style={{ backgroundColor: '#f1f3f1' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div className="mb-2"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Where I've Been</h2><WobblyUnderline height={8} /></div></div>
+          <p className="text-sm mb-6" style={{ color: '#888' }}>Click on a card for more info</p>
+          <HikingTrail />
+        </div>
+      </section>
 
       {/* Technical Skills Section */}
-      <section className="px-6 py-14" style={{ backgroundColor: '#f1f3f1' }}>
+      <section id="skills" className="px-6 py-14 scroll-mt-20" style={{ backgroundColor: '#f1f3f1' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="mb-8" style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Technical Skills</h2><WobblyUnderline height={8} /></div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2150,8 +2027,8 @@ export default function Site() {
       {/* Contact Section */}
       <section id="contact" className="px-6 py-16 scroll-mt-20" style={{ backgroundColor: '#f1f3f1' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div className="mb-8 text-center"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Get In Touch</h2><WobblyUnderline height={8} /></div></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <div className="mb-8"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Get In Touch</h2><WobblyUnderline height={8} /></div></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-blue-600" style={{ backgroundColor: 'rgba(14,118,168,0.1)' }}>
                 <Linkedin size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#0e76a8', filter: 'url(#wobble-calm)', overflow: 'visible' }} />
