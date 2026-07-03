@@ -125,7 +125,7 @@ A friend had the data and the general idea. I designed and engineered the app. I
 
 The site you can visit here is a landing page I made for the app, mostly for fun and to test out my design skills.` },
   {
-    id: 'erewhon', title: 'Erewhon Smoothie Archive', desc: 'Research agents that scoured the web to reconstruct every Erewhon smoothie', icon: IconErewhon, tech: ['Agents', 'JavaScript'], link: '/projects/erewhon/', live: true, type: 'Jun 2026',
+    id: 'erewhon', title: 'Erewhon Smoothie Archive', shortTitle: 'Erewhon', desc: 'Research agents that scoured the web to reconstruct every Erewhon smoothie', icon: IconErewhon, tech: ['Agents', 'JavaScript'], link: '/projects/erewhon/', live: true, type: 'Jun 2026',
     category: 'Web App',
     fullDesc: `A weekend spent learning how research agents handle long, multi-step work, with Erewhon's smoothies as the test case.
 
@@ -1354,8 +1354,8 @@ const ProjectSwitcher = () => {
 
   return (
     <div>
-      {/* Tabs: scroll sideways on mobile (bleeding to the screen edge so the next pill peeks), wrap on desktop */}
-      <div className="flex gap-2 overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible" style={{ marginBottom: '22px', paddingBottom: '4px', scrollbarWidth: 'none' }}>
+      {/* Tabs: compact wrapping pills, every project visible at once on any screen */}
+      <div className="flex flex-wrap gap-1.5 md:gap-2" style={{ marginBottom: '22px' }}>
         {projects.map((p) => {
           const on = p.id === activeId;
           const Icon = p.icon;
@@ -1364,20 +1364,20 @@ const ProjectSwitcher = () => {
               key={p.id}
               onClick={() => setActiveId(p.id)}
               aria-pressed={on}
-              className="flex-none"
+              className="flex-none px-[11px] py-[5px] md:px-[15px] md:py-2 text-xs md:text-[13px]"
               style={{
-                display: 'flex', alignItems: 'center', gap: '7px', cursor: 'pointer',
-                padding: '8px 15px', borderRadius: '999px', whiteSpace: 'nowrap',
+                display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer',
+                borderRadius: '999px', whiteSpace: 'nowrap',
                 border: on ? '1.5px solid #4A7C59' : '1.5px solid #e3e5e2',
                 background: on ? 'rgba(74,124,89,0.08)' : 'transparent',
                 color: on ? '#3d6b4a' : '#777',
-                fontSize: '13px', fontWeight: '600', transition: 'all 0.2s ease',
+                fontWeight: '600', transition: 'all 0.2s ease',
               }}
               onMouseEnter={(e) => { if (!on) e.currentTarget.style.borderColor = '#c6cdc6'; }}
               onMouseLeave={(e) => { if (!on) e.currentTarget.style.borderColor = '#e3e5e2'; }}
             >
-              <Icon size={17} style={{ color: on ? '#4A7C59' : '#9aa09a', flexShrink: 0 }} />
-              {p.title}
+              <Icon size={16} style={{ color: on ? '#4A7C59' : '#9aa09a', flexShrink: 0 }} />
+              {p.shortTitle || p.title}
             </button>
           );
         })}
