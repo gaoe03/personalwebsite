@@ -1245,7 +1245,7 @@ window.SMOOTHIES = [
       "Vanilla Stevia"
     ],
     "ingredientsComplete": true,
-    "notes": "The first store-exclusive city-tribute smoothie, launched with the Pasadena store's Sep 13, 2023 opening — a rose-water blend honoring the City of Roses; still Pasadena-only.",
+    "notes": "The first store-exclusive city-tribute smoothie, launched with the Pasadena store's Sep 13, 2023 opening: a rose-water blend honoring the City of Roses; still Pasadena-only.",
     "sources": [
       "https://www.tiktok.com/@erewhonmarket/video/7278441738732178730",
       "https://erewhon.com/product/8089021000/rose-pasadena-smoothie"
@@ -1437,7 +1437,7 @@ window.SMOOTHIES = [
       "Organic Coconut Cream"
     ],
     "ingredientsComplete": true,
-    "notes": "Valentine's-pun February 2024 member smoothie with Clover Sonoma organic dairy — a 'nutrient-dense strawberry milkshake' and one of the rare dairy-forward entries; free for members Feb 1-14.",
+    "notes": "Valentine's-pun February 2024 member smoothie with Clover Sonoma organic dairy: a 'nutrient-dense strawberry milkshake' and one of the rare dairy-forward entries; free for members Feb 1-14.",
     "sources": [
       "https://www.instagram.com/erewhon/p/C20Qq-2PWqL/",
       "https://erewhon.com/product/8105001000/lets-date-smoothie"
@@ -2233,7 +2233,7 @@ window.SMOOTHIES = [
       "Espresso Shot"
     ],
     "ingredientsComplete": false,
-    "notes": "Wildfire-relief smoothie, ~Jan 14, 2025, with 100% of proceeds to fire-affected communities; officially 'a spin on our Peanut Butter Blast' with adaptogenic mushrooms, whey and espresso — the itemized list was never published.",
+    "notes": "Wildfire-relief smoothie, ~Jan 14, 2025, with 100% of proceeds to fire-affected communities; officially 'a spin on our Peanut Butter Blast' with adaptogenic mushrooms, whey and espresso. The itemized list was never published.",
     "sources": [
       "https://web.archive.org/web/20250118002956/https://erewhon.com/product/8372081000/la-strong-smoothie",
       "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/erewhon-palisades-smoothie-caruso-relief-wildfire-1236112525/"
@@ -2485,7 +2485,7 @@ window.SMOOTHIES = [
       "Organic Maple Syrup"
     ],
     "ingredientsComplete": true,
-    "notes": "May 2025 member smoothie with eco toilet-paper brand Who Gives A Crap — C.R.A.P. stands for Coconut, Raspberry, Aloe, Probiotics, pitched as encouraging 'healthy poos'.",
+    "notes": "May 2025 member smoothie with eco toilet-paper brand Who Gives A Crap. C.R.A.P. stands for Coconut, Raspberry, Aloe, Probiotics, pitched as encouraging 'healthy poos'.",
     "sources": [
       "https://web.archive.org/web/20250521172933/https://erewhon.com/product/8412631000/the-crap-smoothie",
       "https://www.streetinsider.com/Evertise+Financial/Erewhon+and+Eco-Friendly+Toilet+Paper+Brand+Who+Gives+a+Crap+Partner+on+the+C.R.A.P.+Smoothie+to+Encourage+Healthy+Poos/24747727.html"
@@ -2744,7 +2744,7 @@ window.SMOOTHIES = [
       "Organic Dairy Cream"
     ],
     "ingredientsComplete": true,
-    "notes": "Lifeway's probiotic spin on PSL season — 'autumn in a cup' with 12 live kefir cultures, the October 2025 member smoothie at all 10 stores; their kefir returned in 2026's Tropical Lifeway.",
+    "notes": "Lifeway's probiotic spin on PSL season: 'autumn in a cup' with 12 live kefir cultures, the October 2025 member smoothie at all 10 stores; their kefir returned in 2026's Tropical Lifeway.",
     "sources": [
       "https://www.prnewswire.com/news-releases/lifeway-foods-and-erewhon-to-launch-member-smoothie-for-the-month-of-october-love-your-gut-pumpkin-spice-smoothie-302572631.html",
       "https://erewhon.com/product/8490901000/lifeway-love-your-gut-smoothie"
@@ -3244,7 +3244,7 @@ window.SMOOTHIES = [
       "Organic Cacao Nibs"
     ],
     "ingredientsComplete": true,
-    "notes": "The Glendale store's opening exclusive (May 20, 2026), a tribute to bird's milk cake — the soufflé-under-chocolate dessert beloved in Glendale's Armenian community — with part of proceeds to the Garden School Foundation.",
+    "notes": "The Glendale store's opening exclusive (May 20, 2026), a tribute to bird's milk cake, the soufflé-under-chocolate dessert beloved in Glendale's Armenian community, with part of proceeds to the Garden School Foundation.",
     "sources": [
       "https://erewhon.com/product/8554491000/glendale-bird-milk-smoothie",
       "https://www.crescentavalleyweekly.com/featured/06/04/2026/erewhon-opens-in-glendale/",
@@ -3311,7 +3311,7 @@ window.SMOOTHIES = [
       "Organic Coconut Flakes"
     ],
     "ingredientsComplete": true,
-    "notes": "Third annual edition of the drinkable-sunscreen collab (Jun 1-30, 2026), '6 layers of Organic Coconut' — water, milk, soft serve, meat, whip and flakes; members sip free Jun 1-14 and every cup comes with a Vacation air freshener while supplies last.",
+    "notes": "Third annual edition of the drinkable-sunscreen collab (Jun 1-30, 2026), '6 layers of Organic Coconut': water, milk, soft serve, meat, whip and flakes; members sip free Jun 1-14 and every cup comes with a Vacation air freshener while supplies last.",
     "sources": [
       "https://www.newbeauty.com/view/vacation-erewhon-sunscreen-smoothie-three",
       "https://erewhon.com/product/8537201000/vacation-sunscreen-smoothie",

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import posts from './posts/index.js';
+import usePageTitle from './usePageTitle.js';
 
 const PostCard = ({ post }) => {
   const dateLabel = post.status === 'growing'
@@ -38,6 +39,7 @@ const PostCard = ({ post }) => {
 };
 
 export default function Blog() {
+  usePageTitle('Blog');
   const visible = posts.filter((p) => p.status !== 'draft');
 
   return (

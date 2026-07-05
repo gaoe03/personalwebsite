@@ -29,7 +29,7 @@
 
     /* ---- cultured & composed first, so flavors don't mis-match ---- */
     { id: 'immunity-shot', name: 'Immunity shot', cat: 'branded', band: 'functional', icon: 'shot', re: /immunity/,
-      blurb: 'A concentrated wellness shot — typically vitamin C, ginger and herbs — drizzled over the top rather than blended in. Alo\'s Immunity Rescue finished their Berries & Cream collab.' },
+      blurb: 'A concentrated wellness shot (typically vitamin C, ginger and herbs) drizzled over the top rather than blended in. Alo\'s Immunity Rescue finished their Berries & Cream collab.' },
     { id: 'probiotics', name: 'Probiotics', cat: 'supplement', band: 'functional', icon: 'probiotic', re: /bio-?k|probiotic/,
       blurb: 'Live bacteria meant to support the gut microbiome, the same families found in yogurt and fermented food. They survive better blended cold into something raw than cooked or heated. Erewhon doses them with Bio-K shots or plain probiotic powder in its gut focused blends.' },
     { id: 'kefir', name: 'Kefir', cat: 'liquid', band: 'functional', icon: 'kefir', re: /kefir/,

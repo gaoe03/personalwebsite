@@ -143,7 +143,7 @@ export default function FlavorMatrix() {
               <div style={{ color: '#222', fontWeight: 500, fontSize: '14px' }}>
                 {varieties[active].name}
                 <span style={{ color: '#999', fontWeight: 400, marginLeft: '8px', fontSize: '12.5px' }}>
-                  · {varieties[active].origin}
+                  {varieties[active].origin}
                 </span>
               </div>
               <div style={{ color: '#666', fontSize: '13px', marginTop: '4px', lineHeight: 1.5 }}>
@@ -165,8 +165,8 @@ export default function FlavorMatrix() {
             </div>
             {varieties.filter((v) => v.origin === originFilter).map((v) => (
               <div key={v.name} style={{ marginBottom: '6px', paddingLeft: '18px' }}>
-                <span style={{ color: '#222', fontWeight: 500 }}>{v.name}</span>
-                <span style={{ color: '#666', marginLeft: '6px' }}>— {v.use}</span>
+                <span style={{ color: '#222', fontWeight: 500 }}>{v.name}:</span>
+                <span style={{ color: '#666', marginLeft: '6px' }}>{v.use}</span>
               </div>
             ))}
           </div>

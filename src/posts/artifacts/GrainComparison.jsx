@@ -112,7 +112,7 @@ export default function GrainComparison() {
         <div style={{ color: '#222', fontWeight: 500, marginBottom: '4px', fontSize: '13.5px' }}>
           {g.name}
           <span style={{ color: '#999', fontWeight: 400, marginLeft: '8px', fontSize: '12px' }}>
-            · {g.family} · {g.origin}
+            {g.family}, {g.origin}
           </span>
         </div>
         <div style={{ color: '#666' }}>{g.dishes}</div>

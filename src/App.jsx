@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, Briefcase, GraduationCap, Github, Youtube, Mail, Camera, Code, Globe, Ticket, ArrowUpRight, Image, X, ChevronRight, Play, ExternalLink, IceCream, Coins, Linkedin, ChevronDown } from 'lucide-react';
+import usePageTitle from './usePageTitle.js';
 
 // === TYPING ANIMATION HOOK ===
 const useTypingEffect = (text, speed = 80, delay = 500) => {
@@ -274,7 +275,7 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
 
         {/* Location markers */}
         {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
-          <g key={i} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)}>
+          <g key={i} tabIndex={0} role="button" aria-label={`${video.title} video`} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectVideo(i); } }}>
             {/* Transparent oversized hit area so the marker is tappable on mobile */}
             <circle cx={video.mapX} cy={video.mapY} r="7" fill="transparent" />
             {/* Pulse animation ring - shows on selected, subtle on others */}
@@ -340,7 +341,7 @@ const AmericaMap = ({ videos, onSelectVideo, selectedIndex }) => {
 
         {/* Location markers */}
         {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
-          <g key={i} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)}>
+          <g key={i} tabIndex={0} role="button" aria-label={`${video.title} video`} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectVideo(i); } }}>
             <circle cx={video.mapX} cy={video.mapY} r="7" fill="transparent" />
             <circle
               cx={video.mapX}
@@ -604,8 +605,8 @@ const GaoLifeSection = () => {
 
 const skills = {
   languages: { title: 'Languages', items: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'HTML/CSS', 'LaTeX'] },
-  frameworks: { title: 'Frameworks & Libraries', items: ['Discord.py', 'Pandas', 'NumPy', 'PyTorch', 'Requests', 'BeautifulSoup'] },
-  tools: { title: 'Tools', items: ['Git/GitHub', 'VS Code', 'OpenAI Models', 'OpenAI Codex', 'Google Antigravity IDE', 'Google Gemini Models', 'Notion', 'Jira', 'Microsoft Suite', 'CapCut', 'IntelliJ', 'Eclipse', 'Repl.it'] },
+  frameworks: { title: 'Frameworks & Libraries', items: ['React', 'SwiftUI', 'Discord.py', 'Pandas', 'NumPy', 'PyTorch'] },
+  tools: { title: 'Tools', items: ['Claude Code', 'OpenAI Codex', 'Gemini & OpenAI APIs', 'Git/GitHub', 'Notion', 'Jira', 'CapCut'] },
   certs: { title: 'Certifications', items: ['Claude Certified Architect - Foundations (CCA-F)', 'Salesforce Platform Administrator'] }
 };
 
@@ -1529,6 +1530,14 @@ const HikingTrail = () => {
       setTimeout(onClose, 200);
     };
 
+    useEffect(() => {
+      const onKey = (e) => { if (e.key === 'Escape') handleClose(); };
+      window.addEventListener('keydown', onKey);
+      return () => window.removeEventListener('keydown', onKey);
+    }, []);
+
+    const Icon = item.icon || IconMapPin;
+
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: isVisible ? 'rgba(17,24,39,0.56)' : 'rgba(17,24,39,0)', transition: 'background-color 0.3s ease' }} onClick={handleClose}>
         <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#fff', maxHeight: '85vh', border: '1px solid #e5e7eb', boxShadow: '0 24px 60px rgba(15,23,42,0.22)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
@@ -1538,7 +1547,7 @@ const HikingTrail = () => {
             </button>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}>
-                <IconMapPin size={24} style={{ color: '#fff' }} />
+                <Icon size={24} style={{ color: '#fff' }} />
               </div>
               {(item.role || item.subtitle) && (
                 <span className="text-xs font-semibold" style={{ color: '#3d6b4a', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{item.role || item.subtitle}</span>
@@ -1558,7 +1567,7 @@ const HikingTrail = () => {
                 <ul className="space-y-3">
                   {item.bullets.map((b, i) => (
                     <li key={i} className="text-sm leading-relaxed flex gap-3" style={{ color: '#555', lineHeight: 1.85 }}>
-                      <span style={{ color: '#4A7C59', fontWeight: 600 }}>•</span>
+                      <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#4A7C59', flexShrink: 0, marginTop: '10px' }} />
                       <span>{b}</span>
                     </li>
                   ))}
@@ -1624,7 +1633,7 @@ const HikingTrail = () => {
                   boxShadow: '0 4px 14px rgba(15,23,42,0.04)',
                   background: '#fff'
                 }}
-                onClick={() => setSelectedItem(m.modalContent)}
+                onClick={() => setSelectedItem({ ...m.modalContent, icon: m.icon })}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.boxShadow = '0 10px 24px rgba(15,23,42,0.09)';
                   e.currentTarget.style.borderColor = '#cbd5e1';
@@ -1690,7 +1699,7 @@ const HikingTrail = () => {
                           border: '1px solid #e5e7eb',
                           boxShadow: '0 4px 12px rgba(15,23,42,0.04)'
                         }}
-                        onClick={() => setSelectedItem(m.modalContent)}
+                        onClick={() => setSelectedItem({ ...m.modalContent, icon: m.icon })}
                       >
                         <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)' }}>
                           <m.icon size={17} style={{ color: '#fff' }} />
@@ -1776,7 +1785,7 @@ const HikingTrail = () => {
                     {stop.milestones.length > 0 && (
                       <div className="ml-6 mt-3 flex flex-col gap-2">
                         {stop.milestones.map((m, i) => (
-                          <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1" style={{ border: '1px solid #e5e7eb', boxShadow: '0 6px 18px rgba(15,23,42,0.05)' }} onClick={() => setSelectedItem(m.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 12px 28px rgba(15,23,42,0.1)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 6px 18px rgba(15,23,42,0.05)'}>
+                          <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1" style={{ border: '1px solid #e5e7eb', boxShadow: '0 6px 18px rgba(15,23,42,0.05)' }} onClick={() => setSelectedItem({ ...m.modalContent, icon: m.icon })} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 12px 28px rgba(15,23,42,0.1)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 6px 18px rgba(15,23,42,0.05)'}>
                             <div className="w-8 h-8 rounded-md flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}><m.icon size={14} style={{ color: '#fff' }} /></div>
                             <div><p className="text-sm font-semibold" style={{ color: '#2d2d2d' }}>{m.label}</p><p className="text-xs" style={{ color: '#888' }}>{m.desc}</p></div>
                           </div>
@@ -1847,8 +1856,6 @@ const HikingTrail = () => {
   );
 };
 
-import { Analytics } from "@vercel/analytics/react"
-
 // === HERO HEADING WITH TYPING ===
 const HeroHeading = () => {
   const { displayedText, isComplete } = useTypingEffect("Hey, I'm Ethan Gao", 70, 300);
@@ -1871,9 +1878,9 @@ const HeroHeading = () => {
 export default function Site() {
   const rootRef = useRef(null);
   useWobbleLoop(rootRef);
+  usePageTitle('Ethan Gao');
   return (
     <div ref={rootRef} style={{ backgroundColor: '#fbfcfb', minHeight: '100vh', fontFamily: 'system-ui, sans-serif', scrollBehavior: 'smooth' }}>
-      <Analytics />
       <WobbleDefs />
       <style>{`
         :root {
@@ -2024,46 +2031,22 @@ export default function Site() {
       {/* YouTube Section */}
       <GaoLifeSection />
 
-      {/* Contact Section */}
-      <section id="contact" className="px-6 py-16 scroll-mt-20" style={{ backgroundColor: '#f1f3f1' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div className="mb-8"><div style={{ display: 'inline-block' }}><h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>Get In Touch</h2><WobblyUnderline height={8} /></div></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
-              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-blue-600" style={{ backgroundColor: 'rgba(14,118,168,0.1)' }}>
-                <Linkedin size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#0e76a8', filter: 'url(#wobble-calm)', overflow: 'visible' }} />
-              </div>
-              <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>LinkedIn</h3>
-              <p className="text-sm" style={{ color: '#888' }}>Professional network</p>
-            </a>
-            <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
-              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-gray-800" style={{ backgroundColor: 'rgba(36,41,47,0.1)' }}>
-                <Github size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#24292f', filter: 'url(#wobble-calm)', overflow: 'visible' }} />
-              </div>
-              <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>GitHub</h3>
-              <p className="text-sm" style={{ color: '#888' }}>Code & projects</p>
-            </a>
-            <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl transition-all duration-200" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
-              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-red-600" style={{ backgroundColor: 'rgba(255,0,0,0.1)' }}>
-                <Youtube size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#FF0000', filter: 'url(#wobble-calm)', overflow: 'visible' }} />
-              </div>
-              <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>YouTube</h3>
-              <p className="text-sm" style={{ color: '#888' }}>Travel videos</p>
-            </a>
-            <a href="mailto:one@ethangao.xyz" className="group p-6 rounded-xl transition-all duration-200" style={{ backgroundColor: '#fff', border: '1px solid #e3e5e2', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.12)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)'}>
-              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-green-700" style={{ backgroundColor: 'rgba(74,124,89,0.1)' }}>
-                <Mail size={24} className="transition-colors duration-200 group-hover:text-white" style={{ color: '#4A7C59', filter: 'url(#wobble-calm)', overflow: 'visible' }} />
-              </div>
-              <h3 className="text-base font-semibold mb-1" style={{ color: '#2d2d2d' }}>Email</h3>
-              <p className="text-sm" style={{ color: '#888' }}>one@ethangao.xyz</p>
-            </a>
+      <footer id="contact" className="px-6 py-10 scroll-mt-20" style={{ borderTop: '1px solid #e3e5e2' }}>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-5" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div className="flex items-center gap-2.5">
+            <img src="/favicon.png" alt="" style={{ width: '22px', height: '22px' }} />
+            <span style={{ fontFamily: 'var(--heading-font)', fontSize: '15px', color: '#2d2d2d' }}>Ethan Gao</span>
+            <a href="mailto:one@ethangao.xyz" className="text-sm" style={{ color: '#999', textDecoration: 'none', marginLeft: '6px' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#555'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#999'}
+            >one@ethangao.xyz</a>
           </div>
-        </div>
-      </section>
-
-      <footer className="px-6 py-8" style={{ borderTop: '1px solid #e3e5e2' }}>
-        <div className="text-center" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <p className="text-sm" style={{ color: '#999' }}>Built with React, Vite & Tailwind CSS</p>
+          <div className="flex items-center gap-5">
+            <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:scale-110 hover:text-blue-600" style={{ color: '#999' }} title="LinkedIn"><Linkedin size={17} /></a>
+            <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:scale-110" style={{ color: '#999' }} title="GitHub"><Github size={17} /></a>
+            <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:scale-110 hover:text-red-600" style={{ color: '#999' }} title="YouTube"><Youtube size={17} /></a>
+            <a href="mailto:one@ethangao.xyz" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:scale-110" style={{ color: '#999' }} title="Email"><Mail size={17} /></a>
+          </div>
         </div>
       </footer>
     </div>

@@ -1,9 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
 import posts from './posts/index.js';
+import usePageTitle from './usePageTitle.js';
 
 export default function BlogPost() {
   const { slug } = useParams();
   const post = posts.find((p) => p.slug === slug);
+  usePageTitle(post ? post.title : 'Blog');
 
   if (!post) {
     return (
