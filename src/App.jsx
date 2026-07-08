@@ -60,7 +60,7 @@ const WobbleDefs = () => (
   </svg>
 );
 
-const useWobbleLoop = (rootRef) => {
+export const useWobbleLoop = (rootRef) => {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const frames = { alive: 0, calm: 0, slow: 0 };

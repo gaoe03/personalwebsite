@@ -1,6 +1,10 @@
 import { useParams, Link } from 'react-router-dom';
 import posts from './posts/index.js';
 import usePageTitle from './usePageTitle.js';
+import BlogNav from './BlogNav.jsx';
+import { formatDate } from './Blog.jsx';
+
+const serif = "'Libre Baskerville', serif";
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -20,11 +24,12 @@ export default function BlogPost() {
 
   const Content = post.Component;
   const dateLabel = post.status === 'growing'
-    ? `Updated ${post.updatedDate || post.date}`
-    : post.date;
+    ? `Updated ${formatDate(post.updatedDate || post.date)}`
+    : formatDate(post.date);
 
   return (
     <div style={{ backgroundColor: '#fbfcfb', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', color: '#333' }}>
+      <BlogNav />
       <style>{`
         .post-content p { margin: 0 0 1.4em; }
         .post-content p:last-child { margin-bottom: 0; }
@@ -47,26 +52,11 @@ export default function BlogPost() {
           .post-content .feature-image { margin-bottom: 1.5em; }
         }
       `}</style>
-      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 28px 120px' }}>
-
-        {/* Breadcrumb */}
-        <div style={{ display: 'flex', gap: '14px', fontSize: '14px', marginBottom: '40px' }}>
-          <Link to="/" style={{ color: '#999', textDecoration: 'none' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#555'}
-            onMouseLeave={(e) => e.currentTarget.style.color = '#999'}
-          >home</Link>
-          <span style={{ color: '#ddd' }}>/</span>
-          <Link to="/blog" style={{ color: '#999', textDecoration: 'none' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#555'}
-            onMouseLeave={(e) => e.currentTarget.style.color = '#999'}
-          >blog</Link>
-          <span style={{ color: '#ddd' }}>/</span>
-          <span style={{ color: '#555' }}>{post.slug}</span>
-        </div>
+      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '120px 28px 100px' }}>
 
         {/* Post */}
         <article>
-          <h1 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: '24px', fontWeight: 400, color: '#232323', marginBottom: '8px', lineHeight: 1.3 }}>
+          <h1 style={{ fontFamily: serif, fontSize: '26px', fontWeight: 400, color: '#232323', lineHeight: 1.3, marginBottom: '8px' }}>
             {post.title}
           </h1>
           <p style={{ color: '#bbb', fontSize: '13px', marginBottom: '40px' }}>{dateLabel}</p>
@@ -74,6 +64,14 @@ export default function BlogPost() {
             <Content />
           </div>
         </article>
+
+        {/* Back link */}
+        <div style={{ marginTop: '56px', paddingTop: '24px', borderTop: '1px solid #ececea' }}>
+          <Link to="/blog" style={{ color: '#999', fontSize: '14px', textDecoration: 'none' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#3d6b4a'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#999'}
+          >&larr; back to blog</Link>
+        </div>
       </div>
     </div>
   );
