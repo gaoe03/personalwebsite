@@ -4,32 +4,13 @@ import posts from './posts/index.js';
 import usePageTitle from './usePageTitle.js';
 import BlogNav from './BlogNav.jsx';
 import { useWobbleLoop } from './App.jsx';
-import { BlogWobbleDefs, SoftFrame, MtHoodScene, RiceScene, CameraScene } from './blogArt.jsx';
+import { BlogWobbleDefs, SoftFrame, Cover } from './blogArt.jsx';
 
 const serif = "'Libre Baskerville', serif";
 
 export const formatDate = (iso) => {
   const d = new Date(`${iso}T00:00:00`);
   return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-};
-
-// Covers: every post gets a hand-drawn wobble scene on a tinted ground.
-// Posts with no entry fall back to the plain tint so nothing ships broken.
-const covers = {
-  'virtual-environments': { scene: MtHoodScene, bg: '#EDF1F2' },
-  'rice': { scene: RiceScene, bg: '#F1F2EC' },
-  'taking-pictures-while-traveling': { scene: CameraScene, bg: '#FAF9F6' },
-};
-
-const Cover = ({ slug, aspect }) => {
-  const c = covers[slug] || {};
-  const Scene = c.scene;
-  return (
-    <div style={{ position: 'relative', width: '100%', aspectRatio: aspect, borderRadius: '10px', overflow: 'hidden', background: c.bg || '#eef0ec' }} aria-hidden="true">
-      {Scene && <Scene />}
-      <SoftFrame radius={9} />
-    </div>
-  );
 };
 
 const Kicker = ({ category }) => category ? (

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, Briefcase, GraduationCap, Github, Youtube, Mail, Camera, Code, Globe, Ticket, ArrowUpRight, Image, X, ChevronRight, Play, ExternalLink, IceCream, Coins, Linkedin, ChevronDown } from 'lucide-react';
 import usePageTitle from './usePageTitle.js';
+import posts from './posts/index.js';
+import { Cover, BlogWobbleDefs } from './blogArt.jsx';
 
 // === TYPING ANIMATION HOOK ===
 const useTypingEffect = (text, speed = 80, delay = 500) => {
@@ -1875,6 +1877,51 @@ const HeroHeading = () => {
   );
 };
 
+// Recent writing: teaser of the three newest posts, pulled from the same posts
+// list the /blog page uses (one source of truth). Cards link straight to each
+// post; the "read the blog" link goes to the full archive.
+const RecentWriting = () => {
+  const recent = posts.filter((p) => p.status !== 'draft').slice(0, 3);
+  if (recent.length === 0) return null;
+  const fmtDate = (iso) => {
+    const d = new Date(`${iso}T00:00:00`);
+    return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+  return (
+    <section id="writing" className="relative px-6 py-16 scroll-mt-20">
+      <BlogWobbleDefs />
+      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4 mb-8">
+          <div style={{ display: 'inline-block' }}>
+            <h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>recent writing</h2>
+            <WobblyUnderline height={8} />
+          </div>
+          <a href="/blog" className="inline-flex items-center gap-1 text-sm transition-all duration-200 hover:gap-2" style={{ color: '#4A7C59', fontWeight: 500 }}>
+            read the blog <ArrowUpRight size={15} />
+          </a>
+        </div>
+        <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+          {recent.map((post) => (
+            <a key={post.slug} href={`/blog/${post.slug}`} className="block group" style={{ textDecoration: 'none' }}>
+              <Cover slug={post.slug} aspect="16 / 9" />
+              <div style={{ padding: '14px 2px 0' }}>
+                {post.category && (
+                  <p style={{ fontFamily: "'Libre Baskerville', serif", fontStyle: 'italic', fontSize: '13px', color: '#75806f', margin: '0 0 6px' }}>{post.category.toLowerCase()}</p>
+                )}
+                <h3 className="transition-colors duration-150" style={{ fontFamily: 'var(--heading-font)', fontSize: '1.2rem', color: '#232323', fontWeight: 400, lineHeight: 1.3, margin: '0 0 6px' }}>{post.title}</h3>
+                {post.excerpt && (
+                  <p style={{ color: '#565a53', fontSize: '14px', lineHeight: 1.55, margin: '0 0 8px' }}>{post.excerpt}</p>
+                )}
+                <p style={{ color: '#9a9d97', fontSize: '12.5px', margin: 0 }}>{fmtDate(post.date)}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default function Site() {
   const rootRef = useRef(null);
   useWobbleLoop(rootRef);
@@ -2030,6 +2077,9 @@ export default function Site() {
 
       {/* YouTube Section */}
       <GaoLifeSection />
+
+      {/* Recent writing teaser */}
+      <RecentWriting />
 
       <footer id="contact" className="px-6 py-10 scroll-mt-20" style={{ borderTop: '1px solid #e3e5e2' }}>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-5" style={{ maxWidth: '1100px', margin: '0 auto' }}>

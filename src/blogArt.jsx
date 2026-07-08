@@ -127,3 +127,23 @@ export const CameraScene = () => {
     </svg>
   );
 };
+
+// Cover art per post slug, on a tinted ground. One source for both the blog
+// index and the homepage "recent writing" teaser. Posts with no entry fall
+// back to a plain tint so nothing ships broken.
+const covers = {
+  'virtual-environments': { scene: MtHoodScene, bg: '#EDF1F2' },
+  'rice': { scene: RiceScene, bg: '#F1F2EC' },
+  'taking-pictures-while-traveling': { scene: CameraScene, bg: '#FAF9F6' },
+};
+
+export const Cover = ({ slug, aspect }) => {
+  const c = covers[slug] || {};
+  const Scene = c.scene;
+  return (
+    <div style={{ position: 'relative', width: '100%', aspectRatio: aspect, borderRadius: '10px', overflow: 'hidden', background: c.bg || '#eef0ec' }} aria-hidden="true">
+      {Scene && <Scene />}
+      <SoftFrame radius={9} />
+    </div>
+  );
+};
