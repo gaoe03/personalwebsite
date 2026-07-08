@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+/* Horizontal pill rows that stay one line tall (no wrap) without a visible scrollbar */
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

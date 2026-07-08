@@ -488,7 +488,7 @@ const GaoLifeSection = () => {
             </div>
 
             {/* Video selector pills */}
-            <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
+            <div className="no-scrollbar" style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'nowrap', overflowX: 'auto' }}>
               {filteredVideos.map((vid, i) => (
                 <button
                   key={i}
@@ -503,6 +503,8 @@ const GaoLifeSection = () => {
                     fontWeight: '500',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   {vid.title}
@@ -579,7 +581,7 @@ const GaoLifeSection = () => {
           </div>
 
           {/* Mobile video pills */}
-          <div style={{ display: 'flex', gap: '6px', marginTop: '8px', flexWrap: 'wrap' }}>
+          <div className="no-scrollbar" style={{ display: 'flex', gap: '6px', marginTop: '8px', flexWrap: 'nowrap', overflowX: 'auto' }}>
             {filteredVideos.map((vid, i) => (
               <button
                 key={i}
@@ -588,6 +590,8 @@ const GaoLifeSection = () => {
                   padding: '10px 14px',
                   borderRadius: '16px',
                   border: 'none',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
                   background: selectedVideo === i ? '#4A7C59' : '#f1f3f1',
                   color: selectedVideo === i ? '#fff' : '#666',
                   fontSize: '12px',
@@ -1896,8 +1900,8 @@ const RecentWriting = () => {
             <h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>recent writing</h2>
             <WobblyUnderline height={8} />
           </div>
-          <a href="/blog" className="inline-flex items-center gap-1 text-sm transition-all duration-200 hover:gap-2" style={{ color: '#4A7C59', fontWeight: 500 }}>
-            read the blog <ArrowUpRight size={15} />
+          <a href="/blog" className="text-sm transition-opacity duration-200 hover:opacity-70" style={{ color: '#4A7C59', fontWeight: 500 }}>
+            read more
           </a>
         </div>
         <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
