@@ -580,8 +580,8 @@ const GaoLifeSection = () => {
             ))}
           </div>
 
-          {/* Mobile video pills */}
-          <div className="no-scrollbar" style={{ display: 'flex', gap: '6px', marginTop: '8px', flexWrap: 'nowrap', overflowX: 'auto' }}>
+          {/* Mobile video pills: wrap into the space below so nothing is cut off */}
+          <div style={{ display: 'flex', gap: '6px', marginTop: '8px', flexWrap: 'wrap' }}>
             {filteredVideos.map((vid, i) => (
               <button
                 key={i}
@@ -1900,8 +1900,8 @@ const RecentWriting = () => {
             <h2 style={{ fontFamily: 'var(--heading-font)', fontSize: '2.25rem', color: '#2d2d2d', fontWeight: 400 }}>recent writing</h2>
             <WobblyUnderline height={8} />
           </div>
-          <a href="/blog" className="text-sm transition-opacity duration-200 hover:opacity-70" style={{ color: '#4A7C59', fontWeight: 500 }}>
-            read more
+          <a href="/blog" className="inline-flex items-center gap-1 text-sm transition-all duration-200 hover:gap-2" style={{ color: '#4A7C59', fontWeight: 500 }}>
+            read more <ArrowUpRight size={15} />
           </a>
         </div>
         <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
