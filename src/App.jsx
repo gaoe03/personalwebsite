@@ -120,7 +120,7 @@ const IconMapPin = (p) => <ProjIcon {...p} paths={`<path d="M32 53 C22 39 18 31 
 
 const projects = [
   {
-    id: 'precinct', title: 'Precinct', desc: 'Reads the political lean and demographics of the precinct you\'re standing in', icon: IconMapPin, tech: ['SwiftUI', 'MapKit', 'SQLite', 'HTML', 'CSS', 'JavaScript'], link: '/projects/precinct/', repo: 'https://github.com/gaoe03/precinct', live: true, type: 'Jun 2026',
+    id: 'precinct', title: 'Precinct', desc: 'Reads the political lean and demographics of the precinct you\'re standing in', icon: IconMapPin, tech: ['SwiftUI', 'MapKit', 'SQLite', 'HTML', 'CSS', 'JavaScript'], link: 'https://precinct.ethangao.xyz/', repo: 'https://github.com/gaoe03/precinct', live: true, type: 'Jun 2026',
     category: 'iOS App',
     fullDesc: `Stand anywhere it covers and Precinct reads the precinct you're standing in: how it voted, which way it has been moving, and who lives there.
 
