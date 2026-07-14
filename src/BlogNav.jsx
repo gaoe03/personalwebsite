@@ -14,8 +14,8 @@ export default function BlogNav() {
         <span className="hidden sm:inline">Ethan Gao</span>
       </Link>
       <div className="flex items-center gap-1 md:gap-3 px-3 md:px-4 py-2 rounded-full" style={pill}>
-        <Link to="/" className="text-xs md:text-sm font-medium transition-all duration-200 px-2 md:px-3 py-1 hover:scale-110" style={{ color: '#555', textDecoration: 'none' }}>Home</Link>
-        <Link to="/blog" className="text-xs md:text-sm font-medium transition-all duration-200 px-2 md:px-3 py-1 hover:scale-110" style={{ color: '#555', textDecoration: 'none' }}>Blog</Link>
+        <Link to="/" className="text-xs md:text-sm font-medium transition-colors duration-200 px-2 md:px-3 py-1 text-[#555] hover:text-[#4A7C59]" style={{ textDecoration: 'none' }}>Home</Link>
+        <Link to="/blog" className="text-xs md:text-sm font-medium transition-colors duration-200 px-2 md:px-3 py-1 text-[#555] hover:text-[#4A7C59]" style={{ textDecoration: 'none' }}>Blog</Link>
       </div>
     </nav>
   );

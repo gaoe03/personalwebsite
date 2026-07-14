@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Briefcase, GraduationCap, Github, Youtube, Mail, Camera, Code, Globe, Ticket, ArrowUpRight, Image, X, ChevronRight, Play, ExternalLink, IceCream, Coins, Linkedin, ChevronDown } from 'lucide-react';
+import { Briefcase, GraduationCap, Github, Youtube, Mail, Camera, Code, Globe, Ticket, ArrowUpRight, Image, X, ChevronRight, Play, ExternalLink, IceCream, Coins, Linkedin, ChevronDown } from 'lucide-react';
 import usePageTitle from './usePageTitle.js';
 import posts from './posts/index.js';
 import { Cover, BlogWobbleDefs } from './blogArt.jsx';
@@ -277,7 +277,7 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
 
         {/* Location markers */}
         {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
-          <g key={i} tabIndex={0} role="button" aria-label={`${video.title} video`} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectVideo(i); } }}>
+          <g key={i} className="map-pin" tabIndex={0} role="button" aria-label={`${video.title} video`} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectVideo(i); } }}>
             {/* Transparent oversized hit area so the marker is tappable on mobile */}
             <circle cx={video.mapX} cy={video.mapY} r="7" fill="transparent" />
             {/* Pulse animation ring - shows on selected, subtle on others */}
@@ -343,7 +343,7 @@ const AmericaMap = ({ videos, onSelectVideo, selectedIndex }) => {
 
         {/* Location markers */}
         {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
-          <g key={i} tabIndex={0} role="button" aria-label={`${video.title} video`} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectVideo(i); } }}>
+          <g key={i} className="map-pin" tabIndex={0} role="button" aria-label={`${video.title} video`} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectVideo(i); } }}>
             <circle cx={video.mapX} cy={video.mapY} r="7" fill="transparent" />
             <circle
               cx={video.mapX}
@@ -457,7 +457,7 @@ const GaoLifeSection = () => {
                 </div>
               </div>
               <div style={{ padding: '20px', background: '#fff' }}>
-                <p className="text-xs font-medium mb-1" style={{ color: '#4A7C59', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                <p className="text-xs mb-1" style={{ color: '#4A7C59' }}>
                   gao life {currentVideo.num}, {currentVideo.country}
                 </p>
                 <p className="font-medium text-xl" style={{ fontFamily: 'var(--heading-font)', color: '#2d2d2d' }}>{currentVideo.title}</p>
@@ -552,7 +552,7 @@ const GaoLifeSection = () => {
             </div>
           </a>
           <div className="mt-3">
-            <p className="text-xs font-medium mb-0.5" style={{ color: '#4A7C59', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <p className="text-xs mb-0.5" style={{ color: '#4A7C59' }}>
               gao life {currentVideo.num}, {currentVideo.country}
             </p>
             <p className="font-medium text-lg" style={{ fontFamily: 'var(--heading-font)', color: '#2d2d2d' }}>{currentVideo.title}</p>
@@ -1014,7 +1014,7 @@ const CyberCreditMockup = () => {
       </div>
 
       <div style={{ background: '#f1f3f1', borderRadius: '6px', padding: '8px 10px', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-        <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }} />
+        <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)' }} />
         <span style={{ fontSize: '9px', color: '#888', fontFamily: 'monospace' }}>0x7a2...f4e9</span>
       </div>
 
@@ -1246,7 +1246,7 @@ const ErewhonMockup = () => {
 // Precinct: a mini of the actual app — a map with hand-drawn pins; tap one and its profile card slides open.
 const precinctColor = (dem) => dem >= 72 ? '#2166E6' : dem >= 58 ? '#4F54CF' : dem >= 43 ? '#8C40B3' : dem >= 29 ? '#B5347A' : '#D92929';
 const PRECINCTS = [
-  { name: 'AD 75 · ED 14', loc: 'Manhattan, NY', lean: 'D+49', dem: 74, income: '$89k', race: '64% White', turnout: '44%', x: '24%', y: '30%' },
+  { name: 'AD 75, ED 14', loc: 'Manhattan, NY', lean: 'D+49', dem: 74, income: '$89k', race: '64% White', turnout: '44%', x: '24%', y: '30%' },
   { name: 'Precinct 0331', loc: 'Houston, TX', lean: 'D+11', dem: 56, income: '$58k', race: '31% White', turnout: '52%', x: '67%', y: '25%' },
   { name: 'Precinct 142', loc: 'McAllen, TX', lean: 'R+1', dem: 49, income: '$41k', race: '14% White', turnout: '39%', x: '46%', y: '44%' },
 ];
@@ -1546,9 +1546,9 @@ const HikingTrail = () => {
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: isVisible ? 'rgba(17,24,39,0.56)' : 'rgba(17,24,39,0)', transition: 'background-color 0.3s ease' }} onClick={handleClose}>
-        <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#fff', maxHeight: '85vh', border: '1px solid #e5e7eb', boxShadow: '0 24px 60px rgba(15,23,42,0.22)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
-          <div className="px-6 pt-6 pb-5" style={{ background: '#f8fafc', borderBottom: '1px solid #e5e7eb' }}>
-            <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150" style={{ backgroundColor: '#eef2f7' }}>
+        <div className="w-full max-w-xl rounded-2xl relative overflow-hidden" style={{ backgroundColor: '#fff', maxHeight: '85vh', border: '1px solid #e8e4da', boxShadow: '0 16px 40px rgba(74,60,40,0.16)', transform: isVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)', opacity: isVisible ? 1 : 0, transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease' }} onClick={e => e.stopPropagation()}>
+          <div className="px-6 pt-6 pb-5" style={{ background: '#f7f6f1', borderBottom: '1px solid #e8e4da' }}>
+            <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-150" style={{ backgroundColor: '#f1efe9' }}>
               <X size={16} style={{ color: '#666' }} />
             </button>
             <div className="flex items-center gap-3 mb-4">
@@ -1556,7 +1556,7 @@ const HikingTrail = () => {
                 <Icon size={24} style={{ color: '#fff' }} />
               </div>
               {(item.role || item.subtitle) && (
-                <span className="text-xs font-semibold" style={{ color: '#3d6b4a', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{item.role || item.subtitle}</span>
+                <span className="text-xs" style={{ color: '#3d6b4a' }}>{item.role || item.subtitle}</span>
               )}
             </div>
             <h3 style={{ fontFamily: 'var(--heading-font)', fontSize: '1.625rem', color: '#2d2d2d', marginBottom: '0.5rem', fontWeight: 400 }}>{item.title}</h3>
@@ -1592,26 +1592,26 @@ const HikingTrail = () => {
         className="relative p-6 rounded-2xl cursor-pointer transition-all duration-300 hover:-translate-y-1 group"
         style={{
           background: '#fff',
-          boxShadow: '0 8px 24px rgba(15,23,42,0.06)',
-          border: '1px solid #e5e7eb',
+          boxShadow: '0 8px 24px rgba(74,60,40,0.06)',
+          border: '1px solid #e8e4da',
           minWidth: '280px',
           backdropFilter: 'blur(4px)'
         }}
         onClick={() => setSelectedItem(stop.modalContent)}
         onMouseEnter={(e) => {
-          e.currentTarget.style.boxShadow = '0 14px 34px rgba(15,23,42,0.11)';
+          e.currentTarget.style.boxShadow = '0 14px 34px rgba(74,60,40,0.11)';
           e.currentTarget.style.borderColor = '#cbd5e1';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,23,42,0.06)';
-          e.currentTarget.style.borderColor = '#e5e7eb';
+          e.currentTarget.style.boxShadow = '0 8px 24px rgba(74,60,40,0.06)';
+          e.currentTarget.style.borderColor = '#e8e4da';
         }}
       >
         {/* Subtle accent line */}
         <div className="absolute top-0 left-6 right-6 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(74,124,89,0.24), transparent)' }} />
 
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#4A7C59', letterSpacing: '0.1em' }}>{stop.year}</span>
+          <span className="text-xs" style={{ color: '#4A7C59' }}>{stop.year}</span>
         </div>
         <p className="text-2xl font-medium" style={{ color: '#2d2d2d', fontFamily: 'var(--heading-font)', letterSpacing: '-0.01em' }}>{stop.title}</p>
         {stop.desc && (
@@ -1635,18 +1635,18 @@ const HikingTrail = () => {
               <div
                 className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white cursor-pointer transition-all duration-300 hover:-translate-y-0.5 group"
                 style={{
-                  border: '1px solid #e5e7eb',
-                  boxShadow: '0 4px 14px rgba(15,23,42,0.04)',
+                  border: '1px solid #e8e4da',
+                  boxShadow: '0 4px 14px rgba(74,60,40,0.04)',
                   background: '#fff'
                 }}
                 onClick={() => setSelectedItem({ ...m.modalContent, icon: m.icon })}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 10px 24px rgba(15,23,42,0.09)';
+                  e.currentTarget.style.boxShadow = '0 10px 24px rgba(74,60,40,0.09)';
                   e.currentTarget.style.borderColor = '#cbd5e1';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(15,23,42,0.04)';
-                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(74,60,40,0.04)';
+                  e.currentTarget.style.borderColor = '#e8e4da';
                 }}
               >
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105" style={{ background: 'linear-gradient(135deg, #4A7C59 0%, #3d6b4a 100%)' }}>
@@ -1683,13 +1683,13 @@ const HikingTrail = () => {
                   className="p-4 rounded-xl cursor-pointer"
                   style={{
                     background: '#fff',
-                    boxShadow: '0 6px 18px rgba(15,23,42,0.06)',
-                    border: '1px solid #e5e7eb'
+                    boxShadow: '0 6px 18px rgba(74,60,40,0.06)',
+                    border: '1px solid #e8e4da'
                   }}
                   onClick={() => setSelectedItem(stop.modalContent)}
                 >
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#4A7C59', letterSpacing: '0.08em' }}>{stop.year}</span>
+                    <span className="text-xs" style={{ color: '#4A7C59' }}>{stop.year}</span>
                   </div>
                   <p className="text-lg font-medium" style={{ color: '#2d2d2d', fontFamily: 'var(--heading-font)' }}>{stop.title}</p>
                   {stop.desc && <p className="text-xs mt-1" style={{ color: '#666', lineHeight: 1.4 }}>{stop.desc}</p>}
@@ -1702,8 +1702,8 @@ const HikingTrail = () => {
                         className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg cursor-pointer"
                         style={{
                           background: '#fff',
-                          border: '1px solid #e5e7eb',
-                          boxShadow: '0 4px 12px rgba(15,23,42,0.04)'
+                          border: '1px solid #e8e4da',
+                          boxShadow: '0 4px 12px rgba(74,60,40,0.04)'
                         }}
                         onClick={() => setSelectedItem({ ...m.modalContent, icon: m.icon })}
                       >
@@ -1783,7 +1783,7 @@ const HikingTrail = () => {
                 {stops.map((stop) => (
                   <div key={stop.id} className="relative">
                     <div className="absolute -left-9 top-5 w-5 h-5 rounded-full bg-white" style={{ borderWidth: '3px', borderStyle: 'solid', borderColor: '#4A7C59' }} />
-                    <div className="p-5 rounded-xl cursor-pointer bg-white transition-all duration-200 hover:-translate-y-1" style={{ boxShadow: '0 8px 24px rgba(15,23,42,0.06)', border: '1px solid #e5e7eb' }} onClick={() => setSelectedItem(stop.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 14px 34px rgba(15,23,42,0.11)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,23,42,0.06)'}>
+                    <div className="p-5 rounded-xl cursor-pointer bg-white transition-all duration-200 hover:-translate-y-1" style={{ boxShadow: '0 8px 24px rgba(74,60,40,0.06)', border: '1px solid #e8e4da' }} onClick={() => setSelectedItem(stop.modalContent)} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 14px 34px rgba(74,60,40,0.11)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 8px 24px rgba(74,60,40,0.06)'}>
                       <p className="text-sm font-bold tracking-wide" style={{ color: '#4A7C59' }}>{stop.year}</p>
                       <p className="text-xl font-medium mt-0.5" style={{ color: '#2d2d2d', fontFamily: 'var(--heading-font)' }}>{stop.title}</p>
                       {stop.desc && <p className="text-sm mt-0.5" style={{ color: '#777' }}>{stop.desc}</p>}
@@ -1791,7 +1791,7 @@ const HikingTrail = () => {
                     {stop.milestones.length > 0 && (
                       <div className="ml-6 mt-3 flex flex-col gap-2">
                         {stop.milestones.map((m, i) => (
-                          <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1" style={{ border: '1px solid #e5e7eb', boxShadow: '0 6px 18px rgba(15,23,42,0.05)' }} onClick={() => setSelectedItem({ ...m.modalContent, icon: m.icon })} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 12px 28px rgba(15,23,42,0.1)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 6px 18px rgba(15,23,42,0.05)'}>
+                          <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1" style={{ border: '1px solid #e8e4da', boxShadow: '0 6px 18px rgba(74,60,40,0.05)' }} onClick={() => setSelectedItem({ ...m.modalContent, icon: m.icon })} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 12px 28px rgba(74,60,40,0.1)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 6px 18px rgba(74,60,40,0.05)'}>
                             <div className="w-8 h-8 rounded-md flex items-center justify-center" style={{ backgroundColor: '#4A7C59' }}><m.icon size={14} style={{ color: '#fff' }} /></div>
                             <div><p className="text-sm font-semibold" style={{ color: '#2d2d2d' }}>{m.label}</p><p className="text-xs" style={{ color: '#888' }}>{m.desc}</p></div>
                           </div>
@@ -1910,7 +1910,7 @@ const RecentWriting = () => {
               <Cover slug={post.slug} aspect="16 / 9" />
               <div style={{ padding: '14px 2px 0' }}>
                 {post.category && (
-                  <p style={{ fontFamily: "'Libre Baskerville', serif", fontStyle: 'italic', fontSize: '13px', color: '#75806f', margin: '0 0 6px' }}>{post.category.toLowerCase()}</p>
+                  <p style={{ fontSize: '13px', color: '#75806f', margin: '0 0 6px' }}>{post.category.toLowerCase()}</p>
                 )}
                 <h3 className="transition-colors duration-150" style={{ fontFamily: 'var(--heading-font)', fontSize: '1.2rem', color: '#232323', fontWeight: 400, lineHeight: 1.3, margin: '0 0 6px' }}>{post.title}</h3>
                 {post.excerpt && (
@@ -1994,6 +1994,10 @@ export default function Site() {
         input[type="number"] {
           -moz-appearance: textfield;
         }
+
+        /* Map pins: no ugly UA focus box on click; clean ring only on keyboard nav */
+        .map-pin:focus { outline: none; }
+        .map-pin:focus-visible { outline: 2px solid #4A7C59; outline-offset: 2px; border-radius: 4px; }
       `}</style>
       <div id="about" className="relative overflow-hidden" style={{ minHeight: '100vh' }}>
         <div className="absolute inset-0" style={{ background: 'linear-gradient(175deg, #fbfcfb 0%, #f4f6f4 55%, #f1f3f1 100%)' }} />
@@ -2006,24 +2010,21 @@ export default function Site() {
           </span>
           <div className="flex items-center gap-1 md:gap-3 px-3 md:px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(250,249,246,0.85)', border: '1px solid rgba(139,115,85,0.15)', backdropFilter: 'blur(8px)' }}>
             {[{ label: 'Projects', href: '#projects' }, { label: 'Experience', href: '#experience' }, { label: 'Interests', href: '#interests' }, { label: 'Blog', href: '/blog' }, { label: 'Contact', href: '#contact' }].map((link) => (
-              <a key={link.label} href={link.href} className="text-xs md:text-sm font-medium transition-all duration-200 px-2 md:px-3 py-1 hover:scale-110" style={{ color: '#555' }}>{link.label}</a>
+              <a key={link.label} href={link.href} className="text-xs md:text-sm font-medium transition-colors duration-200 px-2 md:px-3 py-1 text-[#555] hover:text-[#4A7C59]">{link.label}</a>
             ))}
           </div>
         </nav>
         <section className="relative px-6 md:px-10 flex flex-col justify-center w-full" style={{ maxWidth: '1200px', margin: '0 auto', minHeight: 'calc(100vh - 80px)', paddingTop: '80px' }}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
             <div className="relative z-10 max-w-xl">
-              <p className="flex items-center gap-2 mb-6" style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6f7570' }}>
-                <MapPin size={12} style={{ color: '#4A7C59' }} /> Costa Mesa, CA
-              </p>
               <HeroHeading />
               <p className="leading-relaxed mb-4" style={{ color: '#444', fontSize: 'clamp(1.05rem, 2vw, 1.15rem)', lineHeight: 1.85 }}>I'm an Analyst at <strong>Deloitte</strong> in Costa Mesa, working within Deloitte Digital. I recently graduated from <strong>UC Irvine</strong> with degrees in Computer Science and Business Administration.</p>
               <p className="leading-relaxed mb-8" style={{ color: '#666', fontSize: 'clamp(0.95rem, 1.5vw, 1.05rem)', lineHeight: 1.85 }}>I also make travel videos and build side projects.</p>
               <div className="flex items-center gap-5">
-                <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:scale-110 hover:text-blue-600" style={{ color: '#666' }} title="LinkedIn"><Linkedin size={20} /></a>
-                <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:scale-110" style={{ color: '#666' }} title="GitHub"><Github size={20} /></a>
-                <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:scale-110 hover:text-red-600" style={{ color: '#666' }} title="YouTube"><Youtube size={20} /></a>
-                <a href="mailto:one@ethangao.xyz" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:scale-110" style={{ color: '#666' }} title="Email"><Mail size={20} /></a>
+                <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:text-blue-600" style={{ color: '#666' }} title="LinkedIn"><Linkedin size={20} /></a>
+                <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200" style={{ color: '#666' }} title="GitHub"><Github size={20} /></a>
+                <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200 hover:text-red-600" style={{ color: '#666' }} title="YouTube"><Youtube size={20} /></a>
+                <a href="mailto:one@ethangao.xyz" className="social-icon inline-flex p-2.5 -m-2.5 transition-all duration-200" style={{ color: '#666' }} title="Email"><Mail size={20} /></a>
               </div>
             </div>
           </div>
@@ -2096,10 +2097,10 @@ export default function Site() {
             >one@ethangao.xyz</a>
           </div>
           <div className="flex items-center gap-5">
-            <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:scale-110 hover:text-blue-600" style={{ color: '#999' }} title="LinkedIn"><Linkedin size={17} /></a>
-            <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:scale-110" style={{ color: '#999' }} title="GitHub"><Github size={17} /></a>
-            <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:scale-110 hover:text-red-600" style={{ color: '#999' }} title="YouTube"><Youtube size={17} /></a>
-            <a href="mailto:one@ethangao.xyz" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:scale-110" style={{ color: '#999' }} title="Email"><Mail size={17} /></a>
+            <a href="https://linkedin.com/in/gaoe" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:text-blue-600" style={{ color: '#999' }} title="LinkedIn"><Linkedin size={17} /></a>
+            <a href="https://github.com/gaoe03" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2 -m-2 transition-all duration-200" style={{ color: '#999' }} title="GitHub"><Github size={17} /></a>
+            <a href="https://youtube.com/@gaofiles" target="_blank" rel="noopener noreferrer" className="social-icon inline-flex p-2 -m-2 transition-all duration-200 hover:text-red-600" style={{ color: '#999' }} title="YouTube"><Youtube size={17} /></a>
+            <a href="mailto:one@ethangao.xyz" className="social-icon inline-flex p-2 -m-2 transition-all duration-200" style={{ color: '#999' }} title="Email"><Mail size={17} /></a>
           </div>
         </div>
       </footer>

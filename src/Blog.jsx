@@ -14,7 +14,7 @@ export const formatDate = (iso) => {
 };
 
 const Kicker = ({ category }) => category ? (
-  <p style={{ fontFamily: serif, fontStyle: 'italic', fontSize: '14px', color: '#75806f', margin: '0 0 8px' }}>
+  <p style={{ fontSize: '14px', color: '#75806f', margin: '0 0 8px' }}>
     {category.toLowerCase()}
   </p>
 ) : null;
