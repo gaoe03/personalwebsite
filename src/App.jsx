@@ -120,7 +120,7 @@ const IconMapPin = (p) => <ProjIcon {...p} paths={`<path d="M32 53 C22 39 18 31 
 
 const projects = [
   {
-    id: 'precinct', title: 'Precinct', desc: 'Reads the political lean and demographics of the precinct you\'re standing in', icon: IconMapPin, tech: ['SwiftUI', 'MapKit', 'SQLite', 'HTML', 'CSS', 'JavaScript'], link: '/projects/precinct/', live: true, type: 'Jun 2026',
+    id: 'precinct', title: 'Precinct', desc: 'Reads the political lean and demographics of the precinct you\'re standing in', icon: IconMapPin, tech: ['SwiftUI', 'MapKit', 'SQLite', 'HTML', 'CSS', 'JavaScript'], link: '/projects/precinct/', repo: 'https://github.com/gaoe03/precinct', live: true, type: 'Jun 2026',
     category: 'iOS App',
     fullDesc: `Stand anywhere it covers and Precinct reads the precinct you're standing in: how it voted, which way it has been moving, and who lives there.
 
@@ -128,7 +128,7 @@ A friend had the data and the general idea. I designed and engineered the app. I
 
 The site you can visit here is a landing page I made for the app, mostly for fun and to test out my design skills.` },
   {
-    id: 'erewhon', title: 'Erewhon Smoothie Archive', shortTitle: 'Erewhon', desc: 'Research agents that scoured the web to reconstruct every Erewhon smoothie', icon: IconErewhon, tech: ['Agents', 'JavaScript'], link: '/projects/erewhon/', live: true, type: 'Jun 2026',
+    id: 'erewhon', title: 'Erewhon Smoothie Archive', shortTitle: 'Erewhon', desc: 'Research agents that scoured the web to reconstruct every Erewhon smoothie', icon: IconErewhon, tech: ['Agents', 'JavaScript'], link: 'https://erewhon.vercel.app/', repo: 'https://github.com/gaoe03/erewhon', live: true, type: 'Jun 2026',
     category: 'Web App',
     fullDesc: `A weekend spent learning how research agents handle long, multi-step work, with Erewhon's smoothies as the test case.
 
@@ -1450,6 +1450,23 @@ const ProjectSwitcher = () => {
               {!active.live && active.link && active.link.includes('github') && (
                 <a
                   href={active.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: 'rgba(74,124,89,0.12)', cursor: 'pointer', textDecoration: 'none',
+                    display: 'inline-flex', alignItems: 'center', gap: '6px',
+                    color: '#3d6b4a', fontSize: '12px', fontWeight: '600',
+                    padding: '8px 16px', borderRadius: '999px', transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = '#4A7C59'; e.currentTarget.style.color = '#fff'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(74,124,89,0.12)'; e.currentTarget.style.color = '#3d6b4a'; }}
+                >
+                  <Github size={13} /> View code
+                </a>
+              )}
+              {active.repo && (
+                <a
+                  href={active.repo}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
