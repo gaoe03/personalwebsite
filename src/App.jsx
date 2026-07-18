@@ -120,11 +120,11 @@ const IconMapPin = (p) => <ProjIcon {...p} paths={`<path d="M32 53 C22 39 18 31 
 
 const projects = [
   {
-    id: 'precinct', title: 'Precinct', desc: 'Reads the political lean and demographics of the precinct you\'re standing in', icon: IconMapPin, tech: ['SwiftUI', 'MapKit', 'SQLite', 'HTML', 'CSS', 'JavaScript'], link: 'https://precinct.ethangao.xyz/', repo: 'https://github.com/gaoe03/precinct', live: true, type: 'Jun 2026',
+    id: 'precinct', title: 'Precinctly', desc: 'Reads the political lean and demographics of the precinct you\'re standing in', icon: IconMapPin, tech: ['SwiftUI', 'MapKit', 'SQLite', 'HTML', 'CSS', 'JavaScript'], link: 'https://precinct.ethangao.xyz/', repo: 'https://github.com/gaoe03/precinctly', live: true, type: 'Jun 2026',
     category: 'iOS App',
-    fullDesc: `Stand anywhere it covers and Precinct reads the precinct you're standing in: how it voted, which way it has been moving, and who lives there.
+    fullDesc: `Stand anywhere it covers and Precinctly reads the precinct you're standing in: how it voted, which way it has been moving, and who lives there.
 
-A friend had the data and the general idea. I designed and engineered the app. It covers about 41,000 precincts across California, New York, Texas, and Massachusetts.
+A friend had the data and the general idea. I designed and engineered the app. It covers about 49,000 precincts across California, New York, Texas, and Massachusetts.
 
 The site you can visit here is a landing page I made for the app, mostly for fun and to test out my design skills.` },
   {
