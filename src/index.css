@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+/* Self-hosted Libre Baskerville (latin), replaces the Google Fonts request.
+   Normal weights only; italic keeps synthesizing from 400 as it did before. */
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/libre-baskerville-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/libre-baskerville-700.woff2') format('woff2');
+}
+
 /* Horizontal pill rows that stay one line tall (no wrap) without a visible scrollbar */
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }

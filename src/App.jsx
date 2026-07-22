@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Briefcase, GraduationCap, Github, Youtube, Mail, Camera, Code, Globe, Ticket, ArrowUpRight, Image, X, ChevronRight, Play, ExternalLink, IceCream, Coins, Linkedin, ChevronDown } from 'lucide-react';
+import { Briefcase, GraduationCap, Github, Youtube, Mail, Camera, Code, Globe, Ticket, ArrowUpRight, Image, X, ChevronRight, Play, ExternalLink, IceCream, Coins, Linkedin } from 'lucide-react';
 import usePageTitle from './usePageTitle.js';
 import posts from './posts/index.js';
 import { Cover, BlogWobbleDefs } from './blogArt.jsx';
@@ -2045,12 +2045,6 @@ export default function Site() {
               </div>
             </div>
           </div>
-          <button onClick={() => document.getElementById('experience').scrollIntoView({ behavior: 'smooth' })} className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
-            <span className="text-xs" style={{ color: '#888' }}>Scroll</span>
-            <div className="w-10 h-10 rounded-full border-2 flex items-center justify-center" style={{ borderColor: '#aaa' }}>
-              <ChevronDown size={20} style={{ color: '#888' }} />
-            </div>
-          </button>
         </section>
       </div>
 
