@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import posts from './posts/index.js';
 import usePageTitle from './usePageTitle.js';
 import BlogNav from './BlogNav.jsx';
-import { useWobbleLoop } from './App.jsx';
-import { BlogWobbleDefs, SoftFrame, Cover } from './blogArt.jsx';
-
-const serif = "'Libre Baskerville', serif";
+import { useWobbleLoop } from './portfolioVisuals.jsx';
+import { BlogWobbleDefs, Cover } from './blogArt.jsx';
+import { useLabAccent } from './lab/accentTheme.js';
+import { CustomCursor } from './lab/SiteChrome.jsx';
+import './blog.css';
 
 export const formatDate = (iso) => {
   const d = new Date(`${iso}T00:00:00`);
@@ -14,101 +15,71 @@ export const formatDate = (iso) => {
 };
 
 const Kicker = ({ category }) => category ? (
-  <p style={{ fontSize: '14px', color: '#75806f', margin: '0 0 8px' }}>
-    {category.toLowerCase()}
-  </p>
+  <p className="blog-kicker">{category.toLowerCase()}</p>
 ) : null;
 
 const MetaLine = ({ post }) => (
-  <p style={{ color: '#9a9d97', fontSize: '13px', margin: '10px 0 0' }}>
-    {formatDate(post.date)}
-  </p>
+  <p className="blog-date">{formatDate(post.date)}</p>
 );
 
 export default function Blog() {
-  usePageTitle('Blog');
+  usePageTitle('Writing, Ethan Gao', {
+    description: "Thoughts and things I'm learning.",
+    path: '/blog',
+  });
   const rootRef = useRef(null);
+  useLabAccent();
   useWobbleLoop(rootRef);
   const visible = posts.filter((p) => p.status !== 'draft');
   const [feature, ...rest] = visible;
 
   return (
-    <div ref={rootRef} style={{ backgroundColor: '#fbfcfb', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', color: '#333' }}>
+    <div ref={rootRef} className="lab-page blog-page">
       <BlogWobbleDefs />
+      <CustomCursor />
       <BlogNav />
-      <style>{`
-        .post-link { display: block; text-decoration: none; position: relative; background: #fff; border-radius: 14px; }
-        .post-link .post-title { transition: color 0.15s; }
-        .post-link:hover .post-title { color: #3d6b4a; }
-        .post-link > .soft-frame rect { transition: stroke 0.15s; }
-        .post-link:hover > .soft-frame rect { stroke: rgba(74,124,89,0.5); }
-        .feat { display: flex; gap: 32px; align-items: center; }
-        .feat-text { flex: 1; min-width: 0; }
-        .feat-img { width: 46%; flex-shrink: 0; }
-        .blog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
-        @media (max-width: 700px) {
-          .feat { flex-direction: column-reverse; gap: 18px; align-items: stretch; }
-          .feat-img { width: 100%; }
-          .blog-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
 
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '116px 28px 120px' }}>
+      <main className="blog-shell">
 
         {/* Masthead */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '14px' }}>
+        <header className="blog-masthead">
           <div>
-            <h1 style={{ fontFamily: serif, fontSize: '30px', color: '#232323', fontWeight: 400, marginBottom: '4px' }}>
-              Blog
-            </h1>
-            <p style={{ color: '#888', fontSize: '15px', lineHeight: 1.5 }}>
-              Thoughts and things I'm learning.
-            </p>
+            <h1>Writing</h1>
+            <p>Thoughts and things I'm learning.</p>
           </div>
-          <p style={{ color: '#9a9d97', fontSize: '13px' }}>{visible.length} posts</p>
-        </div>
-        <div style={{ height: '2px', background: '#232323', marginBottom: '32px' }} />
+          <p>{visible.length} posts</p>
+        </header>
 
         {visible.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 20px', color: '#999', fontSize: '13px' }}>
+          <div className="blog-empty">
             Nothing here yet.
           </div>
         ) : (
           <>
             {/* Feature: newest post */}
-            <Link to={`/blog/${feature.slug}`} className="post-link" style={{ padding: '22px 26px' }}>
-              <SoftFrame radius={13} />
-              <div className="feat">
-                <div className="feat-text">
+            <Link to={`/blog/${feature.slug}`} className="blog-post-link blog-feature">
+              <div className="blog-feature-layout">
+                <div className="blog-feature-copy">
                   <Kicker category={feature.category} />
-                  <h2 className="post-title" style={{ fontFamily: serif, fontSize: '29px', color: '#232323', fontWeight: 400, lineHeight: 1.28, margin: '0 0 12px' }}>
-                    {feature.title}
-                  </h2>
-                  {feature.excerpt && (
-                    <p style={{ color: '#565a53', fontSize: '15.5px', lineHeight: 1.6, margin: 0 }}>{feature.excerpt}</p>
-                  )}
+                  <h2 className="blog-post-title">{feature.title}</h2>
+                  {feature.excerpt && <p className="blog-excerpt">{feature.excerpt}</p>}
                   <MetaLine post={feature} />
                 </div>
-                <div className="feat-img">
+                <div className="blog-feature-image">
                   <Cover slug={feature.slug} aspect="16 / 10" />
                 </div>
               </div>
             </Link>
 
             {rest.length > 0 && (
-              <div className="blog-grid" style={{ marginTop: '26px' }}>
+              <div className="blog-grid">
                 {rest.map((post) => (
-                  <Link key={post.slug} to={`/blog/${post.slug}`} className="post-link" style={{ padding: '18px 20px 22px' }}>
-                    <SoftFrame radius={13} />
+                  <Link key={post.slug} to={`/blog/${post.slug}`} className="blog-post-link blog-grid-card">
                     <Cover slug={post.slug} aspect="16 / 9" />
-                    <div style={{ padding: '16px 4px 0' }}>
+                    <div className="blog-grid-copy">
                       <Kicker category={post.category} />
-                      <h3 className="post-title" style={{ fontFamily: serif, fontSize: '21px', color: '#232323', fontWeight: 400, lineHeight: 1.3, margin: '0 0 8px' }}>
-                        {post.title}
-                      </h3>
-                      {post.excerpt && (
-                        <p style={{ color: '#565a53', fontSize: '14.5px', lineHeight: 1.55, margin: 0 }}>{post.excerpt}</p>
-                      )}
+                      <h3 className="blog-post-title">{post.title}</h3>
+                      {post.excerpt && <p className="blog-excerpt">{post.excerpt}</p>}
                       <MetaLine post={post} />
                     </div>
                   </Link>
@@ -118,7 +89,7 @@ export default function Blog() {
           </>
         )}
 
-      </div>
+      </main>
     </div>
   );
 }

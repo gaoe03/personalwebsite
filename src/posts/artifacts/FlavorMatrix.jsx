@@ -35,7 +35,7 @@ export default function FlavorMatrix() {
   return (
     <div style={{ margin: '32px auto', maxWidth: '500px' }}>
       <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1' }}>
-        <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%" style={{ background: '#fafafa', borderRadius: '10px', border: '1px solid #eee' }}>
+        <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%" aria-label="Rice varieties by firmness and stickiness" style={{ background: '#fafafa', borderRadius: '10px', border: '1px solid #eee' }}>
           <defs>
             <filter id="dotShadow" x="-50%" y="-50%" width="200%" height="200%">
               <feDropShadow dx="0" dy="1.5" stdDeviation="2" floodColor="#000" floodOpacity="0.2" />
@@ -53,10 +53,10 @@ export default function FlavorMatrix() {
           <line x1={W / 2} y1={PAD} x2={W / 2} y2={H - PAD} stroke="#bbb" strokeWidth="1" />
           <line x1={PAD} y1={H / 2} x2={W - PAD} y2={H / 2} stroke="#bbb" strokeWidth="1" />
           {/* Axis labels */}
-          <text x={W / 2} y={PAD - 14} textAnchor="middle" fontSize="11" fontWeight="600" fill="#555" letterSpacing="1.5">STICKY</text>
-          <text x={W / 2} y={H - PAD + 22} textAnchor="middle" fontSize="11" fontWeight="600" fill="#555" letterSpacing="1.5">SMOOTH</text>
-          <text x={PAD - 10} y={H / 2 + 4} textAnchor="end" fontSize="11" fontWeight="600" fill="#555" letterSpacing="1.5">FIRM</text>
-          <text x={W - PAD + 10} y={H / 2 + 4} textAnchor="start" fontSize="11" fontWeight="600" fill="#555" letterSpacing="1.5">SOFT</text>
+          <text x={W / 2} y={PAD - 14} textAnchor="middle" fontSize="11" fontWeight="600" fill="#555">Sticky</text>
+          <text x={W / 2} y={H - PAD + 22} textAnchor="middle" fontSize="11" fontWeight="600" fill="#555">Smooth</text>
+          <text x={PAD - 10} y={H / 2 + 4} textAnchor="end" fontSize="11" fontWeight="600" fill="#555">Firm</text>
+          <text x={W - PAD + 10} y={H / 2 + 4} textAnchor="start" fontSize="11" fontWeight="600" fill="#555">Soft</text>
 
           {/* Dots */}
           {varieties.map((v, i) => {
@@ -65,21 +65,37 @@ export default function FlavorMatrix() {
             const dimmed = !isSel && !isHov && !isVisible(v);
             const r = isSel ? 10 : isHov ? 8 : 6;
             return (
-              <circle
+              <g
                 key={i}
-                cx={toPx(v.x)}
-                cy={toPx(v.y)}
-                r={r}
-                fill={originColors[v.origin]}
-                stroke="#fff"
-                strokeWidth="2"
-                opacity={dimmed ? 0.25 : 1}
-                filter={isSel || isHov ? 'url(#dotShadow)' : undefined}
-                style={{ cursor: 'pointer', transition: 'r 0.15s ease, opacity 0.2s ease' }}
+                className="flavor-matrix-dot"
+                role="button"
+                tabIndex={0}
+                aria-label={`${v.name} from ${v.origin}. ${v.use}`}
+                aria-pressed={isSel}
                 onClick={() => setSelected(isSel ? null : i)}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
-              />
+                onFocus={() => setHovered(i)}
+                onBlur={() => setHovered(null)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setSelected(isSel ? null : i);
+                  }
+                }}
+              >
+                <circle
+                  cx={toPx(v.x)}
+                  cy={toPx(v.y)}
+                  r={r}
+                  fill={originColors[v.origin]}
+                  stroke="#fff"
+                  strokeWidth="2"
+                  opacity={dimmed ? 0.25 : 1}
+                  filter={isSel || isHov ? 'url(#dotShadow)' : undefined}
+                  style={{ cursor: 'pointer', transition: 'r 0.15s ease, opacity 0.2s ease' }}
+                />
+              </g>
             );
           })}
           {/* Active label rendered last so it's always on top */}
@@ -171,17 +187,19 @@ export default function FlavorMatrix() {
             ))}
           </div>
         ) : (
-          <span style={{ color: '#aaa' }}>Hover or tap a dot to see the variety.</span>
+          <span style={{ color: '#aaa' }}>Select a dot to see the variety.</span>
         )}
       </div>
 
       {/* Legend / filter */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '12px' }}>
+      <div role="group" aria-label="Filter varieties by origin" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '12px' }}>
         {origins.map((origin) => {
           const isActive = originFilter === origin;
           return (
             <button
+              type="button"
               key={origin}
+              aria-pressed={isActive}
               onClick={() => {
                 if (isActive) {
                   setOriginFilter(null);
@@ -198,10 +216,11 @@ export default function FlavorMatrix() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                padding: '4px 10px',
-                borderRadius: '14px',
-                background: isActive ? originColors[origin] : '#fff',
-                color: isActive ? '#fff' : '#666',
+                minHeight: '32px',
+                padding: '5px 10px',
+                borderRadius: '4px',
+                background: '#fff',
+                color: '#444',
                 border: `1px solid ${isActive ? originColors[origin] : '#eee'}`,
                 fontSize: '11.5px',
                 fontFamily: 'inherit',
@@ -213,7 +232,7 @@ export default function FlavorMatrix() {
                 width: '7px',
                 height: '7px',
                 borderRadius: '50%',
-                background: isActive ? '#fff' : originColors[origin],
+                background: originColors[origin],
               }} />
               {origin}
             </button>
@@ -225,21 +244,5 @@ export default function FlavorMatrix() {
         Data from the rice factory's best-selling charts.
       </div>
     </div>
-  );
-}
-
-// Tiny non-interactive version for the blog card preview
-export function FlavorMatrixPreview() {
-  const pw = 120, ph = 90, pad = 10;
-  const pxx = (v) => pad + ((v - 1) / 9) * (pw - pad * 2);
-  const pxy = (v) => pad + ((v - 1) / 9) * (ph - pad * 2);
-  return (
-    <svg viewBox={`0 0 ${pw} ${ph}`} width="100%" height="100%" style={{ display: 'block' }}>
-      <line x1={pw / 2} y1={pad} x2={pw / 2} y2={ph - pad} stroke="#ccc" strokeWidth="0.5" />
-      <line x1={pad} y1={ph / 2} x2={pw - pad} y2={ph / 2} stroke="#ccc" strokeWidth="0.5" />
-      {varieties.map((v, i) => (
-        <circle key={i} cx={pxx(v.x)} cy={pxy(v.y)} r="2.2" fill={originColors[v.origin]} />
-      ))}
-    </svg>
   );
 }

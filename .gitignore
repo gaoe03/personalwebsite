@@ -29,6 +29,13 @@ dist-ssr
 CLAUDE.md
 .claude/
 
+# Codex
+AGENTS.md
+.codex/
+
+# local working notes
+notes/
+
 # design-sync (staged scripts + generated build output + machine state)
 .ds-sync/
 ds-bundle/

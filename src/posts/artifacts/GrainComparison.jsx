@@ -60,7 +60,9 @@ export default function GrainComparison() {
           const isSel = selected === i;
           return (
             <button
+              type="button"
               key={grn.name}
+              aria-pressed={isSel}
               onClick={() => setSelected(i)}
               style={{
                 textAlign: 'center',
@@ -100,7 +102,7 @@ export default function GrainComparison() {
               <div style={{ fontSize: '12.5px', color: isSel ? '#222' : '#444', fontWeight: isSel ? 500 : 400, marginTop: '2px', minHeight: '2.4em', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                 {grn.name}
               </div>
-              <div style={{ fontSize: '10px', color: familyColor(grn.family), marginTop: '3px', letterSpacing: '0.8px', textTransform: 'uppercase', fontWeight: 500 }}>
+              <div style={{ fontSize: '10px', color: familyColor(grn.family), marginTop: '3px', fontWeight: 500 }}>
                 {grn.family}
               </div>
             </button>
@@ -118,24 +120,5 @@ export default function GrainComparison() {
         <div style={{ color: '#666' }}>{g.dishes}</div>
       </div>
     </div>
-  );
-}
-
-// Small non-interactive preview of the Jasmine rice shape for the blog card.
-export function GrainPreview() {
-  const L = 40, W = 13;
-  const path = [
-    `M ${-L} 0`,
-    `C ${-L} ${-W * 0.95}, ${-L * 0.35} ${-W * 1.08}, ${L * 0.15} ${-W * 1.05}`,
-    `C ${L * 0.7} ${-W * 1.02}, ${L} ${-W * 0.7}, ${L} 0`,
-    `C ${L} ${W * 0.7}, ${L * 0.7} ${W * 1.02}, ${L * 0.15} ${W * 1.05}`,
-    `C ${-L * 0.35} ${W * 1.08}, ${-L} ${W * 0.95}, ${-L} 0`,
-    'Z',
-  ].join(' ');
-  return (
-    <svg viewBox="-50 -30 100 60" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style={{ display: 'block' }}>
-      <path d={path} fill="#efe2c4" stroke="#b89960" strokeWidth="0.8" />
-      <line x1={-L * 0.55} y1="0" x2={L * 0.55} y2="0" stroke="#b89960" strokeWidth="0.5" opacity="0.5" />
-    </svg>
   );
 }
