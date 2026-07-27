@@ -77,10 +77,10 @@ export const projectDetails = {
       ['Timeline', 'July 2026'],
       ['Role', 'Research automation, data design, frontend, maintenance pipeline'],
       ['Team', 'Solo'],
-      ['Tools', 'Research agents, JavaScript, Algolia, GitHub Actions'],
+      ['Tools', 'Research agents, JavaScript, Algolia, Playwright, Anthropic API, GitHub Actions'],
     ],
     highlights: [
-      { title: 'Recovering the old menu', text: 'Research agents swept press coverage, Wayback Machine snapshots, and recipe pages to recover 100 discontinued smoothies, each backed by its source links.' },
+      { title: 'Recovering the old menu', text: 'Research agents swept press coverage, Wayback Machine snapshots, and recipe pages to recover over 100 smoothies, most of them long off the menu, each backed by its source links.' },
       { title: 'Drawing the ingredients', text: 'Every ingredient gets a flat-color SVG icon with an ink outline, plus a constant wobble inspired by skribbl.io that makes the whole page look hand drawn.' },
       { title: 'Keeping it current', text: 'A pipeline checks the live menu twice a month and opens a pull request with images and ingredients already filled in. I review the pull request and decide whether to merge it.' },
     ],
@@ -89,14 +89,14 @@ export const projectDetails = {
         heading: 'The menu kept disappearing',
         body: [
           'When friends visit LA for the first time, I take them to Erewhon. It feels like the LA tourist thing to do. At some point I tried to look up old smoothies I had ordered with them, and the pages were just gone. Erewhon rotates limited smoothies out of its menu, and the old pages usually disappear with them.',
-          'The history was still scattered across press coverage, archived menus, partner recipes, and copycat posts. I set out to rebuild the full catalog from those public sources, starting from 2022, since older drinks have too little surviving evidence to document properly.',
+          'The history was still scattered across press coverage, archived menus, partner recipes, and copycat posts. I set out to rebuild the full catalog from those public sources. The dated records reach back to 2021, and the older house staples are in there too, grouped as undated, since there is not enough surviving evidence to pin them to a launch month.',
         ],
       },
       {
         heading: 'Rebuilding it with research agents',
         body: [
           'The task was open-ended internet research. For every smoothie I needed proof it existed, its dates, its collaborator, and its ingredient list. I ran it with Claude subagents that swept press stories, Wayback Machine snapshots, brand recipe pages, and recipe transcriptions, then I synthesized their findings into records.',
-          'It burnt millions of tokens because the research was open ended and each subagent worked in its own context. I was on a subscription plan, so the cost was fine. The result was 100 smoothie records backed by 258 source links, with each record keeping its sources attached. The oldest drinks were the hardest, since some only survive in an Instagram post or an article that lists half the ingredients.',
+          'It burnt millions of tokens because the research was open ended and each subagent worked in its own context. I was on a subscription plan, so the cost was fine. The result was over 100 smoothie records backed by more than 250 source links, with each record keeping its sources attached. The oldest drinks were the hardest, since some only survive in an Instagram post or an article that lists half the ingredients.',
         ],
         image: {
           src: '/projects/erewhon/record-strawberry-glaze.png',
@@ -126,7 +126,7 @@ export const projectDetails = {
       {
         heading: 'Guardrails',
         body: [
-          'A bad automated run could wreck the archive, so the pipeline refuses to ship anything suspicious. It stops if too few smoothies come back, too many look new at once, or one pass would discontinue half the menu. Those patterns usually mean the fetch broke or the site changed, so the pipeline waits for me to look at it.',
+          'A bad automated run could wreck the archive, so the pipeline refuses to ship anything suspicious. It stops if too few smoothies come back, if any of them arrive missing an ID or a name, if too many look new at once, or if one pass would discontinue more than half the drinks it still counts as live. Those patterns usually mean the fetch broke or the site changed, so the pipeline waits for me to look at it.',
           'The expensive steps run last. A headless browser only opens the handful of genuinely new product pages, and a model only sees ingredient text the regex matcher could not handle.',
         ],
       },
