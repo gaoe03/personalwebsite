@@ -82,6 +82,7 @@
   position: sticky;
   top: 0;
   z-index: 50;
+  isolation: isolate;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -89,8 +90,19 @@
   min-height: 68px;
   margin: 0 auto;
   border-bottom: 1px solid var(--lab-rule);
+}
+
+.lab-nav::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
   background: color-mix(in srgb, var(--lab-paper) 92%, transparent);
   backdrop-filter: blur(12px);
+  content: '';
+  transform: translateX(-50%);
 }
 
 .lab-nav.has-actions {
