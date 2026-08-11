@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Play, Youtube } from 'lucide-react';
-import { AmericaMap, HikingTrail, ProjectMockup, TravelMap, WobbleDefs, projects, skills, useWobbleLoop, videos } from '../portfolioVisuals.jsx';
+import { AmericaMap, HikingTrail, ProjectMockup, TravelMap, WobbleDefs, projects, skills, travelLocations, useWobbleLoop } from '../portfolioVisuals.jsx';
 import { Cover, BlogWobbleDefs } from '../blogArt.jsx';
 import posts from '../posts/index.js';
 import usePageTitle from '../usePageTitle.js';
@@ -74,6 +74,11 @@ export const ProjectLinks = ({ project, showNotes = false, onOpenNotes }) => (
   <div className="lab-project-links">
     {showNotes && (
       <button type="button" onClick={onOpenNotes} aria-haspopup="dialog" aria-controls={`lab-notes-dialog-${project.id}`}>Project notes</button>
+    )}
+    {project.appStoreUrl && (
+      <a href={project.appStoreUrl} target="_blank" rel="noopener noreferrer">
+        App Store <ArrowUpRight size={15} />
+      </a>
     )}
     {project.live && project.link && (
       <a href={project.link} target="_blank" rel="noopener noreferrer">
@@ -237,16 +242,27 @@ const LabSkills = () => (
 );
 
 const LabTravel = () => {
-  const publishedVideos = videos.filter((video) => !video.comingSoon);
   const [region, setRegion] = useState('Asia');
-  const [selectedVideo, setSelectedVideo] = useState(0);
-  const filteredVideos = publishedVideos.filter((video) => (
-    region === 'Asia' ? ['Japan', 'China'].includes(video.country) : video.country === 'USA'
+  const [selectedLocationId, setSelectedLocationId] = useState('tohoku');
+  const [selectedVideoId, setSelectedVideoId] = useState('gao-life-1');
+  const filteredLocations = travelLocations.filter((location) => (
+    region === 'Asia' ? ['Japan', 'China'].includes(location.country) : location.country === 'USA'
   ));
-  const currentVideo = filteredVideos[selectedVideo] || filteredVideos[0];
+  const currentLocation = filteredLocations.find((location) => location.id === selectedLocationId) || filteredLocations[0];
+  const latestVideo = (location) => location.videos[location.videos.length - 1];
+  const currentVideo = currentLocation.videos.find((video) => video.id === selectedVideoId) || latestVideo(currentLocation);
+  const selectLocation = (locationId) => {
+    const location = filteredLocations.find((item) => item.id === locationId);
+    setSelectedLocationId(location.id);
+    setSelectedVideoId(latestVideo(location).id);
+  };
   const changeRegion = (nextRegion) => {
+    const nextLocations = travelLocations.filter((location) => (
+      nextRegion === 'Asia' ? ['Japan', 'China'].includes(location.country) : location.country === 'USA'
+    ));
     setRegion(nextRegion);
-    setSelectedVideo(0);
+    setSelectedLocationId(nextLocations[0].id);
+    setSelectedVideoId(latestVideo(nextLocations[0]).id);
   };
 
   return (
@@ -264,22 +280,22 @@ const LabTravel = () => {
       <div className="lab-travel-explorer">
         <div className="lab-travel-map">
           {region === 'Asia' ? (
-            <TravelMap videos={filteredVideos} onSelectVideo={setSelectedVideo} selectedIndex={selectedVideo} />
+            <TravelMap locations={filteredLocations} onSelectLocation={selectLocation} selectedLocationId={selectedLocationId} />
           ) : (
-            <AmericaMap videos={filteredVideos} onSelectVideo={setSelectedVideo} selectedIndex={selectedVideo} />
+            <AmericaMap locations={filteredLocations} onSelectLocation={selectLocation} selectedLocationId={selectedLocationId} />
           )}
         </div>
         <div className="lab-travel-selection">
           <a href={currentVideo.url} target="_blank" rel="noopener noreferrer" className="lab-travel-feature">
             <span className="lab-travel-feature-media">
-              <img src={currentVideo.thumbnail} alt={currentVideo.title} />
+              <img src={currentVideo.thumbnail} alt={`${currentLocation.title}, gao life ${currentVideo.num}`} />
               <span className="lab-travel-play" aria-hidden="true">
                 <Play size={24} fill="currentColor" />
               </span>
             </span>
             <span>
-              <small>gao life {currentVideo.num}, {currentVideo.country}</small>
-              <strong>{currentVideo.title}</strong>
+              <small>gao life {currentVideo.num}, {currentLocation.country}</small>
+              <strong>{currentLocation.title}</strong>
             </span>
           </a>
           <div className="lab-travel-regions" role="group" aria-label="Map region">
@@ -288,10 +304,17 @@ const LabTravel = () => {
             ))}
           </div>
           <div className="lab-travel-places" role="group" aria-label="Video location">
-            {filteredVideos.map((video, index) => (
-              <button key={video.num} type="button" className={selectedVideo === index ? 'is-active' : ''} aria-pressed={selectedVideo === index} onClick={() => setSelectedVideo(index)}>{video.title}</button>
+            {filteredLocations.map((location) => (
+              <button key={location.id} type="button" className={selectedLocationId === location.id ? 'is-active' : ''} aria-pressed={selectedLocationId === location.id} onClick={() => selectLocation(location.id)}>{location.title}</button>
             ))}
           </div>
+          {currentLocation.videos.length > 1 && (
+            <div className="lab-travel-episodes" role="group" aria-label={`${currentLocation.title} videos`}>
+              {currentLocation.videos.map((video) => (
+                <button key={video.id} type="button" className={currentVideo.id === video.id ? 'is-active' : ''} aria-pressed={currentVideo.id === video.id} onClick={() => setSelectedVideoId(video.id)}>gao life {video.num}</button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -67,7 +67,7 @@ export const projectDetails = {
       },
       {
         heading: 'What is next',
-        body: 'Precinctly is still in progress. This was my first iOS app, and getting it onto the App Store is the next step. More states are on the list after that.',
+        body: 'Precinctly is now available on the App Store. More states are on the list next.',
       },
     ],
   },

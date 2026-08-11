@@ -81,7 +81,7 @@ const IconBriefcase = (p) => <ProjIcon {...p} paths={`<rect x="12" y="23" width=
 
 const projects = [
   {
-    id: 'precinct', title: 'Precinctly', desc: 'Reads the political lean and demographics of the precinct you\'re standing in', tech: ['SwiftUI', 'MapKit', 'SQLite', 'HTML', 'CSS', 'JavaScript'], link: 'https://precinct.ethangao.xyz/', repo: 'https://github.com/gaoe03/precinctly', live: true, type: 'Jun 2026',
+    id: 'precinct', title: 'Precinctly', desc: 'Reads the political lean and demographics of the precinct you\'re standing in', tech: ['SwiftUI', 'MapKit', 'SQLite', 'HTML', 'CSS', 'JavaScript'], link: 'https://precinct.ethangao.xyz/', appStoreUrl: 'https://apps.apple.com/us/app/precinctly/id6792189622', repo: 'https://github.com/gaoe03/precinctly', live: true, type: 'Jun 2026',
     category: 'iOS App' },
   {
     id: 'erewhon', title: 'Erewhon Smoothie Archive', desc: 'An illustrated archive of Erewhon smoothies from 2022 onward', tech: ['JavaScript', 'Algolia', 'GitHub Actions'], link: 'https://erewhon.vercel.app/', repo: 'https://github.com/gaoe03/erewhon', live: true, type: 'Jun 2026',
@@ -104,20 +104,51 @@ const projects = [
 ];
 
 // Coordinates placed visually on SVG landmasses
-const videos = [
+const travelLocations = [
   // Coordinates calculated from SVG path analysis
-  { num: '1', title: 'Tohoku', gradient: 'linear-gradient(135deg, #3d5a4a 0%, #5a7c6a 100%)', url: 'https://www.youtube.com/watch?v=cUowHezVU8c', comingSoon: false, thumbnail: '/thumbnails/gaolife-1.jpg', mapX: 725, mapY: 405, country: 'Japan' },
-  { num: '2', title: 'Hokkaido', gradient: 'linear-gradient(135deg, #2d4a5a 0%, #4a6a7c 100%)', url: 'https://www.youtube.com/watch?v=xY8n0mokf9w', comingSoon: false, thumbnail: '/thumbnails/gaolife-1pt2.jpg', mapX: 725, mapY: 388, country: 'Japan' },
-  { num: '3', title: 'Hong Kong', gradient: 'linear-gradient(135deg, #4a3d5a 0%, #6a5a7c 100%)', url: 'https://www.youtube.com/watch?v=DhuqgmEaplg', comingSoon: false, thumbnail: '/thumbnails/gaolife-2.jpg', mapX: 682, mapY: 462, country: 'China' },
-  { num: '4', title: 'Guangdong', gradient: 'linear-gradient(135deg, #5a4a2d 0%, #7c6a4a 100%)', url: 'https://www.youtube.com/watch?v=oHXrmyAfnkc', comingSoon: false, thumbnail: '/thumbnails/gaolife-3.jpg', mapX: 677, mapY: 456, country: 'China' },
-  { num: '5', title: 'Sichuan', gradient: 'linear-gradient(135deg, #2d5a4a 0%, #4a7c59 100%)', url: 'https://www.youtube.com/watch?v=bOl0s6UcLQI', comingSoon: false, thumbnail: '/thumbnails/gaolife-4.jpg', mapX: 638, mapY: 428, country: 'China' },
-  { num: '6', title: 'Yunnan', gradient: 'linear-gradient(135deg, #5a3d2d 0%, #7c5a4a 100%)', url: 'https://www.youtube.com/watch?v=3eXUCCUpVOU', comingSoon: false, thumbnail: '/thumbnails/gaolife-5.jpg', mapX: 640, mapY: 447, country: 'China' },
-  { num: '7', title: 'Oregon', gradient: 'linear-gradient(135deg, #2d4a3d 0%, #4a7c5a 100%)', url: 'https://www.youtube.com/watch?v=XIAJCIYQvZM', comingSoon: false, thumbnail: '/thumbnails/gaolife-6.jpg', mapX: 138, mapY: 410, country: 'USA' },
-  { num: '8', title: 'Coming Soon', gradient: 'linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%)', url: '', comingSoon: true, thumbnail: null, mapX: 0, mapY: 0, country: '' },
+  { id: 'tohoku', title: 'Tohoku', gradient: 'linear-gradient(135deg, #3d5a4a 0%, #5a7c6a 100%)', mapX: 725, mapY: 405, country: 'Japan', videos: [
+    { id: 'gao-life-1', num: '1', url: 'https://www.youtube.com/watch?v=cUowHezVU8c', thumbnail: '/thumbnails/gaolife-1.jpg' },
+  ] },
+  { id: 'hokkaido', title: 'Hokkaido', gradient: 'linear-gradient(135deg, #2d4a5a 0%, #4a6a7c 100%)', mapX: 725, mapY: 388, country: 'Japan', videos: [
+    { id: 'gao-life-2', num: '2', url: 'https://www.youtube.com/watch?v=xY8n0mokf9w', thumbnail: '/thumbnails/gaolife-1pt2.jpg' },
+  ] },
+  { id: 'hong-kong', title: 'Hong Kong', gradient: 'linear-gradient(135deg, #4a3d5a 0%, #6a5a7c 100%)', mapX: 682, mapY: 462, country: 'China', videos: [
+    { id: 'gao-life-3', num: '3', url: 'https://www.youtube.com/watch?v=DhuqgmEaplg', thumbnail: '/thumbnails/gaolife-2.jpg' },
+    { id: 'gao-life-8', num: '8', url: 'https://www.youtube.com/watch?v=GbgN3Ej5cWI', thumbnail: '/thumbnails/gaolife-8.jpg' },
+  ] },
+  { id: 'guangdong', title: 'Guangdong', gradient: 'linear-gradient(135deg, #5a4a2d 0%, #7c6a4a 100%)', mapX: 677, mapY: 456, country: 'China', videos: [
+    { id: 'gao-life-4', num: '4', url: 'https://www.youtube.com/watch?v=oHXrmyAfnkc', thumbnail: '/thumbnails/gaolife-3.jpg' },
+  ] },
+  { id: 'sichuan', title: 'Sichuan', gradient: 'linear-gradient(135deg, #2d5a4a 0%, #4a7c59 100%)', mapX: 638, mapY: 428, country: 'China', videos: [
+    { id: 'gao-life-5', num: '5', url: 'https://www.youtube.com/watch?v=bOl0s6UcLQI', thumbnail: '/thumbnails/gaolife-4.jpg' },
+  ] },
+  { id: 'yunnan', title: 'Yunnan', gradient: 'linear-gradient(135deg, #5a3d2d 0%, #7c5a4a 100%)', mapX: 640, mapY: 447, country: 'China', videos: [
+    { id: 'gao-life-6', num: '6', url: 'https://www.youtube.com/watch?v=3eXUCCUpVOU', thumbnail: '/thumbnails/gaolife-5.jpg' },
+  ] },
+  { id: 'oregon', title: 'Oregon', gradient: 'linear-gradient(135deg, #2d4a3d 0%, #4a7c5a 100%)', mapX: 138, mapY: 410, country: 'USA', videos: [
+    { id: 'gao-life-7', num: '7', url: 'https://www.youtube.com/watch?v=XIAJCIYQvZM', thumbnail: '/thumbnails/gaolife-6.jpg' },
+  ] },
 ];
 
+const MAP_PIN_HIT_RADIUS = 11;
+
+const selectNearestMapLocation = (event, locations, onSelectLocation) => {
+  const transform = event.currentTarget.getScreenCTM();
+  if (!transform) return;
+
+  const pointer = new DOMPoint(event.clientX, event.clientY).matrixTransform(transform.inverse());
+  const nearest = locations.reduce((closest, location) => {
+    const distance = Math.hypot(pointer.x - location.mapX, pointer.y - location.mapY);
+    return distance < closest.distance ? { location, distance } : closest;
+  }, { location: null, distance: Infinity });
+
+  if (nearest.location && nearest.distance <= MAP_PIN_HIT_RADIUS) {
+    onSelectLocation(nearest.location.id);
+  }
+};
+
 // Interactive map component for gao life videos
-const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
+const TravelMap = ({ locations, onSelectLocation, selectedLocationId }) => {
   // East Asia map using accurate geographic SVG paths from simple-world-map
   // ViewBox cropped to show East Asia region
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -125,7 +156,7 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto', background: '#fff', borderRadius: '14px', padding: '8px' }}>
       <WobblyFrameBorder radius={12} />
-      <svg viewBox="568 365 180 115" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '10px', display: 'block' }}>
+      <svg viewBox="568 365 180 115" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '10px', display: 'block' }} onClick={(event) => selectNearestMapLocation(event, locations, onSelectLocation)}>
 
         <g filter="url(#wobble-calm)">
         {/* China - accurate geographic outline */}
@@ -205,46 +236,46 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
         </g>
 
         {/* Location markers */}
-        {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
-          <g key={i} className="map-pin" tabIndex={0} role="button" aria-label={`${video.title} video`} aria-pressed={selectedIndex === i} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectVideo(i); } }}>
+        {locations.map((location) => (
+          <g key={location.id} className="map-pin" tabIndex={0} role="button" aria-label={`${location.title}, ${location.videos.length} ${location.videos.length === 1 ? 'video' : 'videos'}`} aria-pressed={selectedLocationId === location.id} style={{ cursor: 'pointer' }} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectLocation(location.id); } }}>
             {/* Transparent oversized hit area so the marker is tappable on mobile */}
-            <circle cx={video.mapX} cy={video.mapY} r="7" fill="transparent" />
+            <circle cx={location.mapX} cy={location.mapY} r="11" fill="transparent" />
             {/* Pulse animation ring - shows on selected, subtle on others */}
             <circle
-              cx={video.mapX}
-              cy={video.mapY}
-              r={selectedIndex === i ? 4 : 3}
+              cx={location.mapX}
+              cy={location.mapY}
+              r={selectedLocationId === location.id ? 4 : 3}
               fill="none"
-              stroke={selectedIndex === i ? 'var(--portfolio-accent, #4A7C59)' : '#999'}
+              stroke={selectedLocationId === location.id ? 'var(--portfolio-accent, #4A7C59)' : '#999'}
               strokeWidth="0.8"
               opacity={0.3}
             >
-              {!reducedMotion && <animate attributeName="r" from="3" to="6" dur={selectedIndex === i ? '1.5s' : '2.5s'} repeatCount="indefinite" />}
-              {!reducedMotion && <animate attributeName="opacity" from="0.4" to="0" dur={selectedIndex === i ? '1.5s' : '2.5s'} repeatCount="indefinite" />}
+              {!reducedMotion && <animate attributeName="r" from="3" to="6" dur={selectedLocationId === location.id ? '1.5s' : '2.5s'} repeatCount="indefinite" />}
+              {!reducedMotion && <animate attributeName="opacity" from="0.4" to="0" dur={selectedLocationId === location.id ? '1.5s' : '2.5s'} repeatCount="indefinite" />}
             </circle>
             {/* Main marker */}
             <circle
-              cx={video.mapX}
-              cy={video.mapY}
-              r={selectedIndex === i ? 3 : 2}
-              fill={selectedIndex === i ? 'var(--portfolio-accent, #4A7C59)' : '#999'}
+              cx={location.mapX}
+              cy={location.mapY}
+              r={selectedLocationId === location.id ? 3 : 2}
+              fill={selectedLocationId === location.id ? 'var(--portfolio-accent, #4A7C59)' : '#999'}
               stroke="#fff"
               strokeWidth="1"
               className="map-marker"
               style={{ transition: 'all 0.3s ease' }}
             />
             {/* Label - positioned contextually to avoid overlaps */}
-            {selectedIndex === i && (
+            {selectedLocationId === location.id && (
               <text
-                x={video.country === 'Japan' ? video.mapX - 8 : video.title === 'Hong Kong' ? video.mapX + 8 : video.mapX}
-                y={video.country === 'Japan' ? video.mapY + 1 : video.title === 'Hong Kong' ? video.mapY + 1 : video.mapY - 5}
-                textAnchor={video.country === 'Japan' ? 'end' : video.title === 'Hong Kong' ? 'start' : 'middle'}
+                x={location.country === 'Japan' ? location.mapX - 8 : location.title === 'Hong Kong' ? location.mapX + 8 : location.mapX}
+                y={location.country === 'Japan' ? location.mapY + 1 : location.title === 'Hong Kong' ? location.mapY + 1 : location.mapY - 5}
+                textAnchor={location.country === 'Japan' ? 'end' : location.title === 'Hong Kong' ? 'start' : 'middle'}
                 fill="var(--portfolio-accent, #4A7C59)"
                 fontSize="4"
                 fontWeight="600"
                 fontFamily="system-ui, sans-serif"
               >
-                {video.title}
+                {location.title}
               </text>
             )}
           </g>
@@ -255,13 +286,13 @@ const TravelMap = ({ videos, onSelectVideo, selectedIndex }) => {
 };
 
 // America map component for gao life videos
-const AmericaMap = ({ videos, onSelectVideo, selectedIndex }) => {
+const AmericaMap = ({ locations, onSelectLocation, selectedLocationId }) => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto', background: '#fff', borderRadius: '14px', padding: '8px' }}>
       <WobblyFrameBorder radius={12} />
-      <svg viewBox="120 370 150 100" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '10px', display: 'block' }}>
+      <svg viewBox="120 370 150 100" style={{ width: '100%', height: 'auto', background: '#e8f4f8', borderRadius: '10px', display: 'block' }} onClick={(event) => selectNearestMapLocation(event, locations, onSelectLocation)}>
         {/* Continental US - from simple-world-map, rotated to correct orientation */}
         <g transform="rotate(-12, 195, 420)" filter="url(#wobble-calm)">
           <path
@@ -273,41 +304,41 @@ const AmericaMap = ({ videos, onSelectVideo, selectedIndex }) => {
         </g>
 
         {/* Location markers */}
-        {videos.filter(v => !v.comingSoon && v.mapX > 0).map((video, i) => (
-          <g key={i} className="map-pin" tabIndex={0} role="button" aria-label={`${video.title} video`} aria-pressed={selectedIndex === i} style={{ cursor: 'pointer' }} onClick={() => onSelectVideo(i)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectVideo(i); } }}>
-            <circle cx={video.mapX} cy={video.mapY} r="7" fill="transparent" />
+        {locations.map((location) => (
+          <g key={location.id} className="map-pin" tabIndex={0} role="button" aria-label={`${location.title}, ${location.videos.length} ${location.videos.length === 1 ? 'video' : 'videos'}`} aria-pressed={selectedLocationId === location.id} style={{ cursor: 'pointer' }} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectLocation(location.id); } }}>
+            <circle cx={location.mapX} cy={location.mapY} r="11" fill="transparent" />
             <circle
-              cx={video.mapX}
-              cy={video.mapY}
-              r={selectedIndex === i ? 4 : 3}
+              cx={location.mapX}
+              cy={location.mapY}
+              r={selectedLocationId === location.id ? 4 : 3}
               fill="none"
-              stroke={selectedIndex === i ? 'var(--portfolio-accent, #4A7C59)' : '#999'}
+              stroke={selectedLocationId === location.id ? 'var(--portfolio-accent, #4A7C59)' : '#999'}
               strokeWidth="0.8"
               opacity={0.3}
             >
-              {!reducedMotion && <animate attributeName="r" from="3" to="6" dur={selectedIndex === i ? '1.5s' : '2.5s'} repeatCount="indefinite" />}
-              {!reducedMotion && <animate attributeName="opacity" from="0.4" to="0" dur={selectedIndex === i ? '1.5s' : '2.5s'} repeatCount="indefinite" />}
+              {!reducedMotion && <animate attributeName="r" from="3" to="6" dur={selectedLocationId === location.id ? '1.5s' : '2.5s'} repeatCount="indefinite" />}
+              {!reducedMotion && <animate attributeName="opacity" from="0.4" to="0" dur={selectedLocationId === location.id ? '1.5s' : '2.5s'} repeatCount="indefinite" />}
             </circle>
             <circle
-              cx={video.mapX}
-              cy={video.mapY}
-              r={selectedIndex === i ? 3 : 2}
-              fill={selectedIndex === i ? 'var(--portfolio-accent, #4A7C59)' : '#999'}
+              cx={location.mapX}
+              cy={location.mapY}
+              r={selectedLocationId === location.id ? 3 : 2}
+              fill={selectedLocationId === location.id ? 'var(--portfolio-accent, #4A7C59)' : '#999'}
               stroke="#fff"
               strokeWidth="1"
               style={{ transition: 'all 0.3s ease' }}
             />
-            {selectedIndex === i && (
+            {selectedLocationId === location.id && (
               <text
-                x={video.mapX}
-                y={video.mapY - 5}
+                x={location.mapX}
+                y={location.mapY - 5}
                 textAnchor="middle"
                 fill="var(--portfolio-accent, #4A7C59)"
                 fontSize="4"
                 fontWeight="600"
                 fontFamily="system-ui, sans-serif"
               >
-                {video.title}
+                {location.title}
               </text>
             )}
           </g>
@@ -1506,4 +1537,4 @@ const HikingTrail = () => {
   );
 };
 
-export { WobbleDefs, ProjectMockup, HikingTrail, TravelMap, AmericaMap, projects, skills, videos };
+export { WobbleDefs, ProjectMockup, HikingTrail, TravelMap, AmericaMap, projects, skills, travelLocations };

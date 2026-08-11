@@ -1191,7 +1191,8 @@
 }
 
 .lab-travel-regions,
-.lab-travel-places {
+.lab-travel-places,
+.lab-travel-episodes {
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
@@ -1207,8 +1208,15 @@
   margin-top: 10px;
 }
 
+.lab-travel-episodes {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--lab-rule);
+}
+
 .lab-travel-regions button,
-.lab-travel-places button {
+.lab-travel-places button,
+.lab-travel-episodes button {
   padding: 7px 10px;
   border: 1px solid var(--lab-rule);
   border-radius: 2px;
@@ -1218,10 +1226,19 @@
 }
 
 .lab-travel-regions button.is-active,
-.lab-travel-places button.is-active {
+.lab-travel-places button.is-active,
+.lab-travel-episodes button.is-active {
   border-color: var(--lab-accent);
   background: color-mix(in srgb, var(--lab-accent) 9%, transparent);
   color: var(--lab-accent-strong);
+}
+
+@media (max-width: 900px) {
+  .lab-travel-regions button,
+  .lab-travel-places button,
+  .lab-travel-episodes button {
+    min-height: 44px;
+  }
 }
 
 .lab-writing-list {
