@@ -111,6 +111,7 @@ const travelLocations = [
   ] },
   { id: 'hokkaido', title: 'Hokkaido', gradient: 'linear-gradient(135deg, #2d4a5a 0%, #4a6a7c 100%)', mapX: 725, mapY: 388, country: 'Japan', videos: [
     { id: 'gao-life-2', num: '2', url: 'https://www.youtube.com/watch?v=xY8n0mokf9w', thumbnail: '/thumbnails/gaolife-1pt2.jpg' },
+    { id: 'gao-life-9', num: '9', url: 'https://www.youtube.com/watch?v=UpKTOCX7Q18', thumbnail: '/thumbnails/gaolife-9.jpg' },
   ] },
   { id: 'hong-kong', title: 'Hong Kong', gradient: 'linear-gradient(135deg, #4a3d5a 0%, #6a5a7c 100%)', mapX: 682, mapY: 462, country: 'China', videos: [
     { id: 'gao-life-3', num: '3', url: 'https://www.youtube.com/watch?v=DhuqgmEaplg', thumbnail: '/thumbnails/gaolife-2.jpg' },
