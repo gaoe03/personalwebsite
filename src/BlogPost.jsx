@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router';
 import posts from './posts/index.js';
 import usePageTitle from './usePageTitle.js';
 import BlogNav from './BlogNav.jsx';

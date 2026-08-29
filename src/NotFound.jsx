@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import usePageTitle from './usePageTitle.js';
 import { CustomCursor, SiteNav } from './lab/SiteChrome.jsx';
 import { useLabAccent } from './lab/accentTheme.js';
@@ -8,7 +8,7 @@ export default function NotFound() {
   useLabAccent();
   usePageTitle('Page not found', {
     description: 'The requested page could not be found.',
-    path: window.location.pathname,
+    path: typeof window === 'undefined' ? '/' : window.location.pathname,
     robots: 'noindex, follow',
   });
 

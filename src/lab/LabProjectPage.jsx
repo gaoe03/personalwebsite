@@ -1,5 +1,5 @@
 import { Fragment, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 import { ProjectMockup, WobbleDefs, projects, useWobbleLoop } from '../portfolioVisuals.jsx';
 import usePageTitle from '../usePageTitle.js';
 import { ProjectLinks } from './Lab.jsx';

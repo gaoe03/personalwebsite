@@ -152,7 +152,8 @@ const selectNearestMapLocation = (event, locations, onSelectLocation) => {
 const TravelMap = ({ locations, onSelectLocation, selectedLocationId }) => {
   // East Asia map using accurate geographic SVG paths from simple-world-map
   // ViewBox cropped to show East Asia region
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = typeof window !== 'undefined'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto', background: '#fff', borderRadius: '14px', padding: '8px' }}>
@@ -288,7 +289,8 @@ const TravelMap = ({ locations, onSelectLocation, selectedLocationId }) => {
 
 // America map component for gao life videos
 const AmericaMap = ({ locations, onSelectLocation, selectedLocationId }) => {
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = typeof window !== 'undefined'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '800px', margin: '0 auto', background: '#fff', borderRadius: '14px', padding: '8px' }}>
