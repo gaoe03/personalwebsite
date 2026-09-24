@@ -28,11 +28,13 @@ export const projectDetails = {
       },
       {
         heading: 'The design system',
-        body: 'I kept the design close to standard iOS. Display numbers and headers use New York, Apple\'s serif font, and labels and body text use SF Pro. Almost everything on screen is neutral ink. The one big color is the red to purple to blue scale for partisan lean, plus green and orange for the money comparisons. The widget draws your precinct\'s actual shape in a small chip next to the lean number.',
-        image: {
-          src: '/projects/precinctly/design-system.png',
-          alt: 'Design system board: neutrals, the partisan lean scale, semantic colors, typography, the app icon, and the widget chip',
-        },
+        body: [
+          'Version 1.0 stayed close to standard iOS, with New York serif headers over SF Pro and a lean scale that faded from blue through purple to red. For version 1.1 I rebuilt the design from scratch. I based it on the results page a city paper prints the morning after an election, with a heavy figure for each race, a plain label under it, and thin rules between the races.',
+          'The whole app now uses one typeface, Libre Franklin, a revival of Franklin Gothic, which American newspapers used for their headlines. I use it in every weight and let weight and size set the hierarchy, so the lean figure is the heaviest thing on the screen. Color is reserved for party. There are five fixed steps, from solid blue through soft blue, gray and soft red to solid red. Everything else is ink, apart from green and orange for the money and education comparisons.',
+          'I also dropped the gray cards and capsules. Every section is now a title with one rule under it. Small controls are rounded rectangles with 8 point corners, buttons use 12 points, and sheets close with an X.',
+          'The old icon was a red map pin on a beige street map. The new one is a heavy white lowercase p on flat navy, and the bottom edge of the icon cuts off the tail of the p. It has light, dark, tinted and clear versions, so it matches whichever Home Screen style you use.',
+        ],
+        figure: { component: 'precinct-design' },
       },
       {
         heading: 'From his data to a public app',
@@ -66,8 +68,17 @@ export const projectDetails = {
         ],
       },
       {
+        heading: 'Rebuilding By the Numbers',
+        body: [
+          'By the Numbers is the screen that compares your precinct with the other precincts in the area. In version 1.1 every measure there is a chart with five bars that sorts the area\'s precincts into groups, and the bar your precinct falls in is marked. That covers lean, how far precincts swung between elections, turnout, the largest group, income, college degrees, age, density, and renters and owners. Tapping a bar lists the precincts in it.',
+          'The precinct card and By the Numbers now share the same four sections: Politics, Who lives here, Money and education, and People and housing. Each stat on the card is a link to its chart.',
+          'I also corrected a few numbers. The swing chart now uses margin points everywhere, so a precinct that went from D+36 to R+10 shows a 46 point swing. When precincts tie for the top spot, the app lists them as a tie.',
+        ],
+        figure: { component: 'precinct-numbers' },
+      },
+      {
         heading: 'What is next',
-        body: 'Precinctly is now available on the App Store. More states are on the list next.',
+        body: 'Precinctly is now available on the App Store. Version 1.1 adds the new design and the rebuilt By the Numbers, plus a tour on first launch that walks you through the real map and its controls. More states are on the list next.',
       },
     ],
   },

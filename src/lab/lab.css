@@ -956,6 +956,86 @@
   font-size: 11px;
 }
 
+.precinct-design-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.precinct-design-steps span {
+  display: block;
+  height: 44px;
+}
+
+.precinct-design-steps small {
+  display: block;
+  margin-top: 7px;
+  color: var(--lab-muted);
+  font-size: 11px;
+}
+
+.precinct-design-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.precinct-design-main,
+.precinct-design-side {
+  display: grid;
+  gap: 16px;
+}
+
+.lab-project-note-figure .precinct-design-widget {
+  border: 0;
+  border-radius: 0;
+}
+
+.lab-project-note-figure .precinct-design-icon {
+  width: 62%;
+  justify-self: center;
+  border: 0;
+  border-radius: 22.5%;
+}
+
+.precinct-screens-figure {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.lab-project-note-figure.precinct-screens-figure img {
+  border-radius: 14px;
+}
+
+@media (max-width: 640px) {
+  .precinct-design-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .precinct-design-side {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .lab-project-note-figure .precinct-design-icon {
+    width: 78%;
+  }
+
+  .precinct-screens-figure {
+    grid-template-columns: repeat(3, 72%);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 6px;
+  }
+
+  .precinct-screens-figure img {
+    scroll-snap-align: start;
+  }
+}
+
 
 .lab-project-next {
   display: flex;
