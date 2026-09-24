@@ -52,6 +52,16 @@ input[type="number"] {
   src: url('/fonts/libre-baskerville-700.woff2') format('woff2');
 }
 
+/* Libre Franklin (latin, variable 400 to 900) for the Precinctly sketch card only.
+   The browser fetches it only where a rule uses the family. */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/libre-franklin-latin.woff2') format('woff2');
+}
+
 /* Horizontal pill rows that stay one line tall (no wrap) without a visible scrollbar */
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }

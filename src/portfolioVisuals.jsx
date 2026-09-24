@@ -1113,6 +1113,25 @@ const precinctColor = (dem) => {
   const channel = (index) => Math.round(from[index] + (to[index] - from[index]) * amount);
   return `rgb(${channel(0)}, ${channel(1)}, ${channel(2)})`;
 };
+// Mirrors Brand.leanColor in the app: Democratic blue through purple to Republican red.
+const appLeanColor = (share) => {
+  const t = Math.max(0, Math.min(1, share));
+  const dem = [0.16, 0.36, 0.67];
+  const even = [0.47, 0.27, 0.58];
+  const rep = [0.78, 0.06, 0.18];
+  const [from, to, amount] = t >= 0.5 ? [even, dem, (t - 0.5) * 2] : [rep, even, t * 2];
+  const channel = (index) => Math.round((from[index] + (to[index] - from[index]) * amount) * 255);
+  return `rgb(${channel(0)}, ${channel(1)}, ${channel(2)})`;
+};
+const APP_DEM = appLeanColor(0.9);
+const APP_REP = appLeanColor(0.1);
+const appLeanLabel = (share) => {
+  if (share >= 0.65) return 'Solid Dem';
+  if (share >= 0.55) return 'Lean Dem';
+  if (share >= 0.45) return 'Even';
+  if (share >= 0.35) return 'Lean Rep';
+  return 'Solid Rep';
+};
 const PRECINCTS = [
   { name: 'AD 75, ED 14', loc: 'Manhattan, NY', lean: 'D+49', dem: 74, income: '$89k', turnout: '44%', x: '24%', y: '30%' },
   { name: 'Precinct 0331', loc: 'Houston, TX', lean: 'D+11', dem: 56, income: '$58k', turnout: '52%', x: '67%', y: '25%' },
@@ -1197,6 +1216,22 @@ const PrecinctMockup = ({ labVariant = false }) => {
         );
       })}
       {/* bottom-sheet profile card — slides open to reveal the demographics */}
+      {labVariant ? (
+        <div className="precinct-lab-card" style={{ transform: open ? 'translateY(0)' : 'translateY(40%)' }}>
+          <div className="precinct-lab-card-handle" />
+          <div className="precinct-lab-card-place">{p.loc} ({p.id})</div>
+          <div className="precinct-lab-card-lean" style={{ color: appLeanColor(p.dem / 100) }}>{p.lean}</div>
+          <div className="precinct-lab-card-label" style={{ color: appLeanColor(p.dem / 100) }}>{appLeanLabel(p.dem / 100)} in 2024</div>
+          <div className="precinct-lab-card-bar">
+            <div style={{ width: `${p.dem}%`, background: APP_DEM }} />
+            <div style={{ flex: 1, background: APP_REP }} />
+          </div>
+          <div className="precinct-lab-card-shares">
+            <span style={{ color: APP_DEM }}>{Math.round(p.dem)}% Dem</span>
+            <span style={{ color: APP_REP }}>{Math.round(100 - p.dem)}% Rep</span>
+          </div>
+        </div>
+      ) : (
       <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, background: '#fff', borderRadius: '16px 16px 0 0', boxShadow: '0 -6px 20px rgba(20,24,32,0.12)', padding: '9px 15px 14px', transform: open ? 'translateY(0)' : 'translateY(40%)', transition: 'transform 0.5s cubic-bezier(.22,.61,.36,1)' }}>
         <div style={{ width: 32, height: 4, borderRadius: 2, background: '#dcdfd9', margin: '0 auto 9px' }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 10 }}>
@@ -1210,15 +1245,12 @@ const PrecinctMockup = ({ labVariant = false }) => {
           <div style={{ width: `${p.dem}%`, background: '#2166E6', transition: 'width 0.3s ease' }} />
           <div style={{ flex: 1, background: '#D92929' }} />
         </div>
-        {labVariant ? (
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginTop: 8, fontSize: 10, color: '#5b616b' }}><span>{Math.round(p.dem)}% Dem</span><span>{Math.round(100 - p.dem)}% Rep</span></div>
-        ) : (
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginTop: 10, fontSize: 10, color: '#5b616b' }}>
-            <span><b style={{ color: '#2d2d2d', fontWeight: 600 }}>{p.income}</b> income</span>
-            <span><b style={{ color: '#2d2d2d', fontWeight: 600 }}>{p.turnout}</b> turnout</span>
-          </div>
-        )}
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginTop: 10, fontSize: 10, color: '#5b616b' }}>
+          <span><b style={{ color: '#2d2d2d', fontWeight: 600 }}>{p.income}</b> income</span>
+          <span><b style={{ color: '#2d2d2d', fontWeight: 600 }}>{p.turnout}</b> turnout</span>
+        </div>
       </div>
+      )}
     </div>
   );
 };
