@@ -5,7 +5,6 @@ import usePageTitle from '../usePageTitle.js';
 import { ProjectLinks } from './Lab.jsx';
 import { useLabAccent } from './accentTheme.js';
 import { projectDetails } from './projectDetails.js';
-import { projectFigures } from './precinctFigures.jsx';
 import { CustomCursor, SiteNav } from './SiteChrome.jsx';
 import './lab.css';
 
@@ -94,8 +93,6 @@ export default function LabProjectPage() {
                 {(() => {
                   const paragraphs = Array.isArray(section.body) ? section.body : [section.body];
                   const figureIndex = section.image ? (section.image.afterParagraph ?? paragraphs.length - 1) : -1;
-                  const Figure = section.figure ? projectFigures[section.figure.component] : null;
-                  const customIndex = Figure ? (section.figure.afterParagraph ?? paragraphs.length - 1) : -1;
                   return paragraphs.map((paragraph, index) => (
                     <Fragment key={paragraph}>
                       <p>{paragraph}</p>
@@ -105,7 +102,6 @@ export default function LabProjectPage() {
                           {section.image.caption && <figcaption>{section.image.caption}</figcaption>}
                         </figure>
                       )}
-                      {index === customIndex && <Figure />}
                     </Fragment>
                   ));
                 })()}

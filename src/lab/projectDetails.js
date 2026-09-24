@@ -9,8 +9,8 @@ export const projectDetails = {
     ],
     highlights: [
       { title: 'Why I built it', text: 'A friend was moving to New York and wanted to know the neighborhoods. The data existed but only in datasets and desktop tools, so I built the app version.' },
-      { title: 'Finding a precinct', text: '49,000 precincts across four states are stored on the device. An R-tree index narrows your location, then a point-in-polygon test finds your precinct with no network request.' },
-      { title: 'Learning iOS', text: 'This was my first iOS app, so almost everything was new: SwiftUI, SQLite, and how to make a lookup across 49,000 precinct shapes feel instant using a spatial index.' },
+      { title: 'Finding a precinct', text: '54,718 precincts across six states and the DC area are stored on the device. An R-tree index narrows your location, then a point-in-polygon test finds your precinct with no network request.' },
+      { title: 'Learning iOS', text: 'This was my first iOS app, so almost everything was new: SwiftUI, SQLite, and how to make a lookup across 54,718 precinct shapes feel instant using a spatial index.' },
     ],
     sections: [
       {
@@ -29,56 +29,51 @@ export const projectDetails = {
       {
         heading: 'The design system',
         body: [
-          'Version 1.0 stayed close to standard iOS, with New York serif headers over SF Pro and a lean scale that faded from blue through purple to red. For version 1.1 I rebuilt the design from scratch. I based it on the results page a city paper prints the morning after an election, with a heavy figure for each race, a plain label under it, and thin rules between the races.',
-          'The whole app now uses one typeface, Libre Franklin, a revival of Franklin Gothic, which American newspapers used for their headlines. I use it in every weight and let weight and size set the hierarchy, so the lean figure is the heaviest thing on the screen. Color is reserved for party. There are five fixed steps, from solid blue through soft blue, gray and soft red to solid red. Everything else is ink, apart from green and orange for the money and education comparisons.',
-          'I also dropped the gray cards and capsules. Every section is now a title with one rule under it. Small controls are rounded rectangles with 8 point corners, buttons use 12 points, and sheets close with an X.',
-          'The old icon was a red map pin on a beige street map. The new one is a heavy white lowercase p on flat navy, and the bottom edge of the icon cuts off the tail of the p. It has light, dark, tinted and clear versions, so it matches whichever Home Screen style you use.',
+          'I based the design on the results page a city paper prints the morning after an election, with a heavy figure for each place, a plain label under it, and a rule between sections.',
+          'The app uses one typeface, Libre Franklin, in every weight. Weight and size set the hierarchy, so the lean figure is the heaviest thing on screen.',
+          'Color only marks party. Charts sort precincts into five fixed steps, from solid blue through gray to solid red. Everything else is ink, apart from green and orange for the money and education differences.',
+          'Each section is a title over one ink rule, and spacing groups the rows under it. Chips use 8 point corners, buttons use 12, and sheets close with an X.',
+          'The icon is a heavy white lowercase p on navy, and the bottom edge cuts off its tail.',
         ],
-        figure: { component: 'precinct-design' },
+        image: {
+          src: '/projects/precinctly/design-system.png',
+          alt: 'Design system board: the Libre Franklin type scale, the app icon, the five party colors with their hex values, and specs for the card header, section title, chips and buttons',
+        },
       },
       {
         heading: 'From his data to a public app',
         body: 'The first version ran on my friend\'s private precinct shapes plus public Census data, which was enough to prove the idea. I could not ship his work files, so he helped me find the public versions of the same shapes and I rebuilt on those. I did all the building solo, with him as the client. I would build for a weekend, show him, and adjust from his feedback. A working version took about a week. The rest of the two months went to UI, speed, and where the data should live, since this was my first app and all of that was new to me. I also designed the app\'s interface myself and built the landing page for it. He was moving in August, so I had a real deadline.',
       },
       {
-        heading: 'Making 49,000 precincts fast on a phone',
+        heading: 'Making 54,718 precincts fast on a phone',
         body: [
-          'Everything is stored on the device, so a lookup never talks to a server. The catch is that finding your precinct means checking your location against 49,000 polygons, and precinct boundaries are detailed shapes with hundreds of corners each. Checking them one by one was too slow for an app that should answer the moment you open it. This was also my first time using SQLite, so I had to learn how a database handles shapes at all.',
-          'The fix is a two-step lookup. First, every precinct gets a plain rectangle drawn around its shape. Checking whether a point sits inside a rectangle is nearly free, so an index of those rectangles, called an R-tree, lets the database instantly discard every precinct whose rectangle does not contain you. That cuts 49,000 candidates down to a handful. Second, since rectangles overlap near borders, the app traces the real boundary of each remaining precinct to see which one actually contains your point.',
-          'The expensive boundary check ends up running on a few shapes instead of 49,000, so a lookup feels instant. I started with California, New York, Texas, and Massachusetts, the places my friend and I actually spend time. More states mostly means finding public data and paying for it in app size.',
+          'Everything is stored on the device, so a lookup never talks to a server. The catch is that finding your precinct means checking your location against 54,718 polygons, and precinct boundaries are detailed shapes with hundreds of corners each. Checking them one by one was too slow for an app that should answer the moment you open it. This was also my first time using SQLite, so I had to learn how a database handles shapes at all.',
+          'The fix is a two-step lookup. First, every precinct gets a plain rectangle drawn around its shape. Checking whether a point sits inside a rectangle is nearly free, so an index of those rectangles, called an R-tree, lets the database instantly discard every precinct whose rectangle does not contain you. That cuts 54,718 candidates down to a handful. Second, since rectangles overlap near borders, the app traces the real boundary of each remaining precinct to see which one actually contains your point.',
+          'The expensive boundary check ends up running on a few shapes instead of 54,718, so a lookup feels instant. I started with California, New York, Texas, and Massachusetts, the places my friend and I actually spend time. Since then I have added Colorado, Oregon, and the DC area, meaning the District, Montgomery and Prince George\'s Counties in Maryland, and Northern Virginia. More states mostly means finding public data and paying for it in app size.',
         ],
         image: {
           src: '/projects/precinctly/lookup.png',
-          alt: 'Diagram of the precinct lookup: 49,000 bounding boxes narrow to 3 candidates, then one exact boundary test finds your precinct',
+          alt: 'Diagram of the precinct lookup: 54,718 bounding boxes narrow to 3 candidates, then one exact boundary test finds your precinct',
           afterParagraph: 1,
         },
       },
       {
         heading: 'Edge cases',
         body: [
-          'Search is where the messy inputs show up. An address can sit outside the four covered states, and a GPS fix can land where no precinct exists, so the app checks for both and tells you which states it covers. When precise location is off, iOS only shares a rough location that could land in the wrong precinct, so the app asks for one-time full accuracy and the widget falls back to its cached precinct.',
+          'Search is where the messy inputs show up. An address can sit outside the covered areas, and a GPS fix can land where no precinct exists, so the app checks for both and tells you which areas it covers. When precise location is off, iOS only shares a rough location that could land in the wrong precinct, so the app asks for one-time full accuracy and the widget falls back to its cached precinct.',
           'When a precinct has little or no data, the app says so. If only 40 ballots were cast somewhere, it prints "only 40 votes cast" next to the lean, and missing values show a plain dash. A small test suite checks known locations against the bundled database to catch these cases if they ever break again.',
         ],
       },
       {
         heading: 'Getting the Census data right',
         body: [
-          'The data pipeline joins election returns with Census voting districts, and the Census surprised me twice. Early on the app ranked one precinct the richest in its area, and it took me a while to learn the Census stops counting household income at $250,000. Around 170 precincts sit at that cap reporting the exact same "$250k+", and there is no separating them.',
+          'The data pipeline joins election returns with Census voting districts, and the Census surprised me twice. Early on the app ranked one precinct the richest in its area, and it took me a while to learn the Census stops counting household income at $250,000. Around 440 precincts sit at that cap reporting the exact same "$250k+", and there is no separating them.',
           'The second surprise was race. The Census asks about race and Hispanic origin as two separate questions, so the shares overlap and can add up to well over 100 percent, and the columns I have cannot be forced into one clean total. The app calls both out. Income shows as "$250k+" once it hits the cap, and an info box in the profile explains why the race numbers overlap. The widget has been on my home screen since it started working, and I like seeing it update from time to time.',
         ],
       },
       {
-        heading: 'Rebuilding By the Numbers',
-        body: [
-          'By the Numbers is the screen that compares your precinct with the other precincts in the area. In version 1.1 every measure there is a chart with five bars that sorts the area\'s precincts into groups, and the bar your precinct falls in is marked. That covers lean, how far precincts swung between elections, turnout, the largest group, income, college degrees, age, density, and renters and owners. Tapping a bar lists the precincts in it.',
-          'The precinct card and By the Numbers now share the same four sections: Politics, Who lives here, Money and education, and People and housing. Each stat on the card is a link to its chart.',
-          'I also corrected a few numbers. The swing chart now uses margin points everywhere, so a precinct that went from D+36 to R+10 shows a 46 point swing. When precincts tie for the top spot, the app lists them as a tie.',
-        ],
-        figure: { component: 'precinct-numbers' },
-      },
-      {
         heading: 'What is next',
-        body: 'Precinctly is now available on the App Store. Version 1.1 adds the new design and the rebuilt By the Numbers, plus a tour on first launch that walks you through the real map and its controls. More states are on the list next.',
+        body: 'Precinctly is now available on the App Store. More states are on the list next.',
       },
     ],
   },
